@@ -1,0 +1,124 @@
+openapi: '3.0.3'
+info:
+  title: "Trentino Transit Analytisc API"
+  version: '1.0'
+  description: 'API for analyzing public tranport efficency'
+servers:
+  - url: http://localhost:9000/api/
+paths:
+  /users/register:
+    post:
+      summary: 'Registra nuovo utente'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: 'Nome utente'
+                email:
+                  type: string
+                  format: email
+                  description: 'Email utente'
+                password:  
+                  type: string
+                  format: password
+                  description: 'Password utente'
+      responses:
+        '201': 
+          description: 'Utente creato con successo'
+        '400':
+          description: 'Errore nei parametri'
+  /users/login:
+   post:
+      summary: Effettua il login e ottiene un token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email dell'utente
+                password:
+                  type: string
+                  format: password
+                  description: Password dell'utente
+      responses:
+        '200':
+          description: Login riuscito, restituisce il token JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Token JWT da usare nelle richieste future
+        '401':
+          description: Credenziali non valide
+
+  /users/me:
+      get:
+        summary: Ottiene il profilo dell'utente autenticato
+        security:
+          - bearerAuth: []   # Specifica il tipo di autenticazione richiesta
+        responses:
+          '200':
+            description: Dati del profilo dell'utente autenticato
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                    username:
+                      type: string
+                    email:
+                      type: string
+          '401':
+            description: Token non valido o mancante
+
+      patch:
+        summary: Aggiorna i dettagli del profilo dell'utente autenticato
+        security:
+          - bearerAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: Nuovo nome utente
+                  email:
+                    type: string
+                    format: email
+                    description: Nuova email
+        responses:
+          '200':
+            description: Profilo aggiornato con successo
+          '400':
+            description: Errore nei parametri
+          '401':
+            description: Token non valido o mancante
+
+  /users/logout:
+    post:
+      summary: Effettua il logout dell'utente
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Logout effettuato con successo
+        '401':
+          description: Token non valido o mancante
