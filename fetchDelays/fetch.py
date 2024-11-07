@@ -1,26 +1,32 @@
 from mongo_client import MongoDBClient
 from tntrasporti_client import TNTrasportiClient
+from time import sleep
 
 # Funzione principale
 def main():
     
     # 539 route id del 4
     tnClient = TNTrasportiClient()
-    trips = tnClient.get_trips_by_route_today(539)
-
     mongo = MongoDBClient()
-    
-    for t in trips:
-        if len(t['stopTimes']) == 0:
-            break
-        mongo.insert_bus_status("4", 539, t['stopTimes'][0]['tripId'], t['stopLast'], t['delay'])
+
+    while True:
         
-    # routes = get_routes()
+        trips = tnClient.get_trips_by_route_today(539)
 
-    # for r in routes:
-    #     get_trips_by_route_today(r["routeId"])
+        
+        for t in trips:
+            if len(t['stopTimes']) == 0:
+                break
 
-    # get_stops()
+            tripId = t['stopTimes'][0]['tripId']
+            mongo.insert_bus_status(tripId, t['stopLast'], t['delay'])
+            if not mongo.find_tracked_bus(tripId):
+                mongo.add_tracked_bus(tripId)
+                print("aggiunto ai trackedbus", tripId)
+                
+
+        sleep(60)
+        
 
 
 # Esegue la funzione principale
