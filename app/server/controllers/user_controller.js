@@ -33,7 +33,8 @@ const loginUser = async (req, res) =>	{
 		if(!isMatch){
 			return res.status(400);
 		}
-
+		
+		req.session.user = user;
 		console.log('utente loggato con successo')
 		res.status(201).json(user);
 	} catch (error) {
@@ -42,6 +43,33 @@ const loginUser = async (req, res) =>	{
 	}
 	
 } 
+
+const logoutUser = (req, res) => {
+	try{
+		req.session.destroy();
+		res.clearCookie('connect.sid');
+		
+		res.status(200).send('Logout effettuato con successo');
+	} catch (error){
+		console.error('Errore durante il login dell\'utente:', error);
+		res.status(400).json({ message: 'Errore durante il login dell\'utente', error: error.message });
+	}
+}
+
+const profilePage = (req, res) => {
+	try{
+		if(req.session.user){
+			res.status(201).json(req.session.user)
+		}
+		else {
+			res.redirect('users');
+		}
+	}
+	catch(error){
+		res.status(400).json({ message: 'Errore durante il caricamento del profilo dell\'utente', error: error.message });
+	}
+
+}
 
 const readAllUsers = (req, res) => {
   User.find()
@@ -107,6 +135,8 @@ const deleteData = (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
+  profilePage,
   readAllUsers,
   readSingleUser,
   updateData,

@@ -3,6 +3,8 @@ const express = require('express');
 const {
 	registerUser,
 	loginUser,
+	logoutUser,
+	profilePage,
 	readAllUsers,
 	readSingleUser,
 	updateData,
@@ -13,8 +15,10 @@ const router = express.Router();
 
 router
 	.post('/users/register', registerUser)
-	.get('/users/login', loginUser)
+	.post('/users/login', loginUser)
+	.post('/users/logout', logoutUser)
 	.get('/users', readAllUsers)
+	.get('/me', profilePage)
 	.get('/:id', readSingleUser)
 	.put('/:id', updateData)
 	.delete('/:id', deleteData);
