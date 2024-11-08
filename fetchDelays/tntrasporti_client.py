@@ -62,7 +62,6 @@ class TNTrasportiClient:
         response = requests.get(url, auth=self.auth, params=params)
         trips_today = response.json()
         filename = f"trips_route_{route_id}.json"
-        self.save_json(trips_today, filename)
         return trips_today
 
     def get_trip_details(self, trip_id):
@@ -70,5 +69,4 @@ class TNTrasportiClient:
         response = requests.get(url, auth=self.auth)
         trip_details = response.json()
         filename = f"trip_details_{trip_id}.json"
-        self.save_json(trip_details, filename)
         return trip_details
