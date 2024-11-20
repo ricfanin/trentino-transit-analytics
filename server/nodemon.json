@@ -1,0 +1,3 @@
+{
+    "ext": ".mjs, .cjs, .ts, .js, .env, .json"
+}
