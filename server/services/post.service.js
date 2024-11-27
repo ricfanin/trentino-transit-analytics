@@ -6,21 +6,40 @@ const createPost = async (postBody) => {
     return Post.create(postBody);
 }
 
-const getPostById = async (postId) => {
-    return Post.findById(postId);
-}
+const getPostByUser = async (userId) => {
+    const posts = await Post.find({author_id: userId});
+    return posts; 
+} 
 
-const deletePostById = async (postId) => {
-    const post = await getPostById(postId);
+const getPostByLikes = async (tags, order) => {
+    const posts = await getPostByTags(tags);
+    if(order == 'upvote') {
+        return posts.sort((a, b) => b.upvote - a.upvote);
+    } else {
+        return posts.sort((a, b) => a.downvote - b.downvote);
+    }
+};
+
+const getPostByTags = async (tags) => {
+    const posts = await Post.find({tags: {$in: tags}})
+    if(!posts){
+        throw new ApiError(httpStatus.NOT_FOUND, "Post not found")
+    }
+    return posts;
+};
+
+const deletePostById = async (id) => {
+    const post = await Post.findByIdAndDelete(id);
     if(!post) {
         throw new ApiError(httpStatus.NOT_FOUND, "Post not found");
     }
-    await post.remove();
     return post;
 }
 
 module.exports = {
     createPost,
-    getPostById,
+    getPostByUser,
+    getPostByTags,
+    getPostByLikes,
     deletePostById
 }
