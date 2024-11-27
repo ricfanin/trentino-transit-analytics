@@ -6,6 +6,17 @@ const createPost = async (postBody) => {
     return Post.create(postBody);
 }
 
+const updatePost = async (postID, postBody) => {
+
+    const updatedPost = await Post.findByIdAndUpdate(postID, {title: postBody.title, content: postBody.content, tags: postBody.tags, updatedAt: Date.now()}, {new: true});
+
+    if(!updatedPost) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Post not found');
+    }
+
+    return updatedPost;
+}
+
 const getPostByUser = async (userId) => {
     const posts = await Post.find({author_id: userId});
     return posts; 
@@ -20,8 +31,26 @@ const getPostByLikes = async (tags, order) => {
     }
 };
 
+const getPostByDate = async(tags, order) =>{
+    const posts = await getPostByTags(tags);
+    
+    if(order === 'newest'){
+        return posts.sort((a, b) => b.createdAt - a.createdAt);
+    } else {
+        return posts.sort((a, b) => a.createdAt - b.createdAt);
+    }
+}
+
 const getPostByTags = async (tags) => {
-    const posts = await Post.find({tags: {$in: tags}})
+
+    let posts;
+
+    if(tags.length === 0){
+        posts = await Post.find();
+    } else {
+        posts = await Post.find({tags: {$in: tags}})
+    }
+
     if(!posts){
         throw new ApiError(httpStatus.NOT_FOUND, "Post not found")
     }
@@ -38,7 +67,9 @@ const deletePostById = async (id) => {
 
 module.exports = {
     createPost,
+    updatePost,
     getPostByUser,
+    getPostByDate,
     getPostByTags,
     getPostByLikes,
     deletePostById

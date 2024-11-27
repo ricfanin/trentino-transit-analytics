@@ -9,15 +9,21 @@ const router = express.Router();
 router
     .route('/')
     .post(auth(), validate(postValidation.createPost), postController.createPost)
+    .patch(auth(), validate(postValidation.updatePost), postController.updatePost)
     .delete(auth(), validate(postValidation.deletePost), postController.deletePost)
     .get(auth(), validate(postValidation.getPostById), postController.getPostByUser)
 
 router
-    .route('/feed/tags')
+    .route('/filter/tags')
     .get(validate(postValidation.getPostByTags), postController.getPostByTags)
 
 router
-    .route('/feed/likes')
+    .route('/filter/likes')
     .get(validate(postValidation.getPostByLikes), postController.getPostByLikes)
+    
+router
+    .route('/filter/date')
+    .get(validate(postValidation.getPostByDate), postController.getPostByDate);
+
 
 module.exports = router;
