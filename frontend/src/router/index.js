@@ -1,9 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Social from '../views/Social.vue'
+import CommentSection from '../views/CommentSection.vue'
+import Linea from '../views/Linea.vue'
+import Corsa from '../views/Corsa.vue'
+import Profilo from '../views/Profilo.vue'
+import CreazionePost from '../views/CreazionePost.vue'
+import ModificaProfilo from '../views/ModificaProfilo.vue'
+import LoginPage from '../views/LoginPage.vue'
+import RegisterPage from '../views/RegisterPage.vue'
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        {
+          {
             path: "/",
             name: "home",
             component: Home,
@@ -11,42 +21,47 @@ const router = createRouter({
           {
             path: "/Social",
             name: "Social",
-            component: () => import("../views/Social.vue"),
+            component: Social,
+          },
+          {
+            path: "/CommentSection",
+            name: "CommentSection",
+            component: CommentSection,
           },
           {
             path: "/Linea",
             name: "Linea",
-            component: () => import("../views/Linea.vue"),
+            component: Linea,
           },
           {
             path: "/Corsa",
             name: "Corsa",
-            component: () => import("../views/Corsa.vue"),
+            component: Corsa,
           },
           {
             path: "/Profilo",
             name: "Profilo",
-            component: () => import("../views/Profilo.vue"),
+            component: Profilo,
           },
           {
             path: "/CreazionePost",
             name: "CreazionePost",
-            component: () => import("../views/CreazionePost.vue"),
+            component: CreazionePost,
           },
           {
             path: "/ModificaProfilo",
             name: "ModificaProfilo",
-            component: () => import("../views/ModificaProfilo.vue"),
+            component: ModificaProfilo,
           },
           {
             path: "/LoginPage",
             name: "LoginPage",
-            component: () => import("../views/LoginPage.vue"),
+            component: LoginPage,
           },
           {
             path: "/RegisterPage",
             name: "RegisterPage",
-            component: () => import("../views/RegisterPage.vue"),
+            component: RegisterPage,
           },
     ]
 })

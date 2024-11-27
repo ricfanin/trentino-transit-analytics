@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="flex bg-gray-100">
+  <div class="flex">
     <div class="flex-1 p-8">
       <!--Post Search e Filtri-->
       <PostSearchFilterBar />

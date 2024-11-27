@@ -1,10 +1,10 @@
 /* eslint-disable */
 <template>
-  <div class="flex">
+  <div class="h-screen">
     <!-- Main Content -->
     <div class="flex-1 p-8">
       <!-- Titolo -->
-      <h1 class="text-3xl font-bold text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-50 text-center mb-8">
         Scrivi la tua opinione
       </h1>
 
