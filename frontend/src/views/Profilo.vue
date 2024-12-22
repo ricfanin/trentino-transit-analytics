@@ -47,7 +47,7 @@
         <!-- Username -->
         <div class="mt-24 text-center pb-8">
           <h1 class="text-2xl font-bold sm:text-4xl text-gray-700">
-            Username
+            {{ username }}
           </h1>
         </div>
       </div>
@@ -68,6 +68,7 @@
 <script>
 import Post from "@/components/Post.vue";
 import PostButton from "../components/PostButton.vue";
+import apiClient from "@/services/api";
 
 export default {
   name: "Profilo",
@@ -75,5 +76,27 @@ export default {
     Post,
     PostButton,
   },
+
+  data(){
+    return {
+      username: "",
+    };
+  },
+
+  methods: {
+    async getProfile(){
+      try{
+        const response = await apiClient.get('/profile');
+        this.username = response.data.name;
+      } catch{
+        alert("errore profilo");
+      }
+    }
+  },
+
+  created : function() {
+    this.getProfile()
+  },
+
 };
 </script>
