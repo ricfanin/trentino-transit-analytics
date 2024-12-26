@@ -1,14 +1,13 @@
 const Joi = require('joi');
 const { objectId } = require('./custom.validation');
 
-const createPost = {
+const createPostSchema = {
     body: Joi.object().keys({
         author_id: Joi.string().custom(objectId).required(),
         title: Joi.string().required(),
         content: Joi.string(),
         tags: Joi.array().items(Joi.string().custom(objectId)),
     })
-
 }
 
 const updatePost = {
@@ -54,7 +53,7 @@ const deletePost = {
 }
 
 module.exports = {
-    createPost,
+    createPostSchema,
     updatePost,
     getPostByUser,
     getPostByLikes,

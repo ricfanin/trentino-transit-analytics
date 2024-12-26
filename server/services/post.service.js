@@ -17,6 +17,7 @@ const updatePost = async (postID, postBody) => {
     return updatedPost;
 }
 
+
 const getPostByUser = async (userId) => {
     const posts = await Post.find({author_id: userId});
     return posts; 
