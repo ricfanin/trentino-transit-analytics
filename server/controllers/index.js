@@ -1,1 +1,3 @@
-exports.AuthenticationController = require("./Authentication.controllers");
+exports.AuthenticationController = require("./auth.controller");
+exports.PostController = require("./post.controller");
+exports.VoteController = require("./vote.controller");
