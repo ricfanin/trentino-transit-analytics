@@ -4,6 +4,7 @@ const userRoute = require('./user.routes');
 const tagRoute = require('./tag.routes');
 const postRoute = require('./post.routes');
 const commentRoute = require('./comment.routes');
+const voteRoute = require('./vote.routes');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -28,6 +29,10 @@ const defaultRoutes = [
     {
         path: '/comments',
         route: commentRoute
+    },    
+    {
+        path: '/votes',
+        route: voteRoute
     }
 ];
 

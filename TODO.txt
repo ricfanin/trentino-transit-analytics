@@ -10,5 +10,5 @@ COMMENT
 [x] update comment
 
 LIKES
-[] add upvote/downvote
-[] remove upvote/downvote
+[x] add upvote/downvote
+[x] remove upvote/downvote
