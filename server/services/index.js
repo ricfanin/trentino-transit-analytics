@@ -5,3 +5,4 @@ module.exports.tagService = require('./tag.service');
 module.exports.postService = require('./post.service');
 module.exports.commentService = require('./comment.service');
 module.exports.voteService = require('./vote.service');
+module.exports.tripsAverageService = require('./tripsAverage.service');

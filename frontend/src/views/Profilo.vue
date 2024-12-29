@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <div class="mb-8 bg-gray-100">
+  <div>
     <!-- Profilo Utente -->
     <div class="p-4 sm:p-8 lg:p-16 mx-auto max-w-screen-lg">
       <div class="p-6 bg-white border-2 rounded-lg shadow-md mt-20">
@@ -33,19 +33,21 @@
           <div
             class="flex flex-wrap justify-between md:justify-center space-x-4 mt-16 md:mt-0"
           >
-            <button
-              class="mt-4 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-600"
-            >
-              <router-link to="/ModificaProfilo">Modifica Profilo</router-link>
-            </button>
+            <router-link to="/ModificaProfilo">
+              <button
+                class="mt-4 px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-600"
+              >
+              Modifica Profilo
+              </button>
+            </router-link>
             <PostButton />
           </div>
         </div>
 
         <!-- Username -->
         <div class="mt-24 text-center pb-8">
-          <h1 class="text-2xl sm:text-4xl font-medium text-gray-700">
-            Username
+          <h1 class="text-2xl font-bold sm:text-4xl text-gray-700">
+            {{ username }}
           </h1>
         </div>
       </div>
@@ -53,7 +55,7 @@
 
     <!-- Lista dei Post -->
     <div class="max-w-4xl mx-auto p-4 space-y-6">
-      <h2 class="text-2xl font-bold mb-6">I Tuoi Post</h2>
+      <!-- <h2 class="text-2xl font-bold mb-6">I Tuoi Post</h2> -->
 
       <!-- Singolo Post -->
       <Post />
@@ -66,6 +68,7 @@
 <script>
 import Post from "@/components/Post.vue";
 import PostButton from "../components/PostButton.vue";
+import apiClient from "@/services/api";
 
 export default {
   name: "Profilo",
@@ -73,5 +76,27 @@ export default {
     Post,
     PostButton,
   },
+
+  data(){
+    return {
+      username: "",
+    };
+  },
+
+  methods: {
+    async getProfile(){
+      try{
+        const response = await apiClient.get('/profile');
+        this.username = response.data.name;
+      } catch{
+        alert("errore profilo");
+      }
+    }
+  },
+
+  created : function() {
+    this.getProfile()
+  },
+
 };
 </script>

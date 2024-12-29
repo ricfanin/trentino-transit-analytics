@@ -1,13 +1,22 @@
 <template>
   <div>
-    <div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="flex justify-center items-center h-screen">
       <div class="bg-white p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-md">
         <h2
           class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center"
         >
           Accedi al tuo Account
         </h2>
-        <form>
+
+        <!-- Messaggio di errore -->
+        <div
+          v-if="errorMessage"
+          class="mb-4 p-4 text-red-700 bg-red-100 border border-red-300 rounded-lg"
+        >
+          {{ errorMessage }}
+        </div>
+
+        <form @submit.prevent="handleLogin">
           <!-- Email -->
           <div class="flex flex-col mb-6">
             <label for="email" class="text-sm font-medium text-gray-600 mb-1"
@@ -19,6 +28,7 @@
               <input
                 id="email"
                 type="email"
+                v-model="email"
                 class="flex-1 px-3 py-2 bg-transparent outline-none"
                 placeholder="email@address.com"
               />
@@ -36,6 +46,7 @@
               <input
                 id="password"
                 type="password"
+                v-model="password"
                 class="flex-1 px-3 py-2 bg-transparent outline-none"
                 placeholder="********"
               />
@@ -43,22 +54,12 @@
           </div>
 
           <!-- Pulsante Login -->
-          <button
-            type="submit"
-            class="w-full px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
-          >
-            <router-link to="/Profilo">Accedi</router-link>
-          </button>
-
-          <div class="my-4 text-center text-sm text-gray-500">Oppure</div>
-
-          <!-- Login con Google -->
-          <button
-            type="button"
-            class="w-full flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-100"
-          >
-            <router-link to="/Profilo">Accedi con Google</router-link>
-          </button>
+            <button
+              type="submit"
+              class="w-full px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
+            >
+              Accedi
+            </button>
         </form>
 
         <div class="mt-6 text-center text-sm text-gray-500">
@@ -73,7 +74,36 @@
 </template>
 
 <script>
+import apiClient from "@/services/api";
+import { errorMessages } from "vue/compiler-sfc";
+
 export default {
   name: "LoginPagePage",
+  data() {
+    return {
+      email: "",
+      password: "",
+      errorMessage: "",
+    };
+  },
+  methods: {
+    async handleLogin() {
+      const response = await apiClient.post("auth/login", {
+        email: this.email,
+        password: this.password,
+      });
+      if(response.ok){
+        this.errorMessage = "";
+  
+        // Memorizza i token e redirigi l'utente
+        const { user, tokens } = response.data;
+        localStorage.setItem("accessToken", tokens.access.token);
+        this.$router.push("/Profilo");
+      } else {
+        // Gestione errore: aggiorna il messaggio da mostrare
+        this.errorMessage = error.response?.data?.message || "Errore di login. Riprova.";
+      }
+    },
+  },
 };
 </script>
