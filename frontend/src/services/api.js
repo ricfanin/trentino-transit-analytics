@@ -44,7 +44,7 @@ apiClient.interceptors.response.use(
             } catch (err) {
                 console.error('Refresh token failed:', err);
                 // Redirigi al login se il refresh fallisce
-                window.location.href = '/login';
+                window.location.href = 'LoginPage';
             }
         }
 
