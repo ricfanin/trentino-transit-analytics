@@ -8,7 +8,7 @@ class MongoDBClient:
     DELAY_COLLECTION_NAME = "delays"
     TRIPS_COLLECTION_NAME = "tripsAverageDelay"
     TRACKED_COLLECTION_NAME = "busTracked"
-    STOPS_COLLECTION_NAME = "delays"
+    STOPS_COLLECTION_NAME = "stopDelays"
 
     def __init__(self, db_name='tnTA', host='localhost', port=27017):
         try:
@@ -17,9 +17,10 @@ class MongoDBClient:
             self.delayCollection = self.db[self.DELAY_COLLECTION_NAME]
             self.trackedCollection = self.db[self.TRACKED_COLLECTION_NAME]
             self.tripInfoCollection = self.db[self.TRIPS_COLLECTION_NAME]
+            self.stopDelaysCollection = self.db[self.STOPS_COLLECTION_NAME]
             print("Connessione al database stabilita.")
         except ConnectionFailure as e:
-            print(f"Errore di connessione a MongoDB: {e}")
+            print(e)
 
     ###################
     ##### DELAYS  #####
@@ -30,7 +31,7 @@ class MongoDBClient:
         """
         esisteBusStatus = self.find_bus_status(tripId, lastStop)
         if esisteBusStatus:
-            print("busStatus con lo stesso tripId e lastStop esiste già. Inserimento non eseguito.")
+            print("busStatus con lo stesso tripId e lastStop esiste gia. Inserimento non eseguito.")
             return
 
         busStatus = mongoModel.busStatusModel(tripId, lastStop, delay)
@@ -63,6 +64,15 @@ class MongoDBClient:
         cancella record con quel tripId
         """
         self.delayCollection.delete_many({"tripId": tripId})
+    
+    def getAllDelaysByTripId(self, tripId):
+        filtro = {"tripId": tripId}
+        result = self.delayCollection.find(filtro)
+        if result:
+            return result
+        else: 
+            return None
+    
         
     ###################
     ##### TRACKED #####
@@ -97,3 +107,13 @@ class MongoDBClient:
         """
         self.client.close()
         print("Connessione al database chiusa.")
+
+    ###################
+    ### STOP DELAYS ###
+    ###################
+    def insert_stop_delay(self, stopDelayObject):
+        """
+        Inserisce uno stop delay
+        """
+        self.stopDelaysCollection.insert_one(stopDelayObject)
+        print("stopDelay inserito con successo.")

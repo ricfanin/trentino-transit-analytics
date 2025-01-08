@@ -3,7 +3,6 @@ from tntrasporti_client import TNTrasportiClient
 from datetime import datetime
 from time import sleep
 
-# Funzione principale
 def main():
     
     # 539 route id del 4
@@ -14,30 +13,49 @@ def main():
     for t in trackedbus:
         tripId = t['tripId']
         trip = tnClient.get_trip_details(tripId)
+        stopTimes = trip['stopTimes']
 
         routeName = trip['tripHeadsign']
         routeId = trip['routeId']
         direction = trip['directionId']
-        startTripTime = trip['stopTimes'][0]['arrivalTime']
-        endTripTime = trip['stopTimes'][-1]['arrivalTime']
+        startTripTime = stopTimes[0]['arrivalTime']
+        endTripTime = stopTimes[-1]['arrivalTime']
         date = datetime.utcnow().isoformat() + "Z"
 
-        delay = mongo.getAverageDelayByTripId(tripId)
-        mongo.insert_trip_info(routeName, routeId, direction, date, tripId, startTripTime, endTripTime, delay)
+        # TRIP INFO
+        averageDelay = mongo.getAverageDelayByTripId(tripId)
+        if averageDelay is not None:
+            mongo.insert_trip_info(routeName, routeId, direction, date, tripId, startTripTime, endTripTime, averageDelay)
+        
+        delayRecords = mongo.getAllDelaysByTripId(tripId)
+            
+        insertStopDelays(mongo, delayRecords, stopTimes, routeName, routeId, direction)
 
         mongo.deleteByTripId(tripId)
         mongo.remove_tracked_bus(tripId)
 
+def insertStopDelays(mongo, delayRecords, stopTimes, routeName, routeId, direction):
+    for stop in stopTimes:
+        delayAssociated = None
+        for delayRecord in delayRecords:
+            if stop['stopId'] == delayRecord['lastStop']:
+                delayAssociated = delayRecord['delay']
+                break
 
+        if delayAssociated is None:
+            continue
 
-
-    # routes = get_routes()
-
-    # for r in routes:
-    #     get_trips_by_route_today(r["routeId"])
-
-    # get_stops()
-
+        stopDelayObject = {
+            "stopId": stop['stopId'],
+            "stopSequence": stop['stopSequence'],
+            "stopTime": stop['arrivalTime'],
+            "routeName": routeName,
+            "routeId": routeId,
+            "direction": direction,
+            "tripId": stop['tripId'],
+            "delay": delayAssociated
+        }
+        mongo.insert_stop_delay(stopDelayObject)
 
 if __name__ == "__main__":
     main()
