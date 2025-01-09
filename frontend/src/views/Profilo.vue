@@ -86,7 +86,7 @@ export default {
   methods: {
     async getProfile(){
       try{
-        const response = await apiClient.get('/profile');
+        const response = await apiClient.get('Profile');
         this.username = response.data.name;
       } catch{
         alert("errore profilo");

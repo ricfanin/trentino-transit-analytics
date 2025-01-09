@@ -88,19 +88,19 @@ export default {
   },
   methods: {
     async handleLogin() {
-      const response = await apiClient.post("auth/login", {
-        email: this.email,
-        password: this.password,
-      });
-      if(response.ok){
+      try{
+        const response = await apiClient.post("auth/login", {
+          email: this.email,
+          password: this.password,
+        });
         this.errorMessage = "";
   
         // Memorizza i token e redirigi l'utente
         const { user, tokens } = response.data;
         localStorage.setItem("accessToken", tokens.access.token);
-        this.$router.push("/Profilo");
-      } else {
-        // Gestione errore: aggiorna il messaggio da mostrare
+        localStorage.setItem("refreshToken", tokens.refresh.token);
+        this.$router.push("Profilo");
+      } catch(error){
         this.errorMessage = error.response?.data?.message || "Errore di login. Riprova.";
       }
     },

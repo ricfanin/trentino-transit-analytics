@@ -1,9 +1,16 @@
-/* eslint-disable */
+<template>
+    <div class="m-10 bg-white rounded-lg">
+        <BusLinesDelays />
+    </div>
+</template>
 
 <script>
-import DataTable from 'datatables.net-dt';
+import BusLinesDelays from '@/components/BusLinesDelays.vue';
 
+export default {
+  name: 'Linea',
+  components: {
+    BusLinesDelays,
+  },
+};
 </script>
-
-<template>
-</template>
