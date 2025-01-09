@@ -58,16 +58,17 @@
       <!-- <h2 class="text-2xl font-bold mb-6">I Tuoi Post</h2> -->
 
       <!-- Singolo Post -->
-      <Post />
-      <Post />
-      <Post />
+      <div v-for="post in posts" :key="post.id">
+        <Post :postId="post._id" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Post from "@/components/Post.vue";
-import PostButton from "../components/PostButton.vue";
+import PostButton from "@/components/PostButton.vue";
+import { getUserPosts } from "@/services/posts";
 import apiClient from "@/services/api";
 
 export default {
@@ -77,26 +78,42 @@ export default {
     PostButton,
   },
 
-  data(){
+  data() {
     return {
       username: "",
+      posts: [], // Array per salvare i post dell'utente
     };
   },
 
   methods: {
-    async getProfile(){
-      try{
-        const response = await apiClient.get('Profile');
+    // Recupera le informazioni del profilo
+    async getProfile() {
+      try {
+        const response = await apiClient.get("/profile");
         this.username = response.data.name;
-      } catch{
-        alert("errore profilo");
+      } catch (error) {
+        alert("Errore durante il caricamento del profilo.");
       }
-    }
+    },
+
+    async fetchUserPosts() {
+      try {
+        const userId = localStorage.getItem("user_id"); 
+        if (!userId) {
+          throw new Error("User ID non trovato.");
+        }
+
+        const posts = await getUserPosts(userId);
+        this.posts = posts; 
+      } catch (error) {
+        alert("Errore durante il caricamento dei post dell'utente.");
+      }
+    },
   },
 
-  created : function() {
-    this.getProfile()
+  async created() {
+    await this.getProfile();
+    await this.fetchUserPosts();
   },
-
 };
 </script>

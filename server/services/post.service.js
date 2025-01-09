@@ -17,6 +17,10 @@ const updatePost = async (postID, postBody) => {
     return updatedPost;
 }
 
+const getPostById = async (postId) => {
+    const post = await Post.findById(postId)
+    return post; 
+} 
 
 const getPostByUser = async (userId) => {
     const posts = await Post.find({author_id: userId});
@@ -69,6 +73,7 @@ const deletePostById = async (id) => {
 module.exports = {
     createPost,
     updatePost,
+    getPostById,
     getPostByUser,
     getPostByDate,
     getPostByTags,

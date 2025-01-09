@@ -3,21 +3,16 @@
   <div class="bg-white p-6 border-2 rounded-lg shadow-md">
     <!-- Titolo -->
     <div class="place-items-center">
-      <span class="font-bold text-gray-600 text-2xl">Titolo del Post</span>
+      <span class="font-bold text-gray-600 text-2xl">{{post.title}}</span>
     </div>
     <!-- Linea e Username -->
     <div class="flex justify-between mb-4">
       <span class="text-gray-600">Linea / Fermata Recensita</span>
-      <span class="text-gray-600 flex items-center"> Username </span>
+      <span class="text-gray-600 flex items-center"> {{post.username}} </span>
     </div>
     <!-- Descrizione Post -->
     <p class="text-gray-700 mb-4">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua... Ricroller Coaster & Mattia Tostato & Gay Joller
+      {{ post.description }}
     </p>
     <!-- Pulsanti Like, Commenta, Condividi -->
     <div class="flex items-center space-x-4">
@@ -121,7 +116,32 @@
 </template>
 
 <script>
+import { getPostById } from "@/services/posts";
+
 export default {
   name: "Post",
+  props: {
+    postId: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      post: null, // Dati del post
+    };
+  },
+  async created() {
+    await this.fetchPost();
+  },
+  methods: {
+    async fetchPost() {
+      try {
+        this.post = await getPostById(this.postId);
+      } catch (error) {
+        console.error("Errore durante il caricamento del post:", error);
+      }
+    },
+  },
 };
 </script>

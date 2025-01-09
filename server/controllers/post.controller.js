@@ -13,9 +13,17 @@ const updatePost = catchAsync(async (req, res) => {
 })
 
 const getPostByUser = catchAsync(async (req, res) => {
-    const posts = await postService.getPostByUser(req.body.id);
+    const {author_id} = req.query;
+    const posts = await postService.getPostByUser(author_id);
     res.status(httpStatus.OK).send(posts);
 });
+
+const getPostById = catchAsync(async (req, res) => {
+    const {post_id} = req.query;
+    const post = await postService.getPostById(post_id);
+    res.status(httpStatus.OK).send(post);
+});
+
 
 const getPostByTags = catchAsync(async (req, res) => {
     const posts = await postService.getPostByTags(req.body.tags);
@@ -41,6 +49,7 @@ module.exports = {
     createPost,
     updatePost,
     getPostByUser,
+    getPostById,
     getPostByTags,
     getPostByDate,
     getPostByLikes,
