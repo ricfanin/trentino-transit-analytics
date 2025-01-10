@@ -8,13 +8,12 @@
 </template>
 
 <script>
-import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
-Chart.register(CategoryScale);
-Chart.register(LinearScale);
-Chart.register(BarController);
-Chart.register(BarElement);
+import apiClient from "@/services/api";
 
-import axios from 'axios';
+import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
+Chart.register(CategoryScale, LinearScale, BarController, BarElement);
+
+
 
 export default {
   name: 'BusDelayChart',
@@ -28,19 +27,14 @@ export default {
   },
   methods: {
     async fetchData() {
-        // const response = await axios.get('http://localhost:3000/api/delays');
-        // const data = response.data;
-
-        const data = [
-            { line: 1, avg_delay: 10 },
-            { line: 2, avg_delay: 5 },
-            { line: 3, avg_delay: 15 },
-            { line: 4, avg_delay: 7 },
-        ];
+      try {
+        // Ottieni i dati dal server
+        const response = await apiClient.get('trips-average/lines');
+        const data = response.data;
 
         // Estrarre dati per il grafico
-        const labels = data.map(item => `Linea ${item.line}`);
-        const delays = data.map(item => item.avg_delay);
+        const labels = data.map(item => `Linea ${item.routeId}`);
+        const delays = data.map(item => item.averageDelay);
 
         // Configurazione del grafico
         this.chart = new Chart(this.$refs.chart, {
@@ -77,6 +71,9 @@ export default {
             },
           },
         });
+      } catch (error) {
+        console.error('Errore nel caricamento dei dati:', error);
+      }
     },
   },
 };
