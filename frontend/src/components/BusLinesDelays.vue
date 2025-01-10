@@ -13,8 +13,6 @@ import apiClient from "@/services/api";
 import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
 Chart.register(CategoryScale, LinearScale, BarController, BarElement);
 
-
-
 export default {
   name: 'BusDelayChart',
   data() {

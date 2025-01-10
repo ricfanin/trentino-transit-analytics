@@ -14,4 +14,8 @@ router
     .route('/lines')
     .get(auth(), tripsAverageDelayController.getLinesDelays);
 
+router
+    .route('/times')
+    .get(auth(), tripsAverageDelayController.getLinesDelaysByTimes);
+
 module.exports = router;

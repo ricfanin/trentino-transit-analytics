@@ -27,7 +27,34 @@ const getLinesDelays = async () => {
     }
 };
 
+/**
+ * Get all line times average delays
+ * @returns {Promise<Array>}
+ */
+const getLinesDelayByTimes = async () => {
+    try {
+        return await TripsAverageDelay.getAverageDelayGroupByStartTrip();
+    }
+    catch (error) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+    }
+};
+
+/**
+ * Get specic line times average delays
+ * @returns {Promise<Array>}
+ */
+// const getLineDelayByTimes = async () => {
+//     try {
+//         return await TripsAverageDelay.getAverageDelayGroupByLinea();
+//     }
+//     catch (error) {
+//         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+//     }
+// };
+
 module.exports = {
     getAllTripAverageDelays,
     getLinesDelays,
+    getLinesDelayByTimes,
 };

@@ -8,13 +8,10 @@
 </template>
 
 <script>
-import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
-Chart.register(CategoryScale);
-Chart.register(LinearScale);
-Chart.register(BarController);
-Chart.register(BarElement);
+import apiClient from "@/services/api";
 
-import axios from 'axios';
+import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
+Chart.register(CategoryScale, LinearScale, BarController, BarElement);
 
 export default {
   name: 'BusDelayChart',
@@ -28,29 +25,14 @@ export default {
   },
   methods: {
     async fetchData() {
-        // const response = await axios.get('http://localhost:3000/api/delays');
-        // const data = response.data;
-
-        const data = [
-            { hour: '8:00', avg_delay: 10 },
-            { hour: '8:30', avg_delay: 1 },
-            { hour: '9:00', avg_delay: 15 },
-            { hour: '9:30', avg_delay: 0 },
-            { hour: '10:00', avg_delay: 11 },
-            { hour: '10:30', avg_delay: 9 },
-            { hour: '11:00', avg_delay: 8 },
-            { hour: '11:30', avg_delay: 3 },
-            { hour: '12:00', avg_delay: 3 },
-            { hour: '12:30', avg_delay: 8 },
-            { hour: '13:00', avg_delay: 11 },
-            { hour: '13:30', avg_delay: 19 },
-            { hour: '14:00', avg_delay: 11 },
-            { hour: '14:30', avg_delay: 4 },
-        ];
+      try {
+        // Ottieni i dati dal server
+        const response = await apiClient.get('trips-average/times');
+        const data = response.data;
 
         // Estrarre dati per il grafico
-        const labels = data.map(item => item.hour);
-        const delays = data.map(item => item.avg_delay);
+        const labels = data.map(item => `Linea ${item.routeId}`);
+        const delays = data.map(item => item.averageDelay);
 
         // Configurazione del grafico
         this.chart = new Chart(this.$refs.chart, {
@@ -81,12 +63,15 @@ export default {
               y: {
                 title: {
                   display: true,
-                  text: 'Ore',
+                  text: 'Linee',
                 },
               },
             },
           },
         });
+      } catch (error) {
+        console.error('Errore nel caricamento dei dati:', error);
+      }
     },
   },
 };
