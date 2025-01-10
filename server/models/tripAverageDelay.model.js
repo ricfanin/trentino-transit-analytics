@@ -52,6 +52,29 @@ const tripAverageDelaySchema = mongoose.Schema(
     }
 );
 
+
+tripAverageDelaySchema.statics.getAverageDelayGroupByLinea = async function () {
+    const result = await TripAverageDelay.aggregate([
+        {
+            // Raggruppa per linea (routeName) e calcola la media dei ritardi
+            $group: {
+                _id: '$routeId',
+                averageDelay: { $avg: '$delay' },
+            },
+        },
+        {
+            // Rinomina il campo _id in routeName
+            $project: {
+                _id: 0,
+                routeId: '$_id',
+                averageDelay: 1,
+            },
+        },
+    ]);
+
+    return result;
+};
+
 /**
  * @typedef TripAverageDelay
  */

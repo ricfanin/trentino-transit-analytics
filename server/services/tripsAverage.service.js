@@ -14,6 +14,20 @@ const getAllTripAverageDelays = async () => {
     return delays;
 };
 
+/**
+ * Get all Lines average delays
+ * @returns {Promise<Array>}
+ */
+const getLinesDelays = async () => {
+    try {
+        return await TripsAverageDelay.getAverageDelayGroupByLinea();
+    }
+    catch (error) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+    }
+};
+
 module.exports = {
     getAllTripAverageDelays,
+    getLinesDelays,
 };

@@ -10,4 +10,8 @@ router
     .route('/')
     .get(auth(), tripsAverageDelayController.getAllTripsAverageDelays)
 
+router
+    .route('/lines')
+    .get(auth(), tripsAverageDelayController.getLinesDelays);
+
 module.exports = router;
