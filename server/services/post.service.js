@@ -29,19 +29,29 @@ const getPostByUser = async (userId) => {
 
 const getPostByLikes = async (tags, order) => {
     const posts = await getPostByTags(tags);
-    if(order == 'upvote') {
-        return posts.sort((a, b) => b.upvote - a.upvote);
+
+    // Aggiungi il calcolo dello score (upvote - downvote)
+    posts.forEach(post => {
+        post.netScore = post.upvote - post.downvote;
+    });
+
+    // Ordina i post in base al valore di netScore
+    if (order === 'upvote') {
+        return posts.sort((a, b) => b.netScore - a.netScore); // Decrescente
+    } else if (order === 'downvote') {
+        return posts.sort((a, b) => a.netScore - b.netScore); // Crescente
     } else {
-        return posts.sort((a, b) => a.downvote - b.downvote);
+        throw new Error('Invalid order type. Use "upvote" or "downvote".');
     }
 };
 
 const getPostByDate = async(tags, order) =>{
+
     const posts = await getPostByTags(tags);
     
     if(order === 'newest'){
         return posts.sort((a, b) => b.createdAt - a.createdAt);
-    } else {
+    } else  if (order === 'oldest') {
         return posts.sort((a, b) => a.createdAt - b.createdAt);
     }
 }

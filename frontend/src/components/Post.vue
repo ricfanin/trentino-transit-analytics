@@ -1,6 +1,6 @@
 <template>
   <!-- Post -->
-  <div class="bg-white p-6 border-2 rounded-lg shadow-md">
+  <div v-if="isPostValid" class="bg-white p-6 border-2 rounded-lg shadow-md">
     <!-- Titolo -->
     <div class="place-items-center">
       <span class="font-bold text-gray-600 text-2xl">{{post.title}}</span>
@@ -8,17 +8,18 @@
     <!-- Linea e Username -->
     <div class="flex justify-between mb-4">
       <span class="text-gray-600">Linea / Fermata Recensita</span>
-      <span class="text-gray-600 flex items-center"> {{post.username}} </span>
+      <span class="text-gray-600 flex items-center"> {{post.author_id}} </span>
     </div>
     <!-- Descrizione Post -->
     <p class="text-gray-700 mb-4">
-      {{ post.description }}
+      {{ post.content }}
     </p>
     <!-- Pulsanti Like, Commenta, Condividi -->
     <div class="flex items-center space-x-4">
       <div class="flex items-center space-x-2 bg-blue-400 rounded-3xl">
         <!-- Upvote -->
         <button
+          @click="vote('upvote')" 
           class="flex items-center px-2 py-2 rounded-3xl hover:bg-blue-500"
         >
           <div class="text-gray-100 md:order-1">
@@ -44,9 +45,10 @@
           </div>
         </button>
         <!-- Conteggio -->
-        <div class="flex items-center text-gray-100">355</div>
+        <div class="flex items-center text-gray-100">{{netScore}}</div>
         <!-- Downvote -->
         <button
+          @click="vote('downvote')"
           class="flex items-center px-2 py-2 rounded-3xl hover:bg-blue-500"
         >
           <div class="text-gray-100 md:order-1">
@@ -113,10 +115,13 @@
       </button>
     </div>
   </div>
+  <div v-else>
+    <p>Caricamento o dati non validi...</p>
+  </div>
 </template>
 
 <script>
-import { getPostById } from "@/services/posts";
+import { getPostById, updatePostVote } from "@/services/posts";
 
 export default {
   name: "Post",
@@ -128,11 +133,19 @@ export default {
   },
   data() {
     return {
-      post: null, // Dati del post
+      post: null, 
     };
   },
   async created() {
     await this.fetchPost();
+  },
+  computed: {
+    isPostValid() {
+      return this.post;
+    },
+    netScore() {
+      return this.post.upvote - this.post.downvote;
+    },
   },
   methods: {
     async fetchPost() {
@@ -140,6 +153,15 @@ export default {
         this.post = await getPostById(this.postId);
       } catch (error) {
         console.error("Errore durante il caricamento del post:", error);
+      }
+    },
+    async vote(type) {
+      try {
+        console.log(type);
+        const updatedPost = await updatePostVote(this.postId, localStorage.getItem("user_id"), type); // Funzione per aggiornare il voto nel backend
+        this.post = updatedPost; // Aggiorna il post con i nuovi voti
+      } catch (error) {
+        console.error("Errore durante l'aggiornamento del voto:", error);
       }
     },
   },

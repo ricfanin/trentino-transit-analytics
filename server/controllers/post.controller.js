@@ -26,17 +26,19 @@ const getPostById = catchAsync(async (req, res) => {
 
 
 const getPostByTags = catchAsync(async (req, res) => {
-    const posts = await postService.getPostByTags(req.body.tags);
+    const posts = await postService.getPostByTags(req.query.tags);
     res.status(httpStatus.OK).send(posts);
 });
 
 const getPostByDate = catchAsync(async (req, res) => {
-    const posts = await postService.getPostByDate(req.body.tags, req.body.order);
+    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const posts = await postService.getPostByDate(tags, req.query.order);
     res.status(httpStatus.OK).send(posts);
 })
 
 const getPostByLikes = catchAsync(async (req, res) => {
-    const post = await postService.getPostByLikes(req.body.tags, req.body.order);
+    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const post = await postService.getPostByLikes(tags, req.query.order);
     res.status(httpStatus.OK).send(post);
 });
 
