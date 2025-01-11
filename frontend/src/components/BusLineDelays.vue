@@ -1,10 +1,12 @@
 <template>
     <div>
-        <span class="font-bold text-gray-600 text-2xl">Ritardi medi con orari Linea X</span>
+        <span class="font-bold text-gray-600 text-2xl">
+            Ritardi medi con orari Linea {{ routeId }}{{ routeNumber }}
+        </span>
         <div class="w-full">
             <canvas class="m-auto" ref="chart"></canvas>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -15,26 +17,56 @@ Chart.register(CategoryScale, LinearScale, BarController, BarElement);
 
 export default {
   name: 'BusDelayChart',
+  props: {
+    routeId: {
+      type: [String, Number],
+      required: true,
+    },
+  },
   data() {
     return {
       chart: null,
+      routeNumber: null, // Per visualizzare il numero della linea
     };
   },
-  mounted() {
-    this.fetchData();
+  watch: {
+    routeId: {
+      immediate: true,
+      handler() {
+        this.fetchRouteNumber(); // Ottieni il routeNumber
+        this.fetchData(); // Ottieni i dati del grafico
+      },
+    },
   },
   methods: {
-    async fetchData() {
+    async fetchRouteNumber() {
+      if (!this.routeId) return;
+
       try {
-        // Ottieni i dati dal server
-        const response = await apiClient.get('trips-average/times');
+        // Ottieni il routeNumber per il routeId
+        const response = await apiClient.get(`/routes/${this.routeId}`);
+        this.routeNumber = response.data.routeNumber;
+      } catch (error) {
+        console.error('Errore nel caricamento del routeNumber:', error);
+      }
+    },
+    async fetchData() {
+      if (!this.routeId) return;
+
+      try {
+        // Ottieni i dati dal server filtrati per routeId
+        const response = await apiClient.get(`trips-average/times?routeId=${this.routeId}`);
         const data = response.data;
 
         // Estrarre dati per il grafico
-        const labels = data.map(item => item.startTripTime);
-        const delays = data.map(item => item.averageDelay);
+        const labels = data.map((item) => item.startTripTime);
+        const delays = data.map((item) => item.averageDelay);
 
         // Configurazione del grafico
+        if (this.chart) {
+          this.chart.destroy(); // Distruggi il grafico precedente se esiste
+        }
+
         this.chart = new Chart(this.$refs.chart, {
           type: 'bar',
           data: {
@@ -52,7 +84,7 @@ export default {
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            indexAxis: 'y', // Cambia l'asse per avere le barre orizzontali
+            indexAxis: 'y',
             scales: {
               x: {
                 title: {
@@ -63,7 +95,7 @@ export default {
               y: {
                 title: {
                   display: true,
-                  text: 'Linee',
+                  text: 'Orari',
                 },
               },
             },
@@ -76,10 +108,3 @@ export default {
   },
 };
 </script>
-
-<style>
-canvas{
-  width: 100%;
-}
-
-</style>
