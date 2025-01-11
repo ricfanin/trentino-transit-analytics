@@ -5,8 +5,8 @@
             <label for="routeSelect" class="font-bold text-gray-600">Seleziona una linea:</label>
             <select
                 id="routeSelect"
-                v-model="selectedRoute"
-                @change="updateRoute"
+                v-model="selectedRouteId"
+                @change="updateRouteDetails"
                 class="border border-gray-300 rounded-md p-2"
             >
                 <option value="" disabled>Seleziona una linea</option>
@@ -16,8 +16,8 @@
             </select>
         </div>
 
-        <!-- Passa la linea selezionata come prop -->
-        <BusLineDelays :route-id="selectedRoute" />
+        <!-- Passa sia routeId che routeNumber -->
+        <BusLineDelays :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
         <BusLineDelaysWithStops />
     </div>
 </template>
@@ -35,7 +35,8 @@ export default {
   },
   data() {
     return {
-      selectedRoute: null, // Valore selezionato dall'utente (routeId)
+      selectedRouteId: null, // ID della linea selezionata
+      selectedRouteNumber: null, // Numero della linea selezionata
       routes: [], // Lista delle route con routeId e routeNumber
     };
   },
@@ -52,9 +53,10 @@ export default {
         console.error("Errore nel caricamento delle route:", error);
       }
     },
-    updateRoute() {
-      // Opzionale: log o azioni aggiuntive quando cambia la selezione
-      console.log("Route selezionata:", this.selectedRoute);
+    updateRouteDetails() {
+      // Trova il routeNumber in base al routeId selezionato
+      const selectedRoute = this.routes.find((route) => route.routeId === this.selectedRouteId);
+      this.selectedRouteNumber = selectedRoute ? selectedRoute.routeNumber : null;
     },
   },
 };

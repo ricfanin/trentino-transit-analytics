@@ -1,7 +1,7 @@
 <template>
     <div>
         <span class="font-bold text-gray-600 text-2xl">
-            Ritardi medi con orari Linea {{ routeId }}{{ routeNumber }}
+            Ritardi medi con orari Linea {{ routeNumber }}
         </span>
         <div class="w-full">
             <canvas class="m-auto" ref="chart"></canvas>
@@ -22,34 +22,25 @@ export default {
       type: [String, Number],
       required: true,
     },
+    routeNumber: {
+      type: [String, Number],
+      required: true,
+    },
   },
   data() {
     return {
       chart: null,
-      routeNumber: null, // Per visualizzare il numero della linea
     };
   },
   watch: {
     routeId: {
       immediate: true,
       handler() {
-        this.fetchRouteNumber(); // Ottieni il routeNumber
-        this.fetchData(); // Ottieni i dati del grafico
+          this.fetchData(); // Ottieni i dati del grafico
       },
     },
   },
   methods: {
-    async fetchRouteNumber() {
-      if (!this.routeId) return;
-
-      try {
-        // Ottieni il routeNumber per il routeId
-        const response = await apiClient.get(`/routes/${this.routeId}`);
-        this.routeNumber = response.data.routeNumber;
-      } catch (error) {
-        console.error('Errore nel caricamento del routeNumber:', error);
-      }
-    },
     async fetchData() {
       if (!this.routeId) return;
 
