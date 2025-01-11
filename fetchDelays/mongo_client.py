@@ -9,6 +9,7 @@ class MongoDBClient:
     TRIPS_COLLECTION_NAME = "tripsAverageDelay"
     TRACKED_COLLECTION_NAME = "busTracked"
     STOPS_COLLECTION_NAME = "stopDelays"
+    STOPSNAMES_COLLECTION_NAME = "stopNames"
 
     def __init__(self, db_name='tnTA', host='localhost', port=27017):
         try:
@@ -18,6 +19,7 @@ class MongoDBClient:
             self.trackedCollection = self.db[self.TRACKED_COLLECTION_NAME]
             self.tripInfoCollection = self.db[self.TRIPS_COLLECTION_NAME]
             self.stopDelaysCollection = self.db[self.STOPS_COLLECTION_NAME]
+            self.stopNamesCollection = self.db[self.STOPSNAMES_COLLECTION_NAME]
             print("Connessione al database stabilita.")
         except ConnectionFailure as e:
             print(e)
@@ -117,3 +119,15 @@ class MongoDBClient:
         """
         self.stopDelaysCollection.insert_one(stopDelayObject)
         print("stopDelay inserito con successo.")
+
+
+    ###################
+    ### STOP NAMES ###
+    ###################
+
+    def insert_stop_name(self, stopIdNameObject):
+        """
+        Inserisce uno stop con id e nome
+        """
+        self.stopNamesCollection.insert_one(stopIdNameObject)
+        print("stopName inserito con successo.")

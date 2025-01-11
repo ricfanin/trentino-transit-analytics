@@ -21,10 +21,9 @@ class TNTrasportiClient:
 
     def get_stops(self, size=40, stop_type="U"):
         url = f"{self.BASE_URL}/stops"
-        params = {"size": size, "type": stop_type}
+        params = {"type": stop_type}
         response = requests.get(url, auth=self.auth, params=params)
         stops = response.json()
-        self.save_json(stops, "stops.json")
         return stops
 
     def get_routes(self):
