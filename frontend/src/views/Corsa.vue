@@ -18,7 +18,7 @@
 
         <!-- Passa sia routeId che routeNumber -->
         <BusLineDelays :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
-        <BusLineDelaysWithStops />
+        <BusLineDelaysWithStops :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
     </div>
 </template>
 

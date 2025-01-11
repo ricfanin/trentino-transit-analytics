@@ -1,50 +1,74 @@
 <template>
     <div>
-        <span class="font-bold text-gray-600 text-2xl">Ritardi medi con fermate Linea X</span>
+        <span class="font-bold text-gray-600 text-2xl">
+            Ritardi medi nelle fermate Linea {{ routeNumber }}
+        </span>
         <div class="w-full">
+            <select v-model="directionId" class="border border-gray-300 rounded-md p-2">
+              <option value="0">Andata</option>
+              <option value="1">Ritorno</option>
+            </select>
             <canvas class="m-auto" ref="chart"></canvas>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
-import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
-Chart.register(CategoryScale);
-Chart.register(LinearScale);
-Chart.register(BarController);
-Chart.register(BarElement);
+import apiClient from "@/services/api";
 
-import axios from 'axios';
+import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
+Chart.register(CategoryScale, LinearScale, BarController, BarElement);
 
 export default {
   name: 'BusDelayChart',
+  props: {
+    routeId: {
+      type: [String, Number],
+      required: true,
+    },
+    routeNumber: {
+      type: [String, Number],
+      required: true,
+    },
+  },
   data() {
     return {
       chart: null,
+      directionId: 0,
     };
   },
-  mounted() {
-    this.fetchData();
+  watch: {
+    routeId: {
+      immediate: true,
+      handler() {
+          this.fetchData(); // Ottieni i dati del grafico
+      },
+    },
+    directionId: {
+      immediate: true,
+      handler() {
+          this.fetchData(); // Ottieni i dati del grafico
+      },
+    },
   },
   methods: {
     async fetchData() {
-        // const response = await axios.get('http://localhost:3000/api/delays');
-        // const data = response.data;
+      if (!this.routeId) return;
 
-        const data = [
-            { stop: 'fermata1', avg_delay: 10 },
-            { stop: 'fermata2', avg_delay: 14 },
-            { stop: 'fermata3', avg_delay: 10 },
-            { stop: 'fermata4', avg_delay: 9 },
-            { stop: 'fermata5', avg_delay: 3 },
-            { stop: 'fermata6', avg_delay: 14 },
-        ];
+      try {
+        // Ottieni i dati dal server filtrati per routeId
+        const response = await apiClient.get(`trips-average/stops?routeId=${this.routeId}&directionId=${this.directionId}`);
+        const data = response.data;
 
         // Estrarre dati per il grafico
-        const labels = data.map(item => item.stop);
-        const delays = data.map(item => item.avg_delay);
+        const labels = data.map((item) => item.stopName);
+        const delays = data.map((item) => item.averageDelay);
 
         // Configurazione del grafico
+        if (this.chart) {
+          this.chart.destroy(); // Distruggi il grafico precedente se esiste
+        }
+
         this.chart = new Chart(this.$refs.chart, {
           type: 'bar',
           data: {
@@ -61,8 +85,8 @@ export default {
           },
           options: {
             responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y', // Cambia l'asse per avere le barre orizzontali
+            maintainAspectRatio: true,
+            indexAxis: 'y',
             scales: {
               x: {
                 title: {
@@ -73,20 +97,16 @@ export default {
               y: {
                 title: {
                   display: true,
-                  text: 'fermate',
+                  text: 'Orari',
                 },
               },
             },
           },
         });
+      } catch (error) {
+        console.error('Errore nel caricamento dei dati:', error);
+      }
     },
   },
 };
 </script>
-
-<style>
-canvas{
-  width: 100%;
-}
-
-</style>

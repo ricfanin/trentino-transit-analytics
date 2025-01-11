@@ -42,34 +42,48 @@ const stopDelaySchema = mongoose.Schema(
     },
 );
 
-stopDelaySchema.statics.getAverageDelayGroupByStops = async function (routeId = null) {
+stopDelaySchema.statics.getAverageDelayGroupByStops = async function (routeId = null, directionId=0) {
     const pipeline = [
         {
-            // Filtro per il routeId specificato
-            $match: {
-                routeId: routeId,
-            },
+            // Filtro per il routeId specificato, se fornito
+            $match: routeId ? { routeId: routeId, direction: directionId } : {},
         },
         {
             // Raggruppa i record per stopId
             $group: {
                 _id: '$stopId', // Raggruppa per stopId
                 averageDelay: { $avg: '$delay' }, // Calcola la media dei ritardi
+                stopSequence: { $first: '$stopSequence' },
             },
         },
         {
-            // Ordina per stopId (opzionale)
+            // Ordina per stopSequence (se necessario)
             $sort: { stopSequence: 1 },
         },
         {
-            $project: {
-                _id: 0,
-                stopId: '$_id',
-                averageDelay: 1,
+            // Unisci con la collection StopNames per ottenere lo stopName
+            $lookup: {
+                from: 'stopNames', // Nome della collection StopNames
+                localField: '_id', // Campo _id nel gruppo corrente (stopId)
+                foreignField: 'stopId', // Campo stopId nella collection StopNames
+                as: 'stopDetails', // Nome del campo con i risultati uniti
             },
         },
-        ]
-
+        {
+            // Estrai il primo elemento di stopDetails (ci aspettiamo una corrispondenza unica)
+            $unwind: '$stopDetails',
+        },
+        {
+            // Proietta i campi desiderati nel risultato finale
+            $project: {
+                _id: 0,
+                stopId: '$_id', // Mantiene lo stopId (opzionale)
+                stopName: '$stopDetails.stopName', // Usa lo stopName dalla collection unita
+                averageDelay: 1, // Mantieni la media dei ritardi
+                stopSequence: 1, // Mantieni la media dei ritardi
+            },
+        },
+    ];
     const result = await this.aggregate(pipeline);
     return result;
 };
