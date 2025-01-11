@@ -1,5 +1,6 @@
 const express = require('express');
 const validate = require('../../middlewares/validate')
+const { tripsValidation } = require('../../validations');
 const tripsAverageDelayController = require('../../controllers/tripsAverageDelay.controller');
 const auth = require('../../middlewares/auth');
 
@@ -16,6 +17,6 @@ router
 
 router
     .route('/times')
-    .get(auth(), tripsAverageDelayController.getLinesDelaysByTimes);
+    .get(auth(), validate(tripsValidation.getLinesDelaysByTimesValidation), tripsAverageDelayController.getLinesDelaysByTimes);
 
 module.exports = router;

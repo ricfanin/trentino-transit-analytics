@@ -18,7 +18,7 @@ const getAllTripAverageDelays = async () => {
  * Get all Lines average delays
  * @returns {Promise<Array>}
  */
-const getLinesDelays = async () => {
+const getLinesDelays = async (routeId) => {
     try {
         return await TripsAverageDelay.getAverageDelayGroupByLinea();
     }
@@ -31,9 +31,9 @@ const getLinesDelays = async () => {
  * Get all line times average delays
  * @returns {Promise<Array>}
  */
-const getLinesDelayByTimes = async () => {
+const getLinesDelayByTimes = async (routeId) => {
     try {
-        return await TripsAverageDelay.getAverageDelayGroupByStartTrip();
+        return await TripsAverageDelay.getAverageDelayGroupByStartTrip(routeId);
     }
     catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
