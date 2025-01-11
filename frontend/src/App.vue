@@ -34,10 +34,10 @@
               <router-link to="/Social">Social</router-link>
             </li>
             <li class="md:px-4 md:py-2 hover:text-green-500">
-              <router-link to="/Linea">Linea</router-link>
+              <router-link to="/Linea">Linee</router-link>
             </li>
             <li class="md:px-4 md:py-2 hover:text-green-500">
-              <router-link to="/Corsa">Corsa</router-link>
+              <router-link to="/Corsa">Linea</router-link>
             </li>
             <li class="md:px-4 md:py-2 hover:text-green-500">
               <router-link to="/Profilo">Profilo</router-link>

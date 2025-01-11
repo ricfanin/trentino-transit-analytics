@@ -6,3 +6,4 @@ module.exports.tripsAverageService = require('./tripsAverage.service');
 module.exports.postService = require('./post.service');
 module.exports.commentService = require('./comment.service');
 module.exports.voteService = require('./vote.service');
+module.exports.routeIdNumbers = require('./routeIdrouteNumber.service');

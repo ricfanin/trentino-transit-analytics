@@ -31,7 +31,7 @@ export default {
         const data = response.data;
 
         // Estrarre dati per il grafico
-        const labels = data.map(item => `Linea ${item.routeId}`);
+        const labels = data.map(item => item.startTripTime);
         const delays = data.map(item => item.averageDelay);
 
         // Configurazione del grafico

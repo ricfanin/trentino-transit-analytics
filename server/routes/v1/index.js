@@ -7,6 +7,7 @@ const tripsAverageRoute = require('./tripsAverage.routes');
 const postRoute = require('./post.routes');
 const commentRoute = require('./comment.routes');
 const voteRoute = require('./vote.routes');
+const linesIdNumbers = require('./routeIdNumbers.routes');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -39,7 +40,12 @@ const defaultRoutes = [
     {
         path: '/votes',
         route: voteRoute
-    }
+    },
+    {
+        path: '/linesIdNumbers',
+        route: linesIdNumbers 
+    },
+
 ];
 
 defaultRoutes.forEach((route) => {

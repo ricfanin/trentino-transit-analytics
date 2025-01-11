@@ -88,8 +88,11 @@ tripAverageDelaySchema.statics.getAverageDelayGroupByLinea = async function () {
     return result;
 };
 
-tripAverageDelaySchema.statics.getAverageDelayGroupByStartTrip = async function () {
-    const result = await this.aggregate([
+tripAverageDelaySchema.statics.getAverageDelayGroupByStartTrip = async function (routeId = null) {
+    const matchStage = routeId ? { $match: { routeId: routeId } } : null; // Condizionale per il filtro
+    const pipeline = [
+        // Filtro opzionale su routeId
+        ...(matchStage ? [matchStage] : []),
         {
             // Proietta un nuovo campo con il solo orario (senza secondi)
             $project: {
@@ -135,10 +138,12 @@ tripAverageDelaySchema.statics.getAverageDelayGroupByStartTrip = async function 
                 averageDelay: 1,
             },
         },
-    ]);
+    ];
 
+    const result = await this.aggregate(pipeline);
     return result;
 };
+
 
 /**
  * @typedef TripAverageDelay
