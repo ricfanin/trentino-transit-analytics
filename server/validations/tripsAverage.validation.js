@@ -1,11 +1,11 @@
 const Joi = require('joi');
 
-const getLinesDelaysByTimesValidation = {
+const routeIdValidation = {
   query: Joi.object().keys({
     routeId: Joi.number().integer().optional(),
   }),
 };
 
 module.exports = {
-  getLinesDelaysByTimesValidation,
+  routeIdValidation,
 };

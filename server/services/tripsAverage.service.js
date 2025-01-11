@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { TripsAverageDelay } = require('../models');
+const { TripsAverageDelay, StopDelays } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -41,20 +41,22 @@ const getLinesDelayByTimes = async (routeId) => {
 };
 
 /**
- * Get specic line times average delays
+ * Get all line stop average delays
  * @returns {Promise<Array>}
  */
-// const getLineDelayByTimes = async () => {
-//     try {
-//         return await TripsAverageDelay.getAverageDelayGroupByLinea();
-//     }
-//     catch (error) {
-//         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
-//     }
-// };
+const getLineDelayWithStops = async (routeId) => {
+    try {
+        return await StopDelays.getAverageDelayGroupByStops(routeId);
+    }
+    catch (error) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+    }
+};
+
 
 module.exports = {
     getAllTripAverageDelays,
     getLinesDelays,
     getLinesDelayByTimes,
+    getLineDelayWithStops,
 };

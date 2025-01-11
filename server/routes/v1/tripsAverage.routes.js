@@ -17,6 +17,10 @@ router
 
 router
     .route('/times')
-    .get(auth(), validate(tripsValidation.getLinesDelaysByTimesValidation), tripsAverageDelayController.getLinesDelaysByTimes);
+    .get(auth(), validate(tripsValidation.routeIdValidation), tripsAverageDelayController.getLinesDelaysByTimes);
+
+router
+    .route('/stops')
+    .get(auth(), validate(tripsValidation.routeIdValidation), tripsAverageDelayController.getLineDelaysWithStops);
 
 module.exports = router;

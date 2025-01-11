@@ -42,6 +42,38 @@ const stopDelaySchema = mongoose.Schema(
     },
 );
 
+stopDelaySchema.statics.getAverageDelayGroupByStops = async function (routeId = null) {
+    const pipeline = [
+        {
+            // Filtro per il routeId specificato
+            $match: {
+                routeId: routeId,
+            },
+        },
+        {
+            // Raggruppa i record per stopId
+            $group: {
+                _id: '$stopId', // Raggruppa per stopId
+                averageDelay: { $avg: '$delay' }, // Calcola la media dei ritardi
+            },
+        },
+        {
+            // Ordina per stopId (opzionale)
+            $sort: { stopSequence: 1 },
+        },
+        {
+            $project: {
+                _id: 0,
+                stopId: '$_id',
+                averageDelay: 1,
+            },
+        },
+        ]
+
+    const result = await this.aggregate(pipeline);
+    return result;
+};
+
 /**
  * @typedef StopDelays
  */
