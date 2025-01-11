@@ -56,18 +56,31 @@ const tripAverageDelaySchema = mongoose.Schema(
 tripAverageDelaySchema.statics.getAverageDelayGroupByLinea = async function () {
     const result = await TripAverageDelay.aggregate([
         {
-            // Raggruppa per linea (routeName) e calcola la media dei ritardi
+            // Raggruppa per linea (routeId) e calcola la media dei ritardi
             $group: {
                 _id: '$routeId',
                 averageDelay: { $avg: '$delay' },
             },
         },
         {
-            // Rinomina il campo _id in routeName
+            // Unisci con la collection routeIdRouteNumber per ottenere il routeNumber
+            $lookup: {
+                from: 'routeIdRouteNumber', // Nome della collection con routeId e routeNumber
+                localField: '_id', // Campo della collection corrente (TripAverageDelay)
+                foreignField: 'routeId', // Campo nella collection routeIdRouteNumber
+                as: 'routeDetails', // Nome dell'array di risultati uniti
+            },
+        },
+        {
+            // Estrai il primo elemento dell'array 'routeDetails' (ci aspettiamo una corrispondenza unica)
+            $unwind: '$routeDetails',
+        },
+        {
+            // Proietta i campi desiderati nel risultato finale
             $project: {
                 _id: 0,
-                routeId: '$_id',
-                averageDelay: 1,
+                routeNumber: '$routeDetails.routeNumber', // Usa il routeNumber dalla collection unita
+                averageDelay: 1, // Mantieni la media dei ritardi
             },
         },
     ]);
