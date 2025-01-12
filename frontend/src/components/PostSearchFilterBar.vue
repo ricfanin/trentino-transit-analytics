@@ -8,11 +8,11 @@
     />
     <div class="space-x-4">
       <!-- Filtra per -->
-      <select class="ml-4 px-4 py-2 border-2 rounded-md">
-        <option value="trend">Tendenza</option>
-        <option value="trend">Più votati</option>
-        <option value="trend">Più recenti</option>
-        <option value="trend">Più vecchi</option>
+      <select @change="onOrderChange" class="ml-4 px-4 py-2 border-2 rounded-md">
+        <option value="upvote">Più votati</option>
+        <option value="downvote">Meno votati</option>
+        <option value="newest">Più recenti</option>
+        <option value="oldest">Più vecchi</option>
       </select>
       <!-- Crea Post -->
       <PostButton />
@@ -27,6 +27,11 @@ export default {
   name: "PostSearchFilterBar",
   components: {
     PostButton,
-  }
+  },
+  methods: {
+    onOrderChange(event) {
+      this.$emit('orderChanged', event.target.value); // Emette l'ordine selezionato al genitore
+    },
+  },
 };
 </script>

@@ -13,5 +13,8 @@ router
     .delete(auth(), validate(commentValidation.deleteComment), commentController.deleteComment)
     .get(auth(), validate(commentValidation.getCommentById), commentController.getCommentByUser);
 
+router
+    .route('/post')
+    .get(auth(), validate(commentValidation.getCommentsByPostId), commentController.getCommentsByPostId);
 
 module.exports = router;

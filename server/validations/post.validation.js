@@ -22,8 +22,14 @@ const updatePost = {
 }
 
 const getPostByUser = {
-    body: Joi.object().keys({
+    query: Joi.object().keys({
         author_id: Joi.string().custom(objectId).required()
+    })
+}
+
+const getPostById = {
+    query: Joi.object().keys({
+        post_id: Joi.string().custom(objectId).required()
     })
 }
 
@@ -55,6 +61,7 @@ const deletePost = {
 module.exports = {
     createPostSchema,
     updatePost,
+    getPostById,
     getPostByUser,
     getPostByLikes,
     getPostByDate,

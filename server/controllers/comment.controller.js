@@ -12,6 +12,11 @@ const updateComment = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(comment);
 })
 
+const getCommentsByPostId = catchAsync(async (req, res) => {
+    const comments = await commentService.getCommentsByPostId(req.query.post_id);
+    res.status(httpStatus.OK).send(comments);
+});
+
 const getCommentByUser = catchAsync(async (req, res) => {
     const comments = await commentService.getCommentByUser(req.body.id);
     res.status(httpStatus.OK).send(comments);
@@ -25,6 +30,7 @@ const deleteComment = catchAsync(async (req, res) => {
 module.exports = {
     createComment,
     updateComment,
+    getCommentsByPostId,
     getCommentByUser,
     deleteComment
 }

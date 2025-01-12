@@ -3,14 +3,11 @@
     <div class="bg-white p-6 border-2 rounded-lg shadow-md">
       <!-- Username -->
       <div class="flex justify-between mb-4">
-        <span class="text-gray-600 flex items-center"> Username </span>
+        <span class="text-gray-600 flex items-center"> {{comment.author.name}} </span>
       </div>
       <!-- Descrizione Commento -->
       <p class="text-gray-700 mb-4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit
-        amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. 
+       {{ comment.content }}
       </p>
       <!-- Pulsanti Like -->
       <div class="flex items-center space-x-4">
@@ -72,6 +69,12 @@
   <script>
   export default {
     name: "Comment",
+    props: {
+        comment: {
+            type: Object,
+            required: true,
+        },
+    },
   };
   </script>
   

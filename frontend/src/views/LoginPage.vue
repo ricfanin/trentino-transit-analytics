@@ -97,6 +97,7 @@ export default {
   
         // Memorizza i token e redirigi l'utente
         const { user, tokens } = response.data;
+        localStorage.setItem("user_id", user.id);
         localStorage.setItem("accessToken", tokens.access.token);
         localStorage.setItem("refreshToken", tokens.refresh.token);
         this.$router.push("Profilo");

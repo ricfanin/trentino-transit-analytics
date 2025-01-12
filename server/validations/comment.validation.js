@@ -16,6 +16,12 @@ const updateComment = {
     })
 }
 
+const getCommentsByPostId = {
+    query: Joi.object().keys({
+        post_id: Joi.string().custom(objectId).required()
+    })
+}
+
 const getCommentByUser = {
     body: Joi.object().keys({
         author_id: Joi.string().custom(objectId).required()
@@ -31,6 +37,7 @@ const deleteComment = {
 module.exports = {
     createComment,
     updateComment,
+    getCommentsByPostId,
     getCommentByUser,
     deleteComment
 }

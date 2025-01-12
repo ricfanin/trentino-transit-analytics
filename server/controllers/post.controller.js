@@ -13,22 +13,32 @@ const updatePost = catchAsync(async (req, res) => {
 })
 
 const getPostByUser = catchAsync(async (req, res) => {
-    const posts = await postService.getPostByUser(req.body.id);
+    const {author_id} = req.query;
+    const posts = await postService.getPostByUser(author_id);
     res.status(httpStatus.OK).send(posts);
 });
 
+const getPostById = catchAsync(async (req, res) => {
+    const {post_id} = req.query;
+    const post = await postService.getPostById(post_id);
+    res.status(httpStatus.OK).send(post);
+});
+
+
 const getPostByTags = catchAsync(async (req, res) => {
-    const posts = await postService.getPostByTags(req.body.tags);
+    const posts = await postService.getPostByTags(req.query.tags);
     res.status(httpStatus.OK).send(posts);
 });
 
 const getPostByDate = catchAsync(async (req, res) => {
-    const posts = await postService.getPostByDate(req.body.tags, req.body.order);
+    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const posts = await postService.getPostByDate(tags, req.query.order);
     res.status(httpStatus.OK).send(posts);
 })
 
 const getPostByLikes = catchAsync(async (req, res) => {
-    const post = await postService.getPostByLikes(req.body.tags, req.body.order);
+    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const post = await postService.getPostByLikes(tags, req.query.order);
     res.status(httpStatus.OK).send(post);
 });
 
@@ -41,6 +51,7 @@ module.exports = {
     createPost,
     updatePost,
     getPostByUser,
+    getPostById,
     getPostByTags,
     getPostByDate,
     getPostByLikes,

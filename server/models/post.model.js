@@ -4,6 +4,7 @@ const postSchema = new Schema(
     {
         author_id: {
             type: Schema.ObjectId,
+            ref: 'User',
             required: [true, 'author is required'],
         },
         title: {

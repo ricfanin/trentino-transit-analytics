@@ -10,6 +10,11 @@ const router = express.Router();
 router
     .route('/')
     .post(auth(), validate(tagValidation.createTag), tagController.createTag)
+    .get(auth(), validate(tagValidation.getTagById), tagController.getTagById)
     .delete(auth(), validate(tagValidation.deleteTag), tagController.deleteTag)
+
+router
+    .route('/all')
+    .get(auth(), tagController.getAllTags)
 
 module.exports = router;

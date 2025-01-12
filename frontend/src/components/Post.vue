@@ -1,29 +1,32 @@
 <template>
   <!-- Post -->
-  <div class="bg-white p-6 border-2 rounded-lg shadow-md">
+  <div v-if="isPostValid" class="bg-white p-6 border-2 rounded-lg shadow-md">
     <!-- Titolo -->
     <div class="place-items-center">
-      <span class="font-bold text-gray-600 text-2xl">Titolo del Post</span>
+      <span class="font-bold text-gray-600 text-2xl">{{post.title}}</span>
     </div>
     <!-- Linea e Username -->
     <div class="flex justify-between mb-4">
-      <span class="text-gray-600">Linea / Fermata Recensita</span>
-      <span class="text-gray-600 flex items-center"> Username </span>
+      <div class="flex space-x-2">
+        <!-- Itera sulla lista dei tag per creare i componenti Tag -->
+        <Tag
+          v-for="(tag, index) in tags"
+          :key="index"
+          :tag="tag"
+        />
+      </div>
+      <span class="text-gray-600 flex items-center"> {{post.author_id.name}} </span>
     </div>
     <!-- Descrizione Post -->
     <p class="text-gray-700 mb-4">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit
-      amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua... Ricroller Coaster & Mattia Tostato & Gay Joller
+      {{ post.content }}
     </p>
     <!-- Pulsanti Like, Commenta, Condividi -->
     <div class="flex items-center space-x-4">
       <div class="flex items-center space-x-2 bg-blue-400 rounded-3xl">
         <!-- Upvote -->
         <button
+          @click="vote('upvote')" 
           class="flex items-center px-2 py-2 rounded-3xl hover:bg-blue-500"
         >
           <div class="text-gray-100 md:order-1">
@@ -49,9 +52,10 @@
           </div>
         </button>
         <!-- Conteggio -->
-        <div class="flex items-center text-gray-100">355</div>
+        <div class="flex items-center text-gray-100">{{netScore}}</div>
         <!-- Downvote -->
         <button
+          @click="vote('downvote')"
           class="flex items-center px-2 py-2 rounded-3xl hover:bg-blue-500"
         >
           <div class="text-gray-100 md:order-1">
@@ -73,7 +77,7 @@
         </button>
       </div>
       <!-- Commenta -->
-      <router-link to="/CommentSection" target="_blank" rel="noopener noreferrer">
+      <router-link  :to="{ name: 'CommentSection', query: { postId: this.post._id } }" target="_blank" rel="noopener noreferrer">
         <button
           class="flex items-center px-2 py-2 bg-blue-400 rounded-3xl hover:bg-blue-500"
         >
@@ -118,10 +122,62 @@
       </button>
     </div>
   </div>
+  <div v-else>
+    <p>Caricamento o dati non validi...</p>
+  </div>
 </template>
 
 <script>
+import Tag from './Tag.vue'; 
+import { getTagsById } from '@/services/tags';
+import { updatePostVote } from "@/services/posts";
+
 export default {
   name: "Post",
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
+  },
+  components: {
+    Tag,
+  },
+  data() {
+    return {
+      // Simulazione di calcolo della lista dei tag
+      tags: [], // Questa lista verrà calcolata o popolata dinamicamente
+    };
+  },
+  computed: {
+    isPostValid() {
+      return this.post;
+    },
+    netScore() {
+      return this.post.upvote - this.post.downvote;
+    },
+  },
+  methods: {
+    async vote(type) {
+      try {
+        const updatedPost = await updatePostVote(this.postId, localStorage.getItem("user_id"), type); 
+        this.post = updatedPost;
+      } catch (error) {
+        console.error("Errore durante l'aggiornamento del voto:", error);
+      }
+    },
+
+    async fetchTags(){
+      try {
+        const tags = await getTagsById(this.post.tags) 
+        this.tags = tags; 
+      } catch (error) {
+        console.error("Errore tags:", error);
+      }
+    }
+  },
+  mounted() {
+    this.fetchTags();
+  }
 };
 </script>
