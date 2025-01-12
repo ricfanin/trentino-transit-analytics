@@ -10,6 +10,7 @@ class MongoDBClient:
     TRACKED_COLLECTION_NAME = "busTracked"
     STOPS_COLLECTION_NAME = "stopDelays"
     STOPSNAMES_COLLECTION_NAME = "stopNames"
+    ROUTEIDNUMBER_COLLECTION_NAME = "routeIdRouteNumber"
 
     def __init__(self, db_name='tnTA', host='localhost', port=27017):
         try:
@@ -20,6 +21,7 @@ class MongoDBClient:
             self.tripInfoCollection = self.db[self.TRIPS_COLLECTION_NAME]
             self.stopDelaysCollection = self.db[self.STOPS_COLLECTION_NAME]
             self.stopNamesCollection = self.db[self.STOPSNAMES_COLLECTION_NAME]
+            self.routeIdNumberCollection = self.db[self.ROUTEIDNUMBER_COLLECTION_NAME]
             print("Connessione al database stabilita.")
         except ConnectionFailure as e:
             print(e)
@@ -131,3 +133,21 @@ class MongoDBClient:
         """
         self.stopNamesCollection.insert_one(stopIdNameObject)
         print("stopName inserito con successo.")
+
+    ###################
+    ### ROUTE IDNUM ###
+    ###################
+
+    def get_all_route_idNum(self):
+        return self.routeIdNumberCollection.find()
+
+    def insert_route_idNum(self, routeIdObj):
+        """
+        Inserisce una route con id e nome
+        """
+        filtro = {"routeId": routeIdObj["routeId"]}
+        if self.routeIdNumberCollection.find_one(filtro):
+            print("route con lo stesso routeId esiste gia. Inserimento non eseguito.")
+            return
+        self.routeIdNumberCollection.insert_one(routeIdObj)
+        print("route inserita con successo.")

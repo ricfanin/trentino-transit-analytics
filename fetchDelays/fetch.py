@@ -8,12 +8,12 @@ def main():
     # 539 route id del 4
     tnClient = TNTrasportiClient()
     mongo = MongoDBClient()
-    routesIds = [539, 369, 400, 402, 404, 411]
+    routesIds = mongo.get_all_route_idNum()
 
     while True:
         
-        for routeId in routesIds:
-            trips = tnClient.get_trips_by_route_today(routeId)
+        for route in routesIds:
+            trips = tnClient.get_trips_by_route_today(route['routeId'])
 
             for t in trips:
                 if len(t['stopTimes']) == 0:
