@@ -7,7 +7,14 @@
     </div>
     <!-- Linea e Username -->
     <div class="flex justify-between mb-4">
-      <span class="text-gray-600">Linea / Fermata Recensita</span>
+      <div class="flex space-x-2">
+        <!-- Itera sulla lista dei tag per creare i componenti Tag -->
+        <Tag
+          v-for="(tag, index) in tags"
+          :key="index"
+          :tag="tag"
+        />
+      </div>
       <span class="text-gray-600 flex items-center"> {{post.author_id.name}} </span>
     </div>
     <!-- Descrizione Post -->
@@ -121,6 +128,8 @@
 </template>
 
 <script>
+import Tag from './Tag.vue'; 
+import { getTagsById } from '@/services/tags';
 import { updatePostVote } from "@/services/posts";
 
 export default {
@@ -130,6 +139,15 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  components: {
+    Tag,
+  },
+  data() {
+    return {
+      // Simulazione di calcolo della lista dei tag
+      tags: [], // Questa lista verrà calcolata o popolata dinamicamente
+    };
   },
   computed: {
     isPostValid() {
@@ -142,13 +160,24 @@ export default {
   methods: {
     async vote(type) {
       try {
-        console.log(type);
-        const updatedPost = await updatePostVote(this.postId, localStorage.getItem("user_id"), type); // Funzione per aggiornare il voto nel backend
-        this.post = updatedPost; // Aggiorna il post con i nuovi voti
+        const updatedPost = await updatePostVote(this.postId, localStorage.getItem("user_id"), type); 
+        this.post = updatedPost;
       } catch (error) {
         console.error("Errore durante l'aggiornamento del voto:", error);
       }
     },
+
+    async fetchTags(){
+      try {
+        const tags = await getTagsById(this.post.tags) 
+        this.tags = tags; 
+      } catch (error) {
+        console.error("Errore tags:", error);
+      }
+    }
   },
+  mounted() {
+    this.fetchTags();
+  }
 };
 </script>

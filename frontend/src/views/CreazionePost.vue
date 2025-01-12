@@ -30,7 +30,7 @@
             class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="" disabled selected>Seleziona Linea</option>
-            <option v-for="line in lines" :key="line.id" :value="line.id">
+            <option v-for="line in lines" :key="line._id" :value="line._id">
               {{ line.name }}
             </option>
           </select>
@@ -71,6 +71,7 @@
 
 <script>
 import { createPost } from "@/services/posts";
+import { getAllTags } from "@/services/tags";
 
 export default {
   data() {
@@ -80,16 +81,16 @@ export default {
         content: '',
         line: [],
       },
-      lines: [
-        { id: "677fb493ed73707548758407", name: "Linea 1 - Stazione FS" },
-        { id: "677fb496ed7370754875840b", name: "Linea 2 - Centro Città" },
-        { id: "677fb499ed7370754875840f", name: "Linea 3 - Aeroporto" },
-        { id: "677fb49bed73707548758413", name: "Linea 4 - Aeroporto" },
-        { id: "677fb4a4ed73707548758417", name: "Linea 5 - Aeroporto" },
-      ],
+      lines: [],
     };
   },
   methods: {
+    async fetchTags() {
+      const response = await getAllTags();
+      console.log(response);
+      this.lines = response
+    },
+
     async submitForm() {
       try {
         
@@ -110,5 +111,8 @@ export default {
       }
     },
   },
+  mounted() {
+    this.fetchTags();
+  }
 };
 </script>

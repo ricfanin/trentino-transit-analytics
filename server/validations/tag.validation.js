@@ -7,6 +7,12 @@ const createTag = {
     }),
 };
 
+const getTagById = {
+    params: Joi.object().keys({
+        tagId: Joi.string().custom(objectId),
+    })
+};
+
 const deleteTag = {
     params: Joi.object().keys({
         tagId: Joi.string().custom(objectId),
@@ -15,5 +21,6 @@ const deleteTag = {
 
 module.exports = {
     createTag,
+    getTagById,
     deleteTag,
 };

@@ -6,6 +6,11 @@ const tagSchema = new Schema(
             type: String,
             unique: true
         },
+        color: {
+            type: String,
+            required: true,  // Rende il colore obbligatorio per ogni tag
+            match: /^#([0-9A-F]{3}){1,2}$/i,  // Validazione per assicurarsi che il colore sia un valore esadecimale valido (opzionale)
+        },
         posts: [{
             type: Schema.Types.ObjectId,
             ref: 'Post'

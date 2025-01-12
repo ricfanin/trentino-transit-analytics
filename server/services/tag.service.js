@@ -2,16 +2,24 @@ const httpStatus = require('http-status');
 const { Tag } = require('../models');
 const ApiError = require('../utils/ApiError');
 
-const createTag = async (userBody) => {
-    if (await Tag.tagExists(userBody.name)) {
+const createTag = async (tagBody) => {
+    if (await Tag.tagExists(tagBody.name)) {
         throw new ApiError(httpStatus.BAD_REQUEST, "Tag name already exists");
     }
-    return Tag.create(userBody);
+
+    const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    tagBody.color = randomColor;
+
+    return Tag.create(tagBody);
 };
 
 const getTagById = async (id) => {
     return Tag.findById(id);
 };
+
+const getAllTags = async(id) => {
+    return Tag.find();
+}
 
 const deleteTagById = async (id) => {
     const tag = await getTagById(id);
@@ -25,5 +33,6 @@ const deleteTagById = async (id) => {
 module.exports = {
     createTag,
     getTagById,
+    getAllTags,
     deleteTagById
 }
