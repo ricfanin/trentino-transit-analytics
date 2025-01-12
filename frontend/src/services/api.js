@@ -29,6 +29,10 @@ apiClient.interceptors.response.use(
             try {
                 // Recupera il Refresh Token dal client
                 const refreshToken = localStorage.getItem('refreshToken');
+                if (!refreshToken) {
+                    throw new Error('No refresh token available');
+                }
+
                 const response = await apiClient.post('/auth/refresh-tokens', {
                     refreshToken,
                 });
@@ -44,7 +48,7 @@ apiClient.interceptors.response.use(
             } catch (err) {
                 console.error('Refresh token failed:', err);
                 // Redirigi al login se il refresh fallisce
-                window.location.href = 'LoginPage';
+                router.push({ name: 'LoginPage' });
             }
         }
 

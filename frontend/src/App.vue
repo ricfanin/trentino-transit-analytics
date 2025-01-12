@@ -43,8 +43,13 @@
           </ul>
         </div>
         <div class="order-2 md:order-3">
-          <router-link to="/LoginPage">
-            <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-gray-50 rounded-xl flex items-center gap-2">
+
+          <template v-if="username">
+            <span class="px-4 py-2 bg-green-500 text-gray-50 rounded-xl">{{ username }}</span>
+          </template>
+          <template v-else>
+            <router-link to="/LoginPage">
+              <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-gray-50 rounded-xl flex items-center gap-2">
               <!-- Heroicons - Login Solid -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,8 +64,10 @@
                 />
               </svg>
               Login
-            </button>
-          </router-link>
+              </button>
+            </router-link>
+          </template>
+
         </div>
       </div>
     </nav>
@@ -136,3 +143,32 @@ body {
   }
 }
 </style>
+
+<script>
+import apiClient from './services/api';
+export default {
+  name: "Home",
+
+  data(){
+    return {
+      username: "",
+    };
+  },
+
+  methods: {
+    async getProfile(){
+      try{
+        const response = await apiClient.get('Profile');
+        this.username = response.data.name;
+      } catch{
+        alert("errore profilo");
+      }
+    }
+  },
+
+  created : function() {
+    this.getProfile()
+  },
+
+};
+</script>
