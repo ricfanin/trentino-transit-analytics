@@ -59,7 +59,7 @@
 
       <!-- Singolo Post -->
       <div v-for="post in posts" :key="post.id">
-        <Post :postId="post._id" />
+        <Post :post="post" />
       </div>
     </div>
   </div>

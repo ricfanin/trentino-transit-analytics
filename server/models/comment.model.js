@@ -15,7 +15,7 @@ const commentSchema = new Schema(
         content: {
             type: String,
             required: [true, 'content is required'],
-        }
+        },
     },
     { timestamps: true },
 )

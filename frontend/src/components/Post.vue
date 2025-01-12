@@ -8,7 +8,7 @@
     <!-- Linea e Username -->
     <div class="flex justify-between mb-4">
       <span class="text-gray-600">Linea / Fermata Recensita</span>
-      <span class="text-gray-600 flex items-center"> {{post.author_id}} </span>
+      <span class="text-gray-600 flex items-center"> {{post.author_id.name}} </span>
     </div>
     <!-- Descrizione Post -->
     <p class="text-gray-700 mb-4">
@@ -70,7 +70,7 @@
         </button>
       </div>
       <!-- Commenta -->
-      <router-link to="/CommentSection" target="_blank" rel="noopener noreferrer">
+      <router-link  :to="{ name: 'CommentSection', query: { postId: this.post._id } }" target="_blank" rel="noopener noreferrer">
         <button
           class="flex items-center px-2 py-2 bg-blue-400 rounded-3xl hover:bg-blue-500"
         >
@@ -121,23 +121,15 @@
 </template>
 
 <script>
-import { getPostById, updatePostVote } from "@/services/posts";
+import { updatePostVote } from "@/services/posts";
 
 export default {
   name: "Post",
   props: {
-    postId: {
-      type: String,
+    post: {
+      type: Object,
       required: true,
     },
-  },
-  data() {
-    return {
-      post: null, 
-    };
-  },
-  async created() {
-    await this.fetchPost();
   },
   computed: {
     isPostValid() {
@@ -148,13 +140,6 @@ export default {
     },
   },
   methods: {
-    async fetchPost() {
-      try {
-        this.post = await getPostById(this.postId);
-      } catch (error) {
-        console.error("Errore durante il caricamento del post:", error);
-      }
-    },
     async vote(type) {
       try {
         console.log(type);

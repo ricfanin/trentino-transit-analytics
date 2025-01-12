@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const { Comment } = require('../models');
 const { Post } = require('../models');
 const ApiError = require('../utils/ApiError');
-const { connect } = require('mongoose');
+const mongoose = require('mongoose');
 
 const createComment = async (commentBody) => {
     const comment = await Comment.create(commentBody);
@@ -11,7 +11,6 @@ const createComment = async (commentBody) => {
 }
 
 const updateComment = async (commentID, commentBody) => {
-
     const updatedComment = await Comment.findByIdAndUpdate(commentID, {content: commentBody.content, updatedAt: Date.now()}, {new: true});
 
     if(!updatedComment) {
@@ -19,6 +18,34 @@ const updateComment = async (commentID, commentBody) => {
     }
 
     return updatedComment;
+}
+
+const getCommentsByPostId = async(postId) => {
+    const objectIdPostId = new mongoose.Types.ObjectId(`${postId}`);
+
+    const comments = await Comment.aggregate([
+        { $match: { post_id: objectIdPostId  } }, 
+        {
+            $lookup: {
+                from: "users",
+                localField: "author_id",
+                foreignField: "_id",
+                as: "author",
+            },
+        },
+        { $unwind: "$author" },
+        {
+            $project: {
+                "author.name": 1,
+                post_id: 1,
+                content: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                _id: 1,
+            },
+        },
+    ]);
+    return comments
 }
 
 const getCommentByUser = async (userId) => {
@@ -38,6 +65,7 @@ const deleteCommentById = async (id) => {
 module.exports = {
     createComment,
     updateComment,
+    getCommentsByPostId,
     getCommentByUser,
     deleteCommentById
 }

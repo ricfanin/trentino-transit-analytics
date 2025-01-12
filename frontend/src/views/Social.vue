@@ -9,7 +9,7 @@
       <div class="max-w-4xl mx-auto p-4 space-y-6">
         <!-- Singolo Post -->
         <div v-for="post in posts" :key="post._id">
-          <Post :postId="post._id" />
+          <Post :post="post" />
         </div>
       </div>
     </div>
