@@ -1,19 +1,17 @@
 /* eslint-disable */
 <template>
-  <div id="app" >
+  <div id="app" class="font-sans">
     <nav class="bg-blue-700 shadow shadow-blue-800 w-100 px-8 md:px-auto">
       <div
-        class="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap"
+        class="h-24 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap"
       >
         <!-- Logo -->
         <div class="text-green-500 md:order-1">
-          <!-- Heroicon - Chip Outline -->
-
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            class="h-10 w-10"
+            class="h-14 w-14"
             stroke="white"
           >
             <path
@@ -25,7 +23,7 @@
             <path d="M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
           </svg>
         </div>
-        <div class="text-gray-100 order-3 w-full md:w-auto md:order-2">
+        <div class="text-xl text-gray-100 order-3 w-full md:w-auto md:order-2">
           <ul class="flex font-semibold justify-between">
             <li class="md:px-4 md:py-2 hover:text-green-500">
               <router-link to="/">Home</router-link>

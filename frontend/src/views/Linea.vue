@@ -1,7 +1,7 @@
 <template>
-    <div class="m-10 bg-white rounded-lg">
-        <BusLinesDelays />
-        <BusLinesDelaysByTimes />
+    <div class="font-sans py-4 lg:px-24 md:px-8 m-6 bg-white rounded-lg">
+      <BusLinesDelaysByTimes />
+      <BusLinesDelays />
     </div>
 </template>
 

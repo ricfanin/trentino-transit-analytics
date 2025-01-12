@@ -10,8 +10,8 @@
 <script>
 import apiClient from "@/services/api";
 
-import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
-Chart.register(CategoryScale, LinearScale, BarController, BarElement);
+import { Chart, CategoryScale, LinearScale, BarController, BarElement, Tooltip, Legend } from 'chart.js';
+Chart.register(CategoryScale, LinearScale, BarController, BarElement, Tooltip, Legend);
 
 export default {
   name: 'BusDelayChart',
@@ -41,11 +41,12 @@ export default {
             labels: labels,
             datasets: [
               {
-                label: 'Minuti di ritardo medio',
+                label: 'ritardo medio [min]',
                 data: delays,
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                borderColor: 'rgba(34, 197, 94, 1)',
+                borderWidth: 2,
+                borderRadius: 5,
               },
             ],
           },

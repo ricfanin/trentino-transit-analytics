@@ -44,9 +44,9 @@ const getLinesDelayByTimes = async (routeId) => {
  * Get all line stop average delays
  * @returns {Promise<Array>}
  */
-const getLineDelayWithStops = async (routeId, directionId) => {
+const getLineDelayWithStops = async (routeId) => {
     try {
-        return await StopDelays.getAverageDelayGroupByStops(routeId, directionId);
+        return await StopDelays.getAverageDelayGroupByStopsAllDirection(routeId);
     }
     catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);

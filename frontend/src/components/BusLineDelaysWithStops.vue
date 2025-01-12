@@ -3,21 +3,15 @@
         <span class="font-bold text-gray-600 text-2xl">
             Ritardi medi nelle fermate Linea {{ routeNumber }}
         </span>
-        <div class="w-full">
-            <select v-model="directionId" class="border border-gray-300 rounded-md p-2">
-              <option value="0">Andata</option>
-              <option value="1">Ritorno</option>
-            </select>
-            <canvas class="m-auto" ref="chart"></canvas>
-        </div>
+        <canvas class="m-auto" ref="chart"></canvas>
     </div>
 </template>
 
 <script>
 import apiClient from "@/services/api";
 
-import { Chart, CategoryScale, LinearScale, BarController, BarElement } from 'chart.js';
-Chart.register(CategoryScale, LinearScale, BarController, BarElement);
+import { Chart, CategoryScale, LinearScale, BarController, BarElement, Tooltip, Legend } from 'chart.js';
+Chart.register(CategoryScale, LinearScale, BarController, BarElement, Tooltip, Legend);
 
 export default {
   name: 'BusDelayChart',
@@ -57,12 +51,13 @@ export default {
 
       try {
         // Ottieni i dati dal server filtrati per routeId
-        const response = await apiClient.get(`trips-average/stops?routeId=${this.routeId}&directionId=${this.directionId}`);
+        const response = await apiClient.get(`trips-average/stops?routeId=${this.routeId}`);
         const data = response.data;
 
         // Estrarre dati per il grafico
-        const labels = data.map((item) => item.stopName);
-        const delays = data.map((item) => item.averageDelay);
+        const labels = data.andata.map((item) => item.stopName);
+        const delaysAndata = data.andata.map((item) => item.averageDelay);
+        const delaysRitorno = data.ritorno.map((item) => item.averageDelay);
 
         // Configurazione del grafico
         if (this.chart) {
@@ -75,11 +70,20 @@ export default {
             labels: labels,
             datasets: [
               {
-                label: 'Minuti di ritardo medio',
-                data: delays,
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                label: 'ritardo andata [min]',
+                data: delaysAndata,
+                backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                borderColor: 'rgba(34, 197, 94, 1)',
+                borderWidth: 2,
+                borderRadius: 5,
+              },
+              {
+                label: 'ritardo ritorno [min]',
+                data: delaysRitorno,
+                backgroundColor: '#60a5fa99',
+                borderColor: '#60a5fa',
+                borderWidth: 2,
+                borderRadius: 5,
               },
             ],
           },
@@ -97,7 +101,7 @@ export default {
               y: {
                 title: {
                   display: true,
-                  text: 'Orari',
+                  text: 'Fermate',
                 },
               },
             },

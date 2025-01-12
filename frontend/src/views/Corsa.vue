@@ -1,24 +1,24 @@
 <template>
-    <div class="m-10 bg-white rounded-lg">
+    <div class="font-sans m-6 bg-white rounded-lg">
         <!-- Select per la scelta della linea -->
-        <div class="mb-4">
-            <label for="routeSelect" class="font-bold text-gray-600">Seleziona una linea:</label>
+        <div class="p-4">
+            <label for="routeSelect" class="text-lg mr-4 font-bold text-gray-600">Seleziona una linea:</label>
             <select
                 id="routeSelect"
                 v-model="selectedRouteId"
                 @change="updateRouteDetails"
-                class="border border-gray-300 rounded-md p-2"
+                class="font-sans shadow-lg border border-gray-0 rounded-md p-2"
             >
-                <option value="" disabled>Seleziona una linea</option>
-                <option v-for="route in routes" :key="route.routeId" :value="route.routeId">
+                <option v-for="route in routes" :key="route.routeId" :value="route.routeId" :selected="route.routeId === selectedRouteId">
                     Linea {{ route.routeNumber }}
                 </option>
             </select>
         </div>
 
-        <!-- Passa sia routeId che routeNumber -->
-        <BusLineDelays :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
-        <BusLineDelaysWithStops :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
+        <div class="mt-4">
+          <BusLineDelays :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
+          <BusLineDelaysWithStops :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
+        </div>
     </div>
 </template>
 
@@ -49,6 +49,8 @@ export default {
         // Chiamata API per ottenere tutte le route disponibili
         const response = await apiClient.get('/linesIdNumbers');
         this.routes = response.data;
+        this.selectedRouteId = this.routes[0].routeId;
+        this.selectedRouteNumber = this.routes[0].routeNumber;
       } catch (error) {
         console.error("Errore nel caricamento delle route:", error);
       }

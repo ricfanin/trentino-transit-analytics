@@ -88,6 +88,13 @@ stopDelaySchema.statics.getAverageDelayGroupByStops = async function (routeId = 
     return result;
 };
 
+stopDelaySchema.statics.getAverageDelayGroupByStopsAllDirection = async function (routeId = null) {
+    let result = {};
+    result.andata = await this.getAverageDelayGroupByStops(routeId, 0);
+    result.ritorno = await this.getAverageDelayGroupByStops(routeId, 1);
+    return result;
+}
+
 /**
  * @typedef StopDelays
  */

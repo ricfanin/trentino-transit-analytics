@@ -18,7 +18,7 @@ const getLinesDelaysByTimes = catchAsync(async (req, res) => {
 });
 
 const getLineDelaysWithStops = catchAsync(async (req, res) => {
-    const linesDelays = await tripsAverageService.getLineDelayWithStops(req.query.routeId, req.query.directionId);
+    const linesDelays = await tripsAverageService.getLineDelayWithStops(req.query.routeId);
     res.status(httpStatus.OK).send(linesDelays);
 });
 
