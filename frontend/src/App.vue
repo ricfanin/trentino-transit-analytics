@@ -1,12 +1,12 @@
 /* eslint-disable */
 <template>
   <div id="app" class="font-sans">
-    <nav class="bg-blue-700 shadow shadow-blue-800 w-100 px-8 md:px-auto">
+    <nav class="bg-background_2 shadow shadow-background_2 w-100 px-8 md:px-auto">
       <div
         class="h-24 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap"
       >
         <!-- Logo -->
-        <div class="text-green-500 md:order-1">
+        <div class="text-button_2 md:order-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -23,21 +23,21 @@
             <path d="M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
           </svg>
         </div>
-        <div class="text-xl text-gray-100 order-3 w-full md:w-auto md:order-2">
+        <div class="text-xl text-text_1 order-3 w-full md:w-auto md:order-2">
           <ul class="flex font-semibold justify-between">
-            <li class="md:px-4 md:py-2 hover:text-green-500">
+            <li class="md:px-4 md:py-2 hover:text-button_2">
               <router-link to="/">Home</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-green-500">
+            <li class="md:px-4 md:py-2 hover:text-button_2">
               <router-link to="/Social">Social</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-green-500">
+            <li class="md:px-4 md:py-2 hover:text-button_2">
               <router-link to="/Linea">Linee</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-green-500">
+            <li class="md:px-4 md:py-2 hover:text-button_2">
               <router-link to="/Corsa">Linea</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-green-500">
+            <li class="md:px-4 md:py-2 hover:text-button_2">
               <router-link to="/Profilo">Profilo</router-link>
             </li>
           </ul>
@@ -45,11 +45,11 @@
         <div class="order-2 md:order-3">
 
           <template v-if="username">
-            <span class="px-4 py-2 bg-green-500 text-gray-50 rounded-xl">{{ username }}</span>
+            <span class="px-4 py-2 bg-button_2 text-gray-50 rounded-xl">{{ username }}</span>
           </template>
           <template v-else>
             <router-link to="/LoginPage">
-              <button class="px-4 py-2 bg-green-500 hover:bg-green-600 text-gray-50 rounded-xl flex items-center gap-2">
+              <button class="px-4 py-2 bg-button_2 hover:bg-green-600 text-gray-50 rounded-xl flex items-center gap-2">
               <!-- Heroicons - Login Solid -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"

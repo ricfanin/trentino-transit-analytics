@@ -3,7 +3,7 @@
     <div class="flex justify-center items-center h-screen">
       <div class="bg-white p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-4xl">
         <h2
-          class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center"
+          class="text-2xl sm:text-3xl font-semibold text-text_2 mb-8 text-center"
         >
           Crea il tuo Account
         </h2>
@@ -19,11 +19,11 @@
         <form @submit.prevent="handleRegister" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Username -->
           <div class="flex flex-col">
-            <label for="username" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="username" class="text-sm font-medium text-text_3 mb-1"
               >Username</label
             >
             <div
-              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500"
+              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:button_1_hover"
             >
               <input
                 id="username"
@@ -37,12 +37,12 @@
 
           <!-- Seleziona Ruolo -->
           <div class="flex flex-col">
-            <label for="role" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="role" class="text-sm font-medium text-text_3 mb-1"
               >Seleziona Ruolo</label
             >
             <select
               id="role"
-              class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none"
+              class="border rounded-lg px-3 py-2 text-text_3 bg-gray-50 focus:ring-2 focus:button_1_hover outline-none"
             >
               <option value="Utente">Utente</option>
               <option value="Admin">Admin</option>
@@ -51,11 +51,11 @@
 
           <!-- Email -->
           <div class="flex flex-col">
-            <label for="email" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="email" class="text-sm font-medium text-text_3 mb-1"
               >Email</label
             >
             <div
-              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500"
+              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:button_1_hover"
             >
               <input
                 id="email"
@@ -69,24 +69,24 @@
 
           <!-- Nome -->
           <div class="flex flex-col">
-            <label for="nome" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="nome" class="text-sm font-medium text-text_3 mb-1"
               >Nome</label
             >
             <input
               id="nome"
               type="text"
-              class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none"
+              class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:button_1_hover outline-none"
               placeholder="Nome"
             />
           </div>
 
           <!-- Password -->
           <div class="flex flex-col">
-            <label for="password" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="password" class="text-sm font-medium text-text_3 mb-1"
               >Password</label
             >
             <div
-              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500"
+              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:button_1_hover"
             >
               <input
                 id="password"
@@ -100,20 +100,20 @@
 
           <!-- Cognome -->
           <div class="flex flex-col">
-            <label for="cognome" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="cognome" class="text-sm font-medium text-text_3 mb-1"
               >Cognome</label
             >
             <input
               id="cognome"
               type="text"
-              class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none"
+              class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:button_1_hover outline-none"
               placeholder="Cognome"
             />
           </div>
 
           <!-- Immagine Profilo 
           <div class="flex flex-col items-center">
-            <label class="text-sm font-medium text-gray-600 mb-1"
+            <label class="text-sm font-medium text-text_3 mb-1"
               >Immagine Profilo</label
             >
             <div
@@ -136,7 +136,7 @@
             </div>
             <button
               type="button"
-              class="mt-4 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-600"
+              class="mt-4 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-text_3"
             >
               Seleziona Immagine
             </button>
@@ -145,7 +145,7 @@
           <!-- Bottoni -->
           <div class="mt-8 text-center">
               <button
-              class="w-full px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
+              class="w-full px-6 py-3 bg-button_2 text-text_1 font-medium rounded-lg hover:bg-button_2_hover"
               type="submit"
               >
               Registrati
@@ -153,9 +153,9 @@
           </div>
       </form>
 
-        <div class="mt-4 text-center text-sm text-gray-500">
+        <div class="mt-4 text-center text-sm text-text_3">
           Hai già un account?
-          <span href="#" class="text-blue-500 hover:underline"
+          <span href="#" class="text-button_1_hover hover:underline"
             ><router-link to="/LoginPage">Accedi qui</router-link></span
           >
         </div>

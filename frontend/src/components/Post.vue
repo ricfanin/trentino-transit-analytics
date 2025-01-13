@@ -3,7 +3,7 @@
   <div v-if="isPostValid" class="bg-white p-6 border-2 rounded-lg shadow-md">
     <!-- Titolo -->
     <div class="place-items-center">
-      <span class="font-bold text-gray-600 text-2xl">{{post.title}}</span>
+      <span class="font-bold text-text_2 text-2xl">{{post.title}}</span>
     </div>
     <!-- Linea e Username -->
     <div class="flex justify-between mb-4">
@@ -15,21 +15,21 @@
           :tag="tag"
         />
       </div>
-      <span class="text-gray-600 flex items-center"> {{post.author_id.name}} </span>
+      <span class="text-text_2 flex items-center"> {{post.author_id.name}} </span>
     </div>
     <!-- Descrizione Post -->
-    <p class="text-gray-700 mb-4">
+    <p class="text-text_2 mb-4">
       {{ post.content }}
     </p>
     <!-- Pulsanti Like, Commenta, Condividi -->
     <div class="flex items-center space-x-4">
-      <div class="flex items-center space-x-2 bg-blue-400 rounded-3xl">
+      <div class="flex items-center space-x-2 bg-button_1 rounded-3xl">
         <!-- Upvote -->
         <button
           @click="vote('upvote')" 
-          class="flex items-center px-2 py-2 rounded-3xl hover:bg-blue-500"
+          class="flex items-center px-2 py-2 rounded-3xl hover:bg-button_1_hover"
         >
-          <div class="text-gray-100 md:order-1">
+          <div class="text-text_1 md:order-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -52,13 +52,13 @@
           </div>
         </button>
         <!-- Conteggio -->
-        <div class="flex items-center text-gray-100">{{netScore}}</div>
+        <div class="flex items-center text-text_1">{{netScore}}</div>
         <!-- Downvote -->
         <button
           @click="vote('downvote')"
-          class="flex items-center px-2 py-2 rounded-3xl hover:bg-blue-500"
+          class="flex items-center px-2 py-2 rounded-3xl hover:bg-button_1_hover"
         >
-          <div class="text-gray-100 md:order-1">
+          <div class="text-text_1 md:order-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -79,9 +79,9 @@
       <!-- Commenta -->
       <router-link  :to="{ name: 'CommentSection', query: { postId: this.post._id } }" target="_blank" rel="noopener noreferrer">
         <button
-          class="flex items-center px-2 py-2 bg-blue-400 rounded-3xl hover:bg-blue-500"
+          class="flex items-center px-2 py-2 bg-button_1 rounded-3xl hover:bg-button_1_hover"
         >
-          <div class="text-gray-100 md:order-1">
+          <div class="text-text_1 md:order-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -101,9 +101,9 @@
       </router-link>
       <!-- Condividi -->
       <button
-        class="flex items-center px-2 py-2 bg-blue-400 rounded-3xl hover:bg-blue-500"
+        class="flex items-center px-2 py-2 bg-button_1 rounded-3xl hover:bg-button_1_hover"
       >
-        <div class="text-gray-100 md:order-1">
+        <div class="text-text_1 md:order-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

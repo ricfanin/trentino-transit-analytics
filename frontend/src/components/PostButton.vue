@@ -1,7 +1,7 @@
 <template>
   <router-link to="CreazionePost">
     <button
-      class="mt-4 px-4 py-2 bg-green-400 text-white rounded-md hover:bg-green-600"
+      class="mt-4 px-4 py-2 bg-button_2 text-white rounded-md hover:bg-button_2_hover"
     >
       Crea Post
     </button>

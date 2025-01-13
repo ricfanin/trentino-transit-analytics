@@ -3,7 +3,7 @@
     <div class="flex justify-center items-center h-screen">
       <div class="bg-white p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-md">
         <h2
-          class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-8 text-center"
+          class="text-2xl sm:text-3xl font-semibold text-text_2 mb-8 text-center"
         >
           Accedi al tuo Account
         </h2>
@@ -19,11 +19,11 @@
         <form @submit.prevent="handleLogin">
           <!-- Email -->
           <div class="flex flex-col mb-6">
-            <label for="email" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="email" class="text-sm font-medium text-text_3 mb-1"
               >Email</label
             >
             <div
-              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500"
+              class="flex items-center border rounded-lg text-text_3 bg-gray-50 focus-within:ring-2 focus-within:button_1_hover"
             >
               <input
                 id="email"
@@ -37,11 +37,11 @@
 
           <!-- Password -->
           <div class="flex flex-col mb-4">
-            <label for="password" class="text-sm font-medium text-gray-600 mb-1"
+            <label for="password" class="text-sm font-medium text-text_3 mb-1"
               >Password</label
             >
             <div
-              class="flex items-center border rounded-lg bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500"
+              class="flex items-center border rounded-lg text-text_3 bg-gray-50 focus-within:ring-2 focus-within:button_1_hover"
             >
               <input
                 id="password"
@@ -56,15 +56,15 @@
           <!-- Pulsante Login -->
             <button
               type="submit"
-              class="w-full px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600"
+              class="w-full px-6 py-3 bg-button_2 text-text_1 font-medium rounded-lg hover:bg-button_2_hover"
             >
               Accedi
             </button>
         </form>
 
-        <div class="mt-6 text-center text-sm text-gray-500">
+        <div class="mt-6 text-center text-sm text-text_3">
           Non hai un account?
-          <span class="text-blue-500 hover:underline">
+          <span class="text-button_1_hover hover:underline">
             <router-link to="/RegisterPage">Registrati</router-link>
           </span>
         </div>
