@@ -29,7 +29,7 @@ const logout = async (refreshToken) => {
     if (!refreshTokenDoc) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
     }
-    await refreshTokenDoc.remove();
+    await Token.deleteOne({ _id: refreshTokenDoc._id });
 };
 
 /**

@@ -92,7 +92,6 @@ export default {
         const response = await apiClient.get("/profile");
         this.username = response.data.name;
       } catch (error) {
-        alert("Errore durante il caricamento del profilo.");
       }
     },
 

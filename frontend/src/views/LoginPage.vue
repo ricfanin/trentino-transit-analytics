@@ -75,7 +75,7 @@
 
 <script>
 import apiClient from "@/services/api";
-import { errorMessages } from "vue/compiler-sfc";
+import { useStore } from "vuex";
 
 export default {
   name: "LoginPagePage",
@@ -98,11 +98,15 @@ export default {
         // Memorizza i token e redirigi l'utente
         const { user, tokens } = response.data;
         localStorage.setItem("user_id", user.id);
+        localStorage.setItem("user_name", user.name);
         localStorage.setItem("accessToken", tokens.access.token);
         localStorage.setItem("refreshToken", tokens.refresh.token);
+
+        this.$store.dispatch("login", user.name);
+
         this.$router.push("Profilo");
       } catch(error){
-        this.errorMessage = error.response?.data?.message || "Errore di login. Riprova.";
+        this.errorMessage = error || "Errore di login. Riprova.";
       }
     },
   },
