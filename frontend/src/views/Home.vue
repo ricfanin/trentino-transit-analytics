@@ -3,9 +3,9 @@
   <div class="bg-white rounded-b-full">
     <div class="mx-auto px-4 py-32">
         <div class="mx-auto max-w-xl text-center">
-          <h1 class="text-4xl font-extrabold sm:text-6xl">
+          <h1 class="text-4xl font-extrabold text-dark_gray sm:text-6xl">
             Trento Transit
-            <p class="font-extrabold text-green-500 sm:block"> Analytics </p>
+            <p class="font-extrabold text-button_2 sm:block"> Analytics </p>
           </h1>
 
           <p class="mt-4 sm:text-xl/relaxed">
@@ -15,13 +15,13 @@
           
           <div class="mt-8 flex flex-wrap justify-center gap-4">
             <router-link to="/RegisterPage">
-              <button class="mt-4 px-4 py-2 bg-green-400 text-white rounded-md hover:bg-green-600">
+              <button class="mt-4 px-4 py-2 bg-button_2 text-text_1 rounded-md hover:bg-button_2_hover">
                 Registrati
               </button>
             </router-link>
 
             <a href="https://www.trentinotrasporti.it/">
-              <button class="mt-4 px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-600">
+              <button class="mt-4 px-4 py-2 bg-button_1 text-text_1 rounded-md hover:bg-button_1_hover">
                 Trentino Trasporti
               </button> 
             </a>

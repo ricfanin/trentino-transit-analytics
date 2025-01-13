@@ -4,7 +4,7 @@
     <!-- Main Content -->
     <div class="flex-1 p-8">
       <!-- Titolo -->
-      <h1 class="text-3xl font-bold text-gray-50 text-center mb-8">
+      <h1 class="text-3xl font-bold text-text_2 text-center mb-8">
         Scrivi la tua opinione
       </h1>
 
@@ -17,17 +17,17 @@
             placeholder="Titolo"
             v-model="form.title" 
             required 
-            class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full mb-4 px-4 py-2 border text-text_3 rounded-md focus:outline-none focus:ring-2"
           />
 
           <!-- Seleziona Linea -->
-          <label class="block text-sm font-medium text-gray-400"
+          <label class="block text-sm font-medium text-text_3"
             >Seleziona Linea</label
           >
           <select
             id="line-select"
             v-model="form.line"
-            class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full mb-4 px-4 py-2 border text-text_3 rounded-md focus:outline-none focus:ring-2"
           >
             <option value="" disabled selected>Seleziona Linea</option>
             <option v-for="line in lines" :key="line._id" :value="line._id">
@@ -36,9 +36,9 @@
           </select>
 
           <!-- Seleziona Fermata (Opzionale) -->
-          <label class="block text-sm font-medium text-gray-400"
+          <!-- <label class="block text-sm font-medium text-text_3"
             >Seleziona Fermata (Opzionale)</label
-          >
+          > -->
 
 
           <!-- Descrizione del Problema -->
@@ -47,13 +47,13 @@
             rows="4"
             v-model="form.content" 
             required
-            class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full mb-4 px-4 py-2 border text-text_3 rounded-md focus:outline-none focus:ring-2"
           ></textarea>
 
           <!-- Pulsante Pubblica -->
           <button
             type="submit"
-            class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-700"
+            class="w-full bg-button_2 text-text_1 py-2 rounded-md hover:bg-button_2_hover"
           >
             PUBBLICA
           </button>
@@ -62,12 +62,6 @@
     </div>
   </div>
 </template>
-
-<style>
-.custom-shadow {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-</style>
 
 <script>
 import { createPost } from "@/services/posts";

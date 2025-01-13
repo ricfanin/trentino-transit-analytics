@@ -3,14 +3,14 @@
     <div class="flex mt-4 mb-8">
         <div class="flex-1 max-w-4xl mx-auto p-4 space-y-6">
             <Post :postId="postId" />
-            <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md border">
+            <div class="max-w-6xl mx-auto bg-text_1 p-6 rounded-lg shadow-md border">
                     <form @submit.prevent="submitComment">
                         <!-- Descrizione del Problema -->
                         <textarea v-model="form.content" placeholder="Descrizione del Problema" rows="4"
-                            class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:bg-button_1_hover"></textarea>
 
                         <!-- Pulsante Pubblica -->
-                        <button type="submit" class="w-4/12 bg-green-500 text-white py-2 rounded-md hover:bg-green-700">
+                        <button class="mt-4 px-4 py-2 bg-button_2 text-text_1 rounded-md hover:bg-button_2_hover">
                             COMMENTA
                         </button>
                     </form>

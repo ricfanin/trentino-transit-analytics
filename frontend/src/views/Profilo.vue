@@ -10,12 +10,12 @@
             class="grid grid-cols-2 md:grid-cols-3 text-center order-last md:order-first mt-8 md:mt-0"
           >
             <div>
-              <p class="font-bold text-gray-700 text-xl">10</p>
-              <p class="text-gray-400">Posts</p>
+              <p class="font-bold text-text_2 text-xl">10</p>
+              <p class="text-text_3">Posts</p>
             </div>
             <div>
-              <p class="font-bold text-gray-700 text-xl">89</p>
-              <p class="text-gray-400">Comments</p>
+              <p class="font-bold text-text_2 text-xl">89</p>
+              <p class="text-text_3">Comments</p>
             </div>
           </div>
 
@@ -24,7 +24,7 @@
             <div>
               <img
                 src="https://picsum.photos/200/300"
-                class="w-36 h-36 sm:w-48 sm:h-48 bg-indigo-100 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24"
+                class="w-36 h-36 sm:w-48 sm:h-48 bg-text-text_3 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24"
               />
             </div>
           </div>
@@ -34,9 +34,7 @@
             class="flex flex-wrap justify-between md:justify-center space-x-4 mt-16 md:mt-0"
           >
             <router-link to="/ModificaProfilo">
-              <button
-                class="mt-4 px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-600"
-              >
+              <button class="mt-4 px-4 py-2 bg-button_1 text-text_1 rounded-md hover:bg-button_1_hover">
               Modifica Profilo
               </button>
             </router-link>
@@ -46,7 +44,7 @@
 
         <!-- Username -->
         <div class="mt-24 text-center pb-8">
-          <h1 class="text-2xl font-bold sm:text-4xl text-gray-700">
+          <h1 class="text-2xl font-bold sm:text-4xl text-text-text_2">
             {{ username }}
           </h1>
         </div>

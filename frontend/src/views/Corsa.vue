@@ -2,7 +2,7 @@
     <div class="font-sans m-6 bg-white rounded-lg">
         <!-- Select per la scelta della linea -->
         <div class="p-4">
-            <label for="routeSelect" class="text-lg mr-4 font-bold text-gray-600">Seleziona una linea:</label>
+            <label for="routeSelect" class="text-lg mr-4 font-bold text-text_4">Seleziona una linea:</label>
             <select
                 id="routeSelect"
                 v-model="selectedRouteId"

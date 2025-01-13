@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span class="font-bold text-gray-600 text-2xl">Ritardi medi di tutte le linee con orari</span>
+        <span class="font-bold text-text_4 text-2xl">Ritardi medi di tutte le linee con orari</span>
         <div class="w-full">
             <canvas class="m-auto" ref="chart"></canvas>
         </div>

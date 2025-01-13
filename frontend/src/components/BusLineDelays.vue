@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span class="font-bold text-gray-600 text-2xl">
+        <span class="font-bold text-text_4 text-2xl">
             Ritardi medi con orari Linea {{ routeNumber }}
         </span>
         <div class="w-full">
