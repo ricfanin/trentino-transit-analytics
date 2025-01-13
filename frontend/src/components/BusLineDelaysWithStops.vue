@@ -17,28 +17,21 @@ export default {
   name: 'BusDelayChart',
   props: {
     routeId: {
-      type: [String, Number],
+      type: [String, Number, null],
       required: true,
     },
     routeNumber: {
-      type: [String, Number],
+      type: [String, Number, null],
       required: true,
     },
   },
   data() {
     return {
       chart: null,
-      directionId: 0,
     };
   },
   watch: {
     routeId: {
-      immediate: true,
-      handler() {
-          this.fetchData(); // Ottieni i dati del grafico
-      },
-    },
-    directionId: {
       immediate: true,
       handler() {
           this.fetchData(); // Ottieni i dati del grafico

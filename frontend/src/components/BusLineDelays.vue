@@ -19,11 +19,11 @@ export default {
   name: 'BusDelayChart',
   props: {
     routeId: {
-      type: [String, Number],
+      type: [String, Number, null],
       required: true,
     },
     routeNumber: {
-      type: [String, Number],
+      type: [String, Number, null],
       required: true,
     },
   },
