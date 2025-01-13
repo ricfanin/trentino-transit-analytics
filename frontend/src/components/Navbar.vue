@@ -1,10 +1,10 @@
 <template>
-  <nav class="bg-blue-700 shadow shadow-blue-800 w-100 px-8 md:px-auto">
+    <nav class="bg-background_2 shadow shadow-background_2 w-100 px-8 md:px-auto">
     <div
       class="h-24 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap"
     >
       <!-- Logo -->
-      <div class="text-green-500 md:order-1">
+        <div class="text-button_2 md:order-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -23,23 +23,23 @@
       </div>
 
       <!-- Menu -->
-      <div class="text-xl text-gray-100 order-3 w-full md:w-auto md:order-2">
+    <div class="text-xl text-text_1 order-3 w-full md:w-auto md:order-2">
         <ul class="flex font-semibold justify-between">
-          <li class="md:px-4 md:py-2 hover:text-green-500">
-            <router-link to="/">Home</router-link>
-          </li>
-          <li class="md:px-4 md:py-2 hover:text-green-500">
-            <router-link to="/Social">Social</router-link>
-          </li>
-          <li class="md:px-4 md:py-2 hover:text-green-500">
-            <router-link to="/Linea">Linee</router-link>
-          </li>
-          <li class="md:px-4 md:py-2 hover:text-green-500">
-            <router-link to="/Corsa">Linea</router-link>
-          </li>
-          <li class="md:px-4 md:py-2 hover:text-green-500">
-            <router-link to="/Profilo">Profilo</router-link>
-          </li>
+            <li class="md:px-4 md:py-2 hover:text-button_2">
+                <router-link to="/">Home</router-link>
+            </li>
+            <li class="md:px-4 md:py-2 hover:text-button_2">
+                <router-link to="/Social">Social</router-link>
+            </li>
+            <li class="md:px-4 md:py-2 hover:text-button_2">
+                <router-link to="/Linea">Linee</router-link>
+            </li>
+            <li class="md:px-4 md:py-2 hover:text-button_2">
+                <router-link to="/Corsa">Linea</router-link>
+            </li>
+            <li class="md:px-4 md:py-2 hover:text-button_2">
+                <router-link to="/Profilo">Profilo</router-link>
+            </li>
         </ul>
       </div>
 
@@ -47,7 +47,7 @@
       <div class="order-2 md:order-3">
         <template v-if="isLoggedIn">
           <!-- Mostra il nome utente -->
-          <span class="px-4 py-2 bg-green-500 text-gray-50 rounded-xl">{{ userName }}</span>
+          <span class="px-4 py-2 bg-button_2 text-gray-50 rounded-xl">{{ userName }}</span>
           <button
             @click="logout"
             class="ml-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-gray-50 rounded-xl"
@@ -59,7 +59,7 @@
           <!-- Mostra il pulsante Login -->
           <router-link to="/LoginPage">
             <button
-              class="px-4 py-2 bg-green-500 hover:bg-green-600 text-gray-50 rounded-xl flex items-center gap-2"
+              class="px-4 py-2 bg-button_2 hover:bg-green-600 text-gray-50 rounded-xl flex items-center gap-2"
             >
               <!-- Heroicons - Login Solid -->
               <svg
