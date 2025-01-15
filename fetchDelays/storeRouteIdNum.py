@@ -8,7 +8,7 @@ def main():
 
     routes = [
         {"routeId": 539, "routeNumber": 4},
-        {"routeId": 369, "routeNumber": 3},
+        {"routeId": 396, "routeNumber": 3},
         {"routeId": 400, "routeNumber": 5},
         {"routeId": 402, "routeNumber": 7},
         {"routeId": 404, "routeNumber": 8},

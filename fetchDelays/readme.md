@@ -88,3 +88,42 @@ In questa cartella ci sono gli script Python che raccolgono dati dalle API di tr
 2. **Installare le dipendenze Python:**
    ```bash
    pip install pymongo
+
+## Esecuzione e Automazione
+
+### `fetch.py`
+Lo script `fetch.py` deve essere eseguito continuamente per monitorare i dati in tempo reale. Si consiglia di avviarlo in una sessione `screen` per mantenerlo attivo anche dopo la chiusura del terminale.
+
+1. Avvia una nuova sessione `screen`:
+   ```bash
+   screen -S fetch
+   ```
+
+2. Cambia directory e avvia lo script:
+   ```bash
+   cd /percorso/alla/cartella
+   python3 fetch.py
+   ```
+
+3. Per uscire dalla sessione `screen` senza interrompere lo script, premi `Ctrl+A` seguito da `D`. Puoi rientrare nella sessione con:
+   ```bash
+   screen -r fetch
+   ```
+
+---
+
+### `saveTrackedTrips.py`
+Lo script `saveTrackedTrips.py` deve essere eseguito automaticamente ogni giorno alle 2:00 di notte per elaborare i dati raccolti (alle 2 di notte è meglio così tutti i bus della giornata hanno finito di girare). Questo può essere configurato usando `cron`:
+
+1. Apri il file crontab:
+   ```bash
+   crontab -e
+   ```
+
+2. Aggiungi questa riga per eseguire lo script ogni giorno alle 2:00:
+   ```bash
+   0 2 * * * cd ~/trentino-transit-analytics/fetchDelays && python3 ~/trentino-transit-analytics/fetchDelays/saveTrackedTrips.py
+   ```
+
+3. Salva e chiudi il file. Da ora in poi, lo script verrà eseguito automaticamente all'orario specificato, e l'output verrà registrato nel file `saveTrackedTrips.log` nella cartella fetchDelays.
+```
