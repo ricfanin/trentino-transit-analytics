@@ -126,4 +126,3 @@ Lo script `saveTrackedTrips.py` deve essere eseguito automaticamente ogni giorno
    ```
 
 3. Salva e chiudi il file. Da ora in poi, lo script verrà eseguito automaticamente all'orario specificato, e l'output verrà registrato nel file `saveTrackedTrips.log` nella cartella fetchDelays.
-```
