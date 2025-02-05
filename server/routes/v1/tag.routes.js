@@ -11,7 +11,7 @@ const router = express.Router();
 router
     .route('/')
     .post(auth(), validate(tagValidation.createTag), tagController.createTag)
-    .get(auth(), validate(tagValidation.getTagById), tagController.getTagById)
+    .get(auth(), routeIdRouteNumberController.getRouteIdNumber)
     .delete(auth(), validate(tagValidation.deleteTag), tagController.deleteTag)
 
 router

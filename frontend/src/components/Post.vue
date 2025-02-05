@@ -145,23 +145,23 @@ export default {
   },
   data() {
     return {
-      // Simulazione di calcolo della lista dei tag
-      tags: [], // Questa lista verrà calcolata o popolata dinamicamente
+      tags: [],
+      localPost: this.post,
     };
   },
   computed: {
     isPostValid() {
-      return this.post;
+      return this.localPost;
     },
     netScore() {
-      return this.post.upvote - this.post.downvote;
+      return this.localPost.upvote - this.localPost.downvote;
     },
   },
   methods: {
     async vote(type) {
       try {
-        const updatedPost = await updatePostVote(this.postId, localStorage.getItem("user_id"), type); 
-        this.post = updatedPost;
+        const updatedPost = await updatePostVote(this.localPost._id, localStorage.getItem("user_id"), type); 
+        this.localPost = updatedPost;
       } catch (error) {
         console.error("Errore durante l'aggiornamento del voto:", error);
       }

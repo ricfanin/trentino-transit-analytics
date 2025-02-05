@@ -8,6 +8,7 @@ export const getUserPosts = async (userId) => {
   try {
       const response = await apiClient.get("/posts/filter/user", 
         {params: { author_id: userId }});
+      console.log(response);
       return response.data;
   } catch (error) {
       console.error("Errore durante il recupero dei post dell'utente:", error);
@@ -60,7 +61,6 @@ export const updatePostVote = async (postId, userId, vote_type) => {
       post_id: postId,
       voteType: vote_type,
     }));
-    console.log(response.data);
     return response.data; // Restituisci il post aggiornato
   } catch (error) {
     throw new Error('Errore durante l\'aggiornamento del voto');

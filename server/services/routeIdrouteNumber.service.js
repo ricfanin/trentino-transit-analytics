@@ -12,6 +12,15 @@ const getAllRouteIdNumbers = async () => {
     return routes;
 };
 
+const getRouteIdNumber = async (routeId) => { 
+    const route = await routeIdRouteNumber.getRecordById(routeId);
+    if(!route) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Route not found');
+    }
+    return route;
+}
+
 module.exports = {
     getAllRouteIdNumbers,
+    getRouteIdNumber,
 }

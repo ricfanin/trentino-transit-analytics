@@ -3,7 +3,7 @@
       class="tag"
       :style="tagStyle"
     >
-      {{ tag.name }}
+      {{ tag.routeNumber }}
     </div>
   </template>
   
@@ -12,11 +12,7 @@
     props: {
       tag: {
         type: Object,
-        required: true,
-        validator(value) {
-          // Verifica che l'oggetto tag abbia 'name' e 'color' come stringhe
-          return value && typeof value.name === 'string' && typeof value.color === 'string';
-        }
+        required: true
       }
     },
     computed: {

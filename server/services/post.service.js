@@ -25,7 +25,7 @@ const getPostById = async (postId) => {
 } 
 
 const getPostByUser = async (userId) => {
-    const posts = await Post.find( {"author_id.id": userId} )                    
+    const posts = await Post.find( {"author_id": userId} )                    
                                 .populate('author_id', 'name')
                                 .exec(); 
     return posts; 

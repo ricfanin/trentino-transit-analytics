@@ -22,6 +22,10 @@ routeIdRouteNumberSchema.statics.getAllRecords = async function () {
     return await this.find({}, {routeId: 1, routeNumber: 1, color: 1, _id: 0});
 };
 
+routeIdRouteNumberSchema.statics.getRecordById = async function (id) {
+    return await this.findOne({ _id: id }, { routeId: 1, routeNumber: 1, color: 1, _id: 0 });
+};
+
 /**
  * @typedef RouteIdRouteNumber
  */

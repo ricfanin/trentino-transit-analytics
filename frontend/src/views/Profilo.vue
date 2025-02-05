@@ -95,7 +95,7 @@ export default {
 
     async fetchUserPosts() {
       try {
-        const userId = localStorage.getItem("user_id"); 
+        const userId = localStorage.getItem("user_id");
         if (!userId) {
           throw new Error("User ID non trovato.");
         }

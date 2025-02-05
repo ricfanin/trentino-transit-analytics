@@ -14,6 +14,7 @@ const updatePost = catchAsync(async (req, res) => {
 
 const getPostByUser = catchAsync(async (req, res) => {
     const {author_id} = req.query;
+    console.log(author_id);
     const posts = await postService.getPostByUser(author_id);
     res.status(httpStatus.OK).send(posts);
 });
