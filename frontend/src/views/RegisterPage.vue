@@ -192,9 +192,17 @@ export default {
 
         // Memorizza i token e redirigi l'utente
         const { user, tokens } = response.data;
+
+        localStorage.setItem("user_id", user.id);
+        localStorage.setItem("user_name", user.name);
+
         localStorage.setItem("accessToken", tokens.access.token);
         localStorage.setItem("refreshToken", tokens.refresh.token);
+
+        this.$store.dispatch("login", user.name);
+
         this.$router.push("Profilo");
+
       } catch (error) {
         // Gestione errore: aggiorna il messaggio da mostrare
         this.errorMessage =
