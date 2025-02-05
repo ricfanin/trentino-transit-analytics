@@ -2,6 +2,7 @@ const express = require('express');
 const validate = require('../../middlewares/validate')
 const tagController = require('../../controllers/tag.controller');
 const tagValidation = require('../../validations/tag.validation');
+const routeIdRouteNumberController = require('../../controllers/routeIdRouteNumbers.controller')
 const auth = require('../../middlewares/auth');
 
 
@@ -15,6 +16,6 @@ router
 
 router
     .route('/all')
-    .get(auth(), tagController.getAllTags)
+    .get(auth(), routeIdRouteNumberController.getAllRouteIdNumbers);
 
 module.exports = router;

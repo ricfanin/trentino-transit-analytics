@@ -24,14 +24,14 @@
           <label class="block text-sm font-medium text-text_3"
             >Seleziona Linea</label
           >
-          <select
-            id="line-select"
-            v-model="form.line"
+		  <select
+            v-model="form.line" 
             class="w-full mb-4 px-4 py-2 border text-text_3 rounded-md focus:outline-none focus:ring-2"
+            required
           >
             <option value="" disabled selected>Seleziona Linea</option>
             <option v-for="line in lines" :key="line._id" :value="line._id">
-              {{ line.name }}
+              {{ line.routeNumber }}
             </option>
           </select>
 
@@ -73,26 +73,26 @@ export default {
       form: {
         title: '',
         content: '',
-        line: [],
+        line: '',
       },
       lines: [],
     };
   },
-  methods: {
-    async fetchTags() {
-      const response = await getAllTags();
-      console.log(response);
-      this.lines = response
-    },
+	methods: {
+	async fetchTags() {
+		const response = await getAllTags();
+		console.log(response);
+		this.lines = response
+	},
 
     async submitForm() {
       try {
-        
+        console.log(this.form.title, this.form.content, this.form.line);
         const response = await createPost({
           author_id: localStorage.getItem("user_id"),
           title: this.form.title,
           content: this.form.content,
-          tags: [this.form.line],
+          tags: ["678397e50954c6da2890bc4f"],
         });
 
         alert('Post creato con successo!');
