@@ -2,7 +2,7 @@ import router from "@/router";
 import axios from "axios";
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:3000/api/v1", // URL base del backend
+    baseURL: process.env.VUE_APP_API_BASE_URL,
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
