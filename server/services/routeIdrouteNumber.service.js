@@ -1,4 +1,5 @@
 const { routeIdRouteNumber } = require('../models');
+const ApiError = require('../utils/ApiError');
 
 /**
  * Get all routeIdRouteNumber records
