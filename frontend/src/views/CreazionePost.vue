@@ -24,12 +24,13 @@
           <label class="block text-sm font-medium text-text_3"
             >Seleziona Linea</label
           >
-		  <select
+		      <select
             v-model="form.line" 
             class="w-full mb-4 px-4 py-2 border text-text_3 rounded-md focus:outline-none focus:ring-2"
             required
           >
-            <option value="" disabled selected>Seleziona Linea</option>
+            <option value="" disabled>Seleziona Linea</option>
+            
             <option v-for="line in lines" :key="line._id" :value="line._id">
               {{ line.routeNumber }}
             </option>
@@ -79,26 +80,26 @@ export default {
     };
   },
 	methods: {
-	async fetchTags() {
-		const response = await getAllTags();
-		console.log(response);
-		this.lines = response
-	},
+    async fetchTags() {
+      const response = await getAllTags();
+      this.lines = response
+    },
 
     async submitForm() {
       try {
-        console.log(this.form.title, this.form.content, this.form.line);
         const response = await createPost({
           author_id: localStorage.getItem("user_id"),
           title: this.form.title,
           content: this.form.content,
-          tags: ["678397e50954c6da2890bc4f"],
+          tags: [this.form.line],
         });
 
         alert('Post creato con successo!');
+        this.$router.push({ path: '/Profilo' });
 
         this.form.title = '';
         this.form.content = '';
+        this.form.line
       } catch (error) {
         console.error('Errore durante la creazione del post:', error);
         alert('Errore nella creazione del post.');

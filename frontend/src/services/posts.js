@@ -8,7 +8,7 @@ export const getUserPosts = async (userId) => {
   try {
       const response = await apiClient.get("/posts/filter/user", 
         {params: { author_id: userId }});
-      console.log(response);
+
       return response.data;
   } catch (error) {
       console.error("Errore durante il recupero dei post dell'utente:", error);

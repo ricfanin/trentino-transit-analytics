@@ -20,7 +20,11 @@ export const getTagsById = async (tagIdList) => {
 export const getAllTags = async() => {
   try {
     const response = await apiClient.get("/tags/all");
-    return response.data;
+    const sortedData = response.data.sort((a, b) => {
+      return a.routeNumber - b.routeNumber;  
+    });
+
+    return sortedData;
   } catch (error) {
     console.error("Errore durante il recupero dei tag:", error);
     throw error;
