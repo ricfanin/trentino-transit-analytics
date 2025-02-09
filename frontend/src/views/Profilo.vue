@@ -34,7 +34,7 @@
             class="flex flex-wrap justify-between md:justify-center space-x-4 mt-16 md:mt-0"
           >
             <router-link to="/ModificaProfilo">
-              <button class="mt-4 px-4 py-2 bg-button_1 text-text_1 rounded-md hover:bg-button_1_hover font-semibold shadow-md">
+              <button class="mt-4 px-4 py-2 bg-button_1 text-text_1 rounded-md hover:bg-button_1_hover font-medium shadow-md">
               Modifica Profilo
               </button>
             </router-link>

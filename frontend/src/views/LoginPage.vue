@@ -3,7 +3,7 @@
     <div class="flex justify-center items-center h-screen">
       <div class="bg-white p-8 sm:p-12 rounded-lg shadow-lg w-full max-w-md">
         <h2
-          class="text-2xl sm:text-3xl font-semibold text-text_2 mb-8 text-center"
+          class="text-2xl sm:text-3xl font-medium text-text_2 mb-8 text-center"
         >
           Accedi al tuo Account
         </h2>

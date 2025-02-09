@@ -15,13 +15,13 @@
           
           <div class="mt-8 flex flex-wrap justify-center gap-4">
             <router-link to="/RegisterPage">
-              <button class="mt-4 px-4 py-2 bg-button_2 text-text_1 rounded-md hover:bg-button_2_hover">
+              <button class="mt-4 px-4 py-2 bg-button_2 text-text_1 rounded-md hover:bg-button_2_hover text-lg font-medium shadow-md">
                 Registrati
               </button>
             </router-link>
 
             <a href="https://www.trentinotrasporti.it/">
-              <button class="mt-4 px-4 py-2 bg-button_1 text-text_1 rounded-md hover:bg-button_1_hover">
+              <button class="mt-4 px-4 py-2 bg-button_1 text-text_1 rounded-md hover:bg-button_1_hover text-lg font-medium shadow-md">
                 Trentino Trasporti
               </button> 
             </a>

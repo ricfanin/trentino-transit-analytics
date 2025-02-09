@@ -24,7 +24,7 @@
 
       <!-- Menu -->
     <div class="text-xl text-text_1 order-3 w-full md:w-auto md:order-2">
-        <ul class="flex font-semibold justify-between">
+        <ul class="flex font-medium justify-between">
             <li class="md:px-4 md:py-2 hover:text-button_2">
                 <router-link to="/">Home</router-link>
             </li>
@@ -44,7 +44,7 @@
       </div>
 
       <!-- Login/Logout -->
-      <div class="order-2 md:order-3 font-semibold">
+      <div class="order-2 md:order-3 font-medium">
         <template v-if="isLoggedIn">
           <!-- Mostra il nome utente -->
           <span class="px-4 py-2 bg-button_2 text-gray-50 rounded-xl">{{ userName }}</span>
