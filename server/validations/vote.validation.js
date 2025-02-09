@@ -6,7 +6,8 @@ const createVote = {
     body: Joi.object().keys({
         user_id: Joi.string().custom(objectId).required(),
         post_id: Joi.string().custom(objectId).required(),
-        voteType: Joi.string().valid('upvote', 'downvote').required()
+        voteType: Joi.string().valid('upvote', 'downvote').required(),
+        isComment: Joi.boolean().required()
     })
 }
 

@@ -1,16 +1,17 @@
 const httpStatus = require('http-status');
 const { Vote } = require('../models');
-const { Post } = require('../models');
+const { Post, Comment } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 const createVote = async (voteBody) => {
-
-    const { user_id, post_id, voteType } = voteBody;
+    const { user_id, post_id, voteType, isComment } = voteBody;
+    const model = isComment ? Comment : Post; // Determina se aggiornare un commento o un post
+    
     const existingVote = await Vote.findOne({ user_id, post_id });
-
+    
     if (existingVote) {
         if (existingVote.voteType === voteType) {
-            return await Post.findById(post_id);
+            return await model.findById(post_id);
         }
 
         const updates = {
@@ -18,11 +19,11 @@ const createVote = async (voteBody) => {
             downvote: voteType === 'downvote' ? 1 : -1,
         };
 
-        await Post.findByIdAndUpdate(post_id, { $inc: updates }, { new: true });
+        await model.findByIdAndUpdate(post_id, { $inc: updates }, { new: true });
         existingVote.voteType = voteType;
         await existingVote.save();
 
-        return await Post.findById(post_id);
+        return await model.findById(post_id);
     }
 
     await Vote.create(voteBody);
@@ -31,8 +32,9 @@ const createVote = async (voteBody) => {
         downvote: voteType === 'downvote' ? 1 : 0,
     };
 
-    return await Post.findByIdAndUpdate(post_id, { $inc: updates }, { new: true });
+    return await model.findByIdAndUpdate(post_id, { $inc: updates }, { new: true });
 }
+
 
 
 const getVotesByUser = async (userId) => {

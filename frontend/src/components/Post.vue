@@ -15,7 +15,7 @@
           :tag="tag"
         />
       </div>
-      <span class="text-text_2 flex items-center"> {{post.author_id.name}} </span>
+      <span class="text-text_2 flex items-center"> {{post.author_id.username}} </span>
     </div>
     <!-- Descrizione Post -->
     <p class="text-text_2 mb-4">
@@ -160,7 +160,7 @@ export default {
   methods: {
     async vote(type) {
       try {
-        const updatedPost = await updatePostVote(this.localPost._id, localStorage.getItem("user_id"), type); 
+        const updatedPost = await updatePostVote(this.localPost._id, localStorage.getItem("user_id"), type, false); 
         this.localPost = updatedPost;
       } catch (error) {
         console.error("Errore durante l'aggiornamento del voto:", error);
@@ -178,6 +178,7 @@ export default {
   },
   mounted() {
     this.fetchTags();
+    console.log(this.localPost);
   }
 };
 </script>

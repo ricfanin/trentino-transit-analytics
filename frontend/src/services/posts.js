@@ -54,12 +54,14 @@ export const getAllPostsBySelectedOrder = async(currentTags, currentOrder) => {
   }
 };
 
-export const updatePostVote = async (postId, userId, vote_type) => {
+export const updatePostVote = async (postId, userId, vote_type, is_comment) => {
   try {
+    console.log(is_comment);
     const response = await apiClient.post(`/votes`, JSON.stringify({
       user_id: userId,
       post_id: postId,
       voteType: vote_type,
+      isComment: is_comment
     }));
     return response.data; // Restituisci il post aggiornato
   } catch (error) {

@@ -11,7 +11,19 @@ export const getCommentsByPostId = async (postId) => {
         }})
         return response.data;
     } catch (error) {
-        console.error("Errore durante il recupero dei post dell'utente:", error);
+        console.error("Errore durante il recupero dei commenti dell'post:", error);
         throw error; 
     }
 };
+
+export const getCommentByUser = async (authorId) => {
+    try {
+        const response = await apiClient.get('/comments/user', { params: {
+            author_id: authorId, 
+        }})
+        return response.data;
+    } catch (error) {
+        console.error("Errore durante il recupero dei post dell'utente:", error);
+        throw error; 
+    }
+}
