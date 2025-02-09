@@ -2,8 +2,11 @@
 <template>
   <div class="flex">
     <div class="flex-1 p-8">
+      
       <!--Post Search e Filtri-->
-      <PostSearchFilterBar  @orderChanged="updateOrder" />
+      <div class="max-w-4xl mx-auto p-4 space-y-6">
+        <PostSearchFilterBar  @orderChanged="updateOrder" />
+      </div>
 
       <!-- Posts -->
       <div class="max-w-4xl mx-auto p-4 space-y-6">

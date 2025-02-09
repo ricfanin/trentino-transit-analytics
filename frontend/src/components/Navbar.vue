@@ -44,7 +44,7 @@
       </div>
 
       <!-- Login/Logout -->
-      <div class="order-2 md:order-3">
+      <div class="order-2 md:order-3 font-semibold">
         <template v-if="isLoggedIn">
           <!-- Mostra il nome utente -->
           <span class="px-4 py-2 bg-button_2 text-gray-50 rounded-xl">{{ userName }}</span>
