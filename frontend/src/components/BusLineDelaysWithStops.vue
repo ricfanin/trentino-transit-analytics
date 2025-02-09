@@ -86,6 +86,7 @@ export default {
             ],
           },
           options: {
+            animation: { duration: 0 },
             responsive: true,
             maintainAspectRatio: true,
             indexAxis: 'y',
