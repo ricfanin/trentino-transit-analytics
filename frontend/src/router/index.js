@@ -50,6 +50,7 @@ const router = createRouter({
             component: Corsa,
             meta: {
               requiresAuth: true,
+              role: "admin",
             },
           },
           {
