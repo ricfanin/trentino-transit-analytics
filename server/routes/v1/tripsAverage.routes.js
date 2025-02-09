@@ -9,18 +9,18 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(auth(), tripsAverageDelayController.getAllTripsAverageDelays)
+    .get(auth('getLinesData'), tripsAverageDelayController.getAllTripsAverageDelays)
 
 router
     .route('/lines')
-    .get(auth(), tripsAverageDelayController.getLinesDelays);
+    .get(auth('getLinesData'), tripsAverageDelayController.getLinesDelays);
 
 router
     .route('/times')
-    .get(auth(), validate(tripsValidation.routeIdValidation), tripsAverageDelayController.getLinesDelaysByTimes);
+    .get(auth('getLinesData'), validate(tripsValidation.routeIdValidation), tripsAverageDelayController.getLinesDelaysByTimes);
 
 router
     .route('/stops')
-    .get(auth(), validate(tripsValidation.routeIdValidation), tripsAverageDelayController.getLineDelaysWithStops);
+    .get(auth('getLinesData'), validate(tripsValidation.routeIdValidation), tripsAverageDelayController.getLineDelaysWithStops);
 
 module.exports = router;
