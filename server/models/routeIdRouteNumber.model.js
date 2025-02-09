@@ -19,7 +19,7 @@ const routeIdRouteNumberSchema = mongoose.Schema(
 );
 
 routeIdRouteNumberSchema.statics.getAllRecords = async function () {
-    return await this.find({}, {routeId: 1, routeNumber: 1, color: 1, _id: 1});
+    return await this.find({}, { routeId: 1, routeNumber: 1, color: 1, _id: 1 }).sort({ routeNumber: 1 });
 };
 
 routeIdRouteNumberSchema.statics.getRecordById = async function (id) {
