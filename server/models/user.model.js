@@ -5,7 +5,17 @@ const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
     {
+        username: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         name: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        surname: {
             type: String,
             required: true,
             trim: true,

@@ -42,10 +42,11 @@
             >
             <select
               id="role"
+              v-model="ruolo"
               class="border rounded-lg px-3 py-2 text-text_3 bg-gray-50 focus:ring-2 focus:button_1_hover outline-none"
             >
-              <option value="Utente">Utente</option>
-              <option value="Admin">Admin</option>
+              <option value="user">Utente</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
 
@@ -75,6 +76,7 @@
             <input
               id="nome"
               type="text"
+              v-model="nome"
               class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:button_1_hover outline-none"
               placeholder="Nome"
             />
@@ -106,42 +108,12 @@
             <input
               id="cognome"
               type="text"
+              v-model="cognome"
               class="border rounded-lg px-3 py-2 bg-gray-50 focus:ring-2 focus:button_1_hover outline-none"
               placeholder="Cognome"
             />
           </div>
 
-          <!-- Immagine Profilo 
-          <div class="flex flex-col items-center">
-            <label class="text-sm font-medium text-text_3 mb-1"
-              >Immagine Profilo</label
-            >
-            <div
-              class="border rounded-lg bg-gray-50 w-32 h-32 flex items-center justify-center"
-            >
-              <svg
-                class="w-10 h-10 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v4m0 0v4m-4-4h8"
-                />
-              </svg>
-            </div>
-            <button
-              type="button"
-              class="mt-4 px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-text_3"
-            >
-              Seleziona Immagine
-            </button>
-          </div> -->
-          
           <!-- Bottoni -->
           <div class="mt-8 text-center">
               <button
@@ -174,6 +146,9 @@ export default {
       username: "",
       email: "",
       password: "",
+      nome: "",
+      cognome: "",
+      ruolo: "Utente",
       errorMessage: ""
     };
   },
@@ -182,9 +157,12 @@ export default {
     async handleRegister() {
     try {
         const response = await apiClient.post("auth/register", {
-          name: this.username,
+          username: this.username,
           email: this.email,
           password: this.password,
+          name: this.nome,
+          surname: this.cognome,
+          role: this.ruolo
         });
 
         // Se la richiesta ha successo, resetta gli errori e continua
