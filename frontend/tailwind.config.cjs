@@ -29,8 +29,8 @@ export default {
           dark: '#000000',
         },
         button_2_hover: {
-          light: '#80ED99',
-          DEFAULT: '#80ED99',
+          light: '#3a8a67',
+          DEFAULT: '#3a8a67',
           dark: '#000000',
         },
         text_1: {
