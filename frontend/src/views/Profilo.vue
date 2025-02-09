@@ -10,11 +10,11 @@
             class="grid grid-cols-2 md:grid-cols-3 text-center order-last md:order-first mt-8 md:mt-0"
           >
             <div>
-              <p class="font-bold text-text_2 text-xl">10</p>
+              <p class="font-bold text-text_2 text-xl">{{post_count}}</p>
               <p class="text-text_3">Posts</p>
             </div>
             <div>
-              <p class="font-bold text-text_2 text-xl">89</p>
+              <p class="font-bold text-text_2 text-xl">{{comment_count}}</p>
               <p class="text-text_3">Comments</p>
             </div>
           </div>
@@ -47,6 +47,9 @@
           <h1 class="text-2xl font-bold sm:text-4xl text-text-text_2">
             {{ username }}
           </h1>
+          <div class="mt-2 text-lg text-text_3">
+            <p>{{ name }} {{ surname }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -67,6 +70,7 @@
 import Post from "@/components/Post.vue";
 import PostButton from "@/components/PostButton.vue";
 import { getUserPosts } from "@/services/posts";
+import { getCommentByUser } from "@/services/commets";
 import apiClient from "@/services/api";
 
 export default {
@@ -79,6 +83,10 @@ export default {
   data() {
     return {
       username: "",
+      name: "",
+      surname: "",
+      post_count: 0,
+      comment_count: 0,
       posts: [], // Array per salvare i post dell'utente
     };
   },
@@ -88,7 +96,18 @@ export default {
     async getProfile() {
       try {
         const response = await apiClient.get("/profile");
-        this.username = response.data.name;
+        this.username = response.data.username;
+        this.name = response.data.name;
+        this.surname = response.data.surname;
+      } catch (error) {
+      }
+    },
+
+    async getCommentNumber(){
+      try {
+        const userId = localStorage.getItem("user_id");
+        const comments = await getCommentByUser(userId);
+        this.comment_count = comments.length;
       } catch (error) {
       }
     },
@@ -102,6 +121,7 @@ export default {
 
         const posts = await getUserPosts(userId);
         this.posts = posts; 
+        this.post_count = posts.length;
       } catch (error) {
         alert("Errore durante il caricamento dei post dell'utente.");
       }
@@ -110,6 +130,7 @@ export default {
 
   async created() {
     await this.getProfile();
+    await this.getCommentNumber();
     await this.fetchUserPosts();
   },
 };

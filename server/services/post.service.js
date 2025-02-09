@@ -19,14 +19,14 @@ const updatePost = async (postID, postBody) => {
 
 const getPostById = async (postId) => {
     const post = await Post.findById(postId)
-                    .populate('author_id', 'name')
-                    .exec(); 
+                                .populate('author_id', 'username')
+                                .exec(); 
     return post; 
 } 
 
 const getPostByUser = async (userId) => {
     const posts = await Post.find( {"author_id": userId} )                    
-                                .populate('author_id', 'name')
+                                .populate('author_id', 'username')
                                 .exec(); 
     return posts; 
 } 
@@ -66,11 +66,11 @@ const getPostByTags = async (tags) => {
 
     if(tags.length === 0){
         posts = await Post.find() 
-                            .populate('author_id', 'name')
+                            .populate('author_id', 'username')
                             .exec(); 
     } else {
         posts = await Post.find({tags: {$in: tags}})
-                            .populate('author_id', 'name')
+                            .populate('author_id', 'username')
                             .exec(); 
     }
 

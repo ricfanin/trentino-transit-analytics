@@ -16,6 +16,14 @@ const commentSchema = new Schema(
             type: String,
             required: [true, 'content is required'],
         },
+        upvote: {
+            type: Number,
+            default: 0,
+        },
+        downvote: {
+            type: Number,
+            default: 0,
+        }
     },
     { timestamps: true },
 )

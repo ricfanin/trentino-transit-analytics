@@ -3,7 +3,7 @@
     <div class="bg-white p-6 border-2 rounded-lg shadow-md">
       <!-- Username -->
       <div class="flex justify-between mb-4">
-        <span class="text-text_2 flex items-center"> {{comment.author.name}} </span>
+        <span class="text-text_2 flex items-center"> {{comment.author.username}} </span>
       </div>
       <!-- Descrizione Commento -->
       <p class="text-text_2 mb-4">
@@ -14,6 +14,7 @@
         <div class="flex items-center space-x-2 bg-button_1_hover rounded-3xl">
           <!-- Upvote -->
           <button
+            @click="vote('upvote')" 
             class="flex items-center px-2 py-2 rounded-3xl hover:bg-button_1_hover"
           >
             <div class="text-text_1 md:order-1">
@@ -39,9 +40,10 @@
             </div>
           </button>
           <!-- Conteggio -->
-          <div class="flex items-center text-text_1">355</div>
+          <div class="flex items-center text-text_1">{{netScore}}</div>
           <!-- Downvote -->
           <button
+            @click="vote('downvote')"
             class="flex items-center px-2 py-2 rounded-3xl hover:bg-button_1_hover"
           >
             <div class="text-text_1 md:order-1">
@@ -66,15 +68,42 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    name: "Comment",
-    props: {
-        comment: {
-            type: Object,
-            required: true,
+<script>
+    import { updatePostVote } from '@/services/posts';
+
+    export default {
+      name: "Comment",
+      props: {
+          comment: {
+              type: Object,
+              required: true,
+          },
+      },
+      computed: {
+        netScore() {
+          console.log(this.comment);
+          return this.comment.upvote - this.comment.downvote;
         },
+      },
+      methods: {
+        async vote(type) {
+      try {
+        const updatedComment = await updatePostVote(
+          this.comment._id,
+          localStorage.getItem("user_id"),
+          type,
+          true
+        );
+        this.comment.upvote = updatedComment.upvote;
+        this.comment.downvote = updatedComment.downvote;
+
+        this.$emit("update-comment", updatedComment);
+      } catch (error) {
+        console.error("Errore durante l'aggiornamento del voto:", error);
+      }
+    },
+    
     },
   };
-  </script>
+</script>
   

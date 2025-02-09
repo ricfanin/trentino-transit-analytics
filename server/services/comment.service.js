@@ -36,11 +36,13 @@ const getCommentsByPostId = async(postId) => {
         { $unwind: "$author" },
         {
             $project: {
-                "author.name": 1,
+                "author.username": 1,
                 post_id: 1,
                 content: 1,
                 createdAt: 1,
                 updatedAt: 1,
+                upvote: 1,
+                downvote: 1,
                 _id: 1,
             },
         },

@@ -6,6 +6,8 @@ const getAuthProfile = catchAsync(async (req, res) => {
         .status(httpStatus.OK)
         .json({
             name: req.user.name,
+            username: req.user.username,
+            surname: req.user.surname,
             email: req.user.email,
         });
 });

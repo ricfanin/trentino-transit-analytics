@@ -23,7 +23,7 @@ const getCommentsByPostId = {
 }
 
 const getCommentByUser = {
-    body: Joi.object().keys({
+    query: Joi.object().keys({
         author_id: Joi.string().custom(objectId).required()
     })
 }

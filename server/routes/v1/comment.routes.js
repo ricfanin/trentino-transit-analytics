@@ -17,4 +17,8 @@ router
     .route('/post')
     .get(auth(), validate(commentValidation.getCommentsByPostId), commentController.getCommentsByPostId);
 
+router
+    .route('/user')
+    .get(auth(), validate(commentValidation.getCommentByUser), commentController.getCommentByUser);
+
 module.exports = router;
