@@ -92,7 +92,7 @@ export default {
           return;
         }
 
-        const response = await apiClient.get("/profile");
+        const response = await apiClient.get("/user");
         this.user = response.data; // Popola il form con i dati dell'utente
         
       } catch (error) {
