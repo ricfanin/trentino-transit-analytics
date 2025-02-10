@@ -32,13 +32,13 @@ const getPostByTags = catchAsync(async (req, res) => {
 });
 
 const getPostByDate = catchAsync(async (req, res) => {
-    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const tags = req.query.tags[0];
     const posts = await postService.getPostByDate(tags, req.query.order);
     res.status(httpStatus.OK).send(posts);
 })
 
 const getPostByLikes = catchAsync(async (req, res) => {
-    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const tags = req.query.tags[0];
     const post = await postService.getPostByLikes(tags, req.query.order);
     res.status(httpStatus.OK).send(post);
 });

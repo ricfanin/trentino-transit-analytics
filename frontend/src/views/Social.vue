@@ -4,7 +4,7 @@
     <div class="flex-1 p-8">
       <!-- Post Search e Filtri -->
       <div class="max-w-4xl mx-auto p-4 space-y-6">
-        <PostSearchFilterBar @orderChanged="updateOrder" />
+        <PostSearchFilterBar @filterChanged="onFilterChanged" />
       </div>
       
       <!-- Lista dei Post -->
@@ -36,14 +36,13 @@ export default {
     };
   },
   methods: {
-    updateOrder(order) {
-      this.currentOrder = order;
-      this.fetchPosts();
+    onFilterChanged(filters) {
+      const { order, line } = filters;  
+      this.fetchPosts(order, line);
     },
-
-    async fetchPosts() {
+    async fetchPosts(order, line) {
       try {
-        const posts = await getAllPostsBySelectedOrder(this.tags, this.currentOrder);
+        const posts = await getAllPostsBySelectedOrder(line, order);
         this.posts = posts;
       } catch (error) {
         console.error("Errore durante il caricamento del post:", error);
@@ -55,7 +54,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchPosts();
+    this.fetchPosts("upvote", [""]);
   },
 };
 </script>
