@@ -10,9 +10,6 @@ const ApiError = require("./utils/ApiError");
 const { errorConverter, errorHandler } = require('./middlewares/error');
 
 const routes = require('./routes/v1');
-const { ConnectDB } = require('./config/db');
-const config = require('./config/config');
-
 
 const app = express();
 
@@ -39,11 +36,8 @@ app.options('*', cors());
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
-// connect to mongodb
-ConnectDB();
-
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('trentino-transit-analytics API!')
 });
 
 // ROUTES
@@ -60,6 +54,4 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-    console.log(`sivallettando sulla porta: ${config.port}`)
-});
+module.exports = app;

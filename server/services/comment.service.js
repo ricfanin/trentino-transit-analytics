@@ -11,7 +11,7 @@ const createComment = async (commentBody) => {
 }
 
 const updateComment = async (commentID, commentBody) => {
-    const updatedComment = await Comment.findByIdAndUpdate(commentID, {content: commentBody.content, updatedAt: Date.now()}, {new: true});
+    const updatedComment = await Comment.findByIdAndUpdate(commentID, {content: commentBody, updatedAt: Date.now()}, {new: true});
 
     if(!updatedComment) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Post not found');

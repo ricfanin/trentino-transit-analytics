@@ -25,7 +25,7 @@ const getCommentByUser = catchAsync(async (req, res) => {
 
 const deleteComment = catchAsync(async (req, res) => {
     const comment = await commentService.deleteCommentById(req.body.id);
-    res.status(httpStatus.NO_CONTENT).send(comment);
+    res.status(httpStatus.OK).send(comment);
 });
 
 module.exports = {

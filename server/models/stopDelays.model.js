@@ -6,6 +6,10 @@ const stopDelaySchema = mongoose.Schema(
             type: Number,
             required: true,
         },
+        stopSequence: {
+            type: Number,
+            required: true,
+        },
         stopTime: {
             type: String,
             required: true,

@@ -22,6 +22,9 @@ const getPostByUser = catchAsync(async (req, res) => {
 const getPostById = catchAsync(async (req, res) => {
     const {post_id} = req.query;
     const post = await postService.getPostById(post_id);
+    if (!post) {
+        res.status(httpStatus.NOT_FOUND).send('Post not found');
+    }
     res.status(httpStatus.OK).send(post);
 });
 
@@ -45,7 +48,7 @@ const getPostByLikes = catchAsync(async (req, res) => {
 
 const deletePost = catchAsync(async (req, res) => {
     const post = await postService.deletePostById(req.body.id);
-    res.status(httpStatus.NO_CONTENT).send(post);
+    res.status(httpStatus.OK).send(post);
 });
 
 module.exports = {
