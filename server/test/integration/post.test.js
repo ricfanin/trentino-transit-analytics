@@ -151,10 +151,9 @@ describe('Post routes', () => {
       await insertPosts([postOne]);
 
       const res = await request(app)
-        .delete(`/api/v1/posts`)
+        .delete(`/api/v1/posts/${postOne._id}`)
         .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send({ id: postOne._id })
-        .expect(httpStatus.OK);
+        .expect(httpStatus.NO_CONTENT);
 
       const dbPost = await Post.findById(postOne._id);
       expect(dbPost).toBeNull();

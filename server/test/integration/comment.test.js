@@ -79,6 +79,7 @@ describe('Comment routes', () => {
           content: commentOne.content,
           post_id: commentOne.post_id.toHexString(),
           author: {
+            _id: userOne._id.toHexString(),
             username: userOne.username,
           },
           createdAt: expect.anything(),
@@ -130,10 +131,9 @@ describe('Comment routes', () => {
       await insertComments([commentOne]);
 
       const res = await request(app)
-        .delete(`/api/v1/comments`)
+        .delete(`/api/v1/comments/${commentOne._id}`)
         .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send({ id: commentOne._id })
-        .expect(httpStatus.OK);
+        .expect(httpStatus.NO_CONTENT);
 
       const dbComment = await Comment.findById(commentOne._id);
       expect(dbComment).toBeNull();
