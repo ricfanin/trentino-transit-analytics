@@ -10,8 +10,12 @@ router
     .route('/')
     .post(auth(), validate(postValidation.createPostSchema), postController.createPost)
     .patch(auth(), validate(postValidation.updatePost), postController.updatePost)
-    .delete(auth(), validate(postValidation.deletePost), postController.deletePost)
     .get(auth(), validate(postValidation.getPostById), postController.getPostById)
+
+router
+    .route('/:postId')
+    .delete(auth(), validate(postValidation.deletePost), postController.deletePost);
+
 
 router
     .route('/filter/user')

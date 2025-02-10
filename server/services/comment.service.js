@@ -37,6 +37,7 @@ const getCommentsByPostId = async(postId) => {
         {
             $project: {
                 "author.username": 1,
+                "author._id": 1,
                 post_id: 1,
                 content: 1,
                 createdAt: 1,

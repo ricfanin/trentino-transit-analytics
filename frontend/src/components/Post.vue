@@ -77,7 +77,7 @@
         </button>
       </div>
       <!-- Commenta -->
-      <router-link  :to="{ name: 'CommentSection', query: { postId: this.post._id } }" target="_blank" rel="noopener noreferrer">
+      <router-link  :to="{ name: 'CommentSection', query: { postId: this.post._id } }">
         <button
           class="flex items-center px-2 py-2 bg-button_1 rounded-3xl hover:bg-button_1_hover"
         >
@@ -120,6 +120,21 @@
           </svg>
         </div>
       </button>
+      <button 
+        v-if="isAdmin || isAuthor"
+        @click="deletePost"
+        class="bg-red-700 flex items-center px-2 py-2 rounded-3xl hover:bg-red-800 w-auto"
+      >
+        <svg class="h-5 w-5 text-gray-100" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z"/>
+          <line x1="4" y1="7" x2="20" y2="7" />
+          <line x1="10" y1="11" x2="10" y2="17" />
+          <line x1="14" y1="11" x2="14" y2="17" />
+          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+        </svg>
+      </button>
+
     </div>
   </div>
   <div v-else>
@@ -130,7 +145,7 @@
 <script>
 import Tag from './Tag.vue'; 
 import { getTagsById } from '@/services/tags';
-import { updatePostVote } from "@/services/posts";
+import { deletePost, updatePostVote } from "@/services/posts";
 
 export default {
   name: "Post",
@@ -147,6 +162,8 @@ export default {
     return {
       tags: [],
       localPost: this.post,
+      isAdmin: localStorage.getItem("user_role") === "admin",
+      isAuthor: localStorage.getItem("user_id") === this.post.author_id._id,
     };
   },
   computed: {
@@ -167,6 +184,15 @@ export default {
       }
     },
 
+    async deletePost() {
+      try {
+        await deletePost(this.localPost._id);
+        this.$emit("post-deleted", this.localPost._id);
+      } catch (error) {
+        console.error("Errore delete:", error);
+      }
+    },
+
     async fetchTags(){
       try {
         const tags = await getTagsById(this.post.tags) 
@@ -178,7 +204,6 @@ export default {
   },
   mounted() {
     this.fetchTags();
-    console.log(this.localPost);
   }
 };
 </script>

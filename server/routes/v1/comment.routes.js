@@ -10,8 +10,11 @@ router
     .route('/')
     .post(auth(), validate(commentValidation.createComment), commentController.createComment)
     .patch(auth(), validate(commentValidation.updateComment), commentController.updateComment)
-    .delete(auth(), validate(commentValidation.deleteComment), commentController.deleteComment)
     .get(auth(), validate(commentValidation.getCommentById), commentController.getCommentByUser);
+
+router
+    .route('/:commentId')
+    .delete(auth(), validate(commentValidation.deleteComment), commentController.deleteComment);
 
 router
     .route('/post')

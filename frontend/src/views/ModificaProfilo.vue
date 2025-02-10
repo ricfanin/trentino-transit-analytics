@@ -94,7 +94,7 @@ export default {
 
         const response = await apiClient.get("/profile");
         this.user = response.data; // Popola il form con i dati dell'utente
-        console.log(this.user);
+        
       } catch (error) {
         this.errorMessage = "Errore nel caricamento del profilo.";
       }

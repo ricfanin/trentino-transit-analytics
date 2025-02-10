@@ -60,7 +60,7 @@
 
       <!-- Singolo Post -->
       <div v-for="post in posts" :key="post.id">
-        <Post :post="post" />
+        <Post :post="post" @post-deleted="removePost"/>
       </div>
     </div>
   </div>
@@ -126,6 +126,11 @@ export default {
         alert("Errore durante il caricamento dei post dell'utente.");
       }
     },
+
+    removePost(postId) {
+      this.posts = this.posts.filter(post => post._id !== postId);
+      this.post_count = this.posts.length;
+    }
   },
 
   async created() {

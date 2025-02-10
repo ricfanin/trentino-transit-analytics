@@ -63,13 +63,29 @@
               </svg>
             </div>
           </button>
+         
         </div>
+        <button 
+            v-if="isAdmin || isAuthor"
+            @click="deleteComment"
+            class="bg-red-700 flex items-center px-2 py-2 rounded-3xl hover:bg-red-800 w-auto"
+          >
+            <svg class="h-5 w-5 text-gray-100" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z"/>
+              <line x1="4" y1="7" x2="20" y2="7" />
+              <line x1="10" y1="11" x2="10" y2="17" />
+              <line x1="14" y1="11" x2="14" y2="17" />
+              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+            </svg>
+          </button>
       </div>
     </div>
   </template>
   
 <script>
     import { updatePostVote } from '@/services/posts';
+    import { deleteComment } from '@/services/commets';
 
     export default {
       name: "Comment",
@@ -79,6 +95,12 @@
               required: true,
           },
       },
+      data(){
+        return {
+          isAdmin: localStorage.getItem("user_role") === "admin",
+          isAuthor: localStorage.getItem("user_id") === this.comment.author._id,
+        }
+      },
       computed: {
         netScore() {
           console.log(this.comment);
@@ -87,22 +109,30 @@
       },
       methods: {
         async vote(type) {
-      try {
-        const updatedComment = await updatePostVote(
-          this.comment._id,
-          localStorage.getItem("user_id"),
-          type,
-          true
-        );
-        this.comment.upvote = updatedComment.upvote;
-        this.comment.downvote = updatedComment.downvote;
+              try {
+                const updatedComment = await updatePostVote(
+                  this.comment._id,
+                  localStorage.getItem("user_id"),
+                  type,
+                  true
+                );
+                this.comment.upvote = updatedComment.upvote;
+                this.comment.downvote = updatedComment.downvote;
 
-        this.$emit("update-comment", updatedComment);
-      } catch (error) {
-        console.error("Errore durante l'aggiornamento del voto:", error);
-      }
-    },
+                this.$emit("update-comment", updatedComment);
+          } catch (error) {
+            console.error("Errore durante l'aggiornamento del voto:", error);
+          }
+        },
     
+        async deleteComment() {
+          try {
+            await deleteComment(this.comment._id);
+            this.$emit("comment-deleted", this.comment._id); 
+          } catch (error) {
+            console.error("Errore delete:", error);
+          }
+        },
     },
   };
 </script>

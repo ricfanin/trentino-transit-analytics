@@ -2,17 +2,15 @@
 <template>
   <div class="flex">
     <div class="flex-1 p-8">
-      
-      <!--Post Search e Filtri-->
+      <!-- Post Search e Filtri -->
       <div class="max-w-4xl mx-auto p-4 space-y-6">
-        <PostSearchFilterBar  @orderChanged="updateOrder" />
+        <PostSearchFilterBar @orderChanged="updateOrder" />
       </div>
-
-      <!-- Posts -->
+      
+      <!-- Lista dei Post -->
       <div class="max-w-4xl mx-auto p-4 space-y-6">
-        <!-- Singolo Post -->
         <div v-for="post in posts" :key="post._id">
-          <Post :post="post" />
+          <Post :post="post" @post-deleted="removePost" />
         </div>
       </div>
     </div>
@@ -21,11 +19,11 @@
 
 <script>
 import Post from "@/components/Post.vue";
-import PostSearchFilterBar from "../components/PostSearchFilterBar.vue";
+import PostSearchFilterBar from "@/components/PostSearchFilterBar.vue";
 import { getAllPostsBySelectedOrder } from "@/services/posts";
 
 export default {
-  name: "Social",
+  name: "PostManagement",
   components: {
     Post,
     PostSearchFilterBar,
@@ -33,8 +31,8 @@ export default {
   data() {
     return {
       posts: [], // Array di post
-      currentOrder: 'upvote', 
-      tags: []// Ordine iniziale
+      currentOrder: 'upvote', // Ordine iniziale
+      tags: []
     };
   },
   methods: {
@@ -51,6 +49,10 @@ export default {
         console.error("Errore durante il caricamento del post:", error);
       }
     },
+
+    removePost(postId) {
+      this.posts = this.posts.filter(post => post._id !== postId);
+    }
   },
   mounted() {
     this.fetchPosts();

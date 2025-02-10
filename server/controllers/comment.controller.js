@@ -18,13 +18,12 @@ const getCommentsByPostId = catchAsync(async (req, res) => {
 });
 
 const getCommentByUser = catchAsync(async (req, res) => {
-    console.log(req.query.author_id);
     const comments = await commentService.getCommentByUser(req.query.author_id);
     res.status(httpStatus.OK).send(comments);
 });
 
 const deleteComment = catchAsync(async (req, res) => {
-    const comment = await commentService.deleteCommentById(req.body.id);
+    const comment = await commentService.deleteCommentById(req.params.commentId);
     res.status(httpStatus.NO_CONTENT).send(comment);
 });
 

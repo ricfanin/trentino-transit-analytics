@@ -44,7 +44,7 @@ const getPostByLikes = catchAsync(async (req, res) => {
 });
 
 const deletePost = catchAsync(async (req, res) => {
-    const post = await postService.deletePostById(req.body.id);
+    const post = await postService.deletePostById(req.params.postId);
     res.status(httpStatus.NO_CONTENT).send(post);
 });
 

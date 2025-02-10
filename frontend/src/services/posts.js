@@ -56,7 +56,6 @@ export const getAllPostsBySelectedOrder = async(currentTags, currentOrder) => {
 
 export const updatePostVote = async (postId, userId, vote_type, is_comment) => {
   try {
-    console.log(is_comment);
     const response = await apiClient.post(`/votes`, JSON.stringify({
       user_id: userId,
       post_id: postId,
@@ -66,5 +65,14 @@ export const updatePostVote = async (postId, userId, vote_type, is_comment) => {
     return response.data; // Restituisci il post aggiornato
   } catch (error) {
     throw new Error('Errore durante l\'aggiornamento del voto');
+  }
+};
+
+export const deletePost = async (postId) => {
+  try {
+    const response = await apiClient.delete(`/posts/${postId}`);
+    return response.data; // Restituisci il post aggiornato
+  } catch (error) {
+    throw new Error('Errore durante la cancellazione del post');
   }
 };
