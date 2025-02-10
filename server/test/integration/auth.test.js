@@ -5,7 +5,6 @@ const httpMocks = require('node-mocks-http');
 const moment = require('moment');
 const bcrypt = require('bcryptjs');
 const app = require('../../app');
-const config = require('../../config/config');
 const auth = require('../../middlewares/auth');
 const { tokenService, emailService } = require('../../services');
 const ApiError = require('../../utils/ApiError');
@@ -124,7 +123,7 @@ describe('Auth routes', () => {
 
     test('should return 404 error if refresh token is not found in the database', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
 
       await request(app).post('/api/v1/auth/logout').send({ refreshToken }).expect(httpStatus.NOT_FOUND);
@@ -132,7 +131,7 @@ describe('Auth routes', () => {
 
     test('should return 404 error if refresh token is blacklisted', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
       await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH, true);
 
@@ -143,7 +142,7 @@ describe('Auth routes', () => {
   describe('POST /api/v1/auth/refresh-tokens', () => {
     test('should return 200 and new auth tokens if refresh token is valid', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
       await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
 
@@ -167,7 +166,7 @@ describe('Auth routes', () => {
 
     test('should return 401 error if refresh token is signed using an invalid secret', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH, 'invalidSecret');
       await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
 
@@ -176,7 +175,7 @@ describe('Auth routes', () => {
 
     test('should return 401 error if refresh token is not found in the database', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
 
       await request(app).post('/api/v1/auth/refresh-tokens').send({ refreshToken }).expect(httpStatus.UNAUTHORIZED);
@@ -184,7 +183,7 @@ describe('Auth routes', () => {
 
     test('should return 401 error if refresh token is blacklisted', async () => {
       await insertUsers([userOne]);
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
       await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH, true);
 
@@ -201,7 +200,7 @@ describe('Auth routes', () => {
     });
 
     test('should return 401 error if user is not found', async () => {
-      const expires = moment().add(config.jwt.refreshExpirationDays, 'days');
+      const expires = moment().add(30, 'days');
       const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
       await tokenService.saveToken(refreshToken, userOne._id, expires, tokenTypes.REFRESH);
 
@@ -250,7 +249,7 @@ describe('Auth middleware', () => {
 
   test('should call next with unauthorized error if the token is not an access token', async () => {
     await insertUsers([userOne]);
-    const expires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+    const expires = moment().add(30, 'minutes');
     const refreshToken = tokenService.generateToken(userOne._id, expires, tokenTypes.REFRESH);
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${refreshToken}` } });
     const next = jest.fn();
@@ -265,7 +264,7 @@ describe('Auth middleware', () => {
 
   test('should call next with unauthorized error if access token is generated with an invalid secret', async () => {
     await insertUsers([userOne]);
-    const expires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+    const expires = moment().add(30, 'minutes');
     const accessToken = tokenService.generateToken(userOne._id, expires, tokenTypes.ACCESS, 'invalidSecret');
     const req = httpMocks.createRequest({ headers: { Authorization: `Bearer ${accessToken}` } });
     const next = jest.fn();
