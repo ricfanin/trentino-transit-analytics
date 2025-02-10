@@ -4,7 +4,6 @@ const { voteService } = require('../services');
 
 const createVote = catchAsync(async (req, res) => {
     const vote = await voteService.createVote(req.body);
-    console.log(vote);
     res.status(httpStatus.CREATED).send(vote);
 });
 

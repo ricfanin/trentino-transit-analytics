@@ -9,7 +9,6 @@ const router = express.Router();
 router
     .route('/')
     .post(auth(), validate(voteValidation.createVote), voteController.createVote)
-    .delete(auth(), validate(voteValidation.deleteVote), voteController.deleteVote)
     .get(auth(), validate(voteValidation.getVotesByUser), voteController.getVotesByUser);
 
 
