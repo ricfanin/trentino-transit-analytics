@@ -7,10 +7,9 @@ const userController = require('../../controllers/user.controller');
 const router = express.Router();
 
 // esempi route per un utente admin con permessi extra
-// router
-//     .route('/')
-//     // .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
-//     // .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+router
+    .route('/')
+    .get(auth(), userController.getAuthProfile);
 
 router
     .route('/:userId')

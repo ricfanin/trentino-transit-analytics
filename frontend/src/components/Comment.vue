@@ -103,7 +103,6 @@
       },
       computed: {
         netScore() {
-          console.log(this.comment);
           return this.comment.upvote - this.comment.downvote;
         },
       },

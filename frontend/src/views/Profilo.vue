@@ -95,7 +95,7 @@ export default {
     // Recupera le informazioni del profilo
     async getProfile() {
       try {
-        const response = await apiClient.get("/profile");
+        const response = await apiClient.get("/user");
         this.username = response.data.username;
         this.name = response.data.name;
         this.surname = response.data.surname;

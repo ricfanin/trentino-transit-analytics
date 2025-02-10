@@ -4,7 +4,7 @@ export const getTagsById = async (tagIdList) => {
   try {
       const tags = await Promise.all(
           tagIdList.map(async (tagId) => {
-              const response = await apiClient.get("/tags", { params: { _id: tagId } });
+              const response = await apiClient.get(`/linesIdNumbers/${tagId}`);
               return response.data; // Aggiungi il risultato della query all'array
           })
       );
@@ -19,7 +19,7 @@ export const getTagsById = async (tagIdList) => {
 
 export const getAllTags = async() => {
   try {
-    const response = await apiClient.get("/tags/all");
+    const response = await apiClient.get("/linesIdNumbers");
     const sortedData = response.data.sort((a, b) => {
       return a.routeNumber - b.routeNumber;  
     });

@@ -16,7 +16,6 @@ const getAllRouteIdNumbers = async () => {
 
 const getRouteIdNumber = async (routeId) => { 
     const route = await routeIdRouteNumber.getRecordById(routeId);
-    console.log(route);
     if(!route) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Route not found');
     }

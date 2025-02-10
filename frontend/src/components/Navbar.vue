@@ -28,16 +28,16 @@
             <li class="md:px-4 md:py-2 hover:text-button_2">
                 <router-link to="/">Home</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-button_2">
+            <li v-if="isLoggedIn" class="md:px-4 md:py-2 hover:text-button_2">
                 <router-link to="/Social">Social</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-button_2">
+            <li v-if="isAdmin" class="md:px-4 md:py-2 hover:text-button_2">
                 <router-link to="/Linea">Linee</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-button_2">
+            <li v-if="isAdmin" class="md:px-4 md:py-2 hover:text-button_2">
                 <router-link to="/Corsa">Linea</router-link>
             </li>
-            <li class="md:px-4 md:py-2 hover:text-button_2">
+            <li v-if="isLoggedIn" class="md:px-4 md:py-2 hover:text-button_2">
                 <router-link to="/Profilo">Profilo</router-link>
             </li>
         </ul>
@@ -96,6 +96,7 @@ export default {
     const router = useRouter();
     const isLoggedIn = computed(() => store.state.isLoggedIn);
     const userName = computed(() => store.state.userName);
+    const isAdmin = computed(() => store.state.role === "admin");
 
     const logout = () => {
         const refreshToken = localStorage.getItem('refreshToken');
@@ -110,6 +111,7 @@ export default {
     return {
       isLoggedIn,
       userName,
+      isAdmin,
       logout,
     };
   },

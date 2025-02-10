@@ -1,4 +1,9 @@
 <template>
+
+    <div class="text-lg m-6 p-4 text-teal-700 bg-teal-100 border-2 border-teal-300 rounded-lg shadow-md">
+      📡 Tutti i dati visualizzati in questa pagina provengono direttamente dalle API di Trentino Trasporti (dal 12/01/2025). <br> 
+      🚀 In futuro, raccogliendo più dati, potremo aggiungere nuove funzionalità!
+    </div>
     <div class="font-sans m-6 bg-white rounded-lg">
         <!-- Select per la scelta della linea -->
         <div class="p-4">
@@ -7,6 +12,7 @@
                 id="routeSelect"
                 v-model="selectedRouteId"
                 @change="updateRouteDetails"
+                :disabled="isSelectDisabled"
                 class="font-sans shadow-lg border border-gray-0 rounded-md p-2"
             >
                 <option v-for="route in routes" :key="route.routeId" :value="route.routeId" :selected="route.routeId === selectedRouteId">
@@ -16,8 +22,8 @@
         </div>
 
         <div class="mt-4">
-          <BusLineDelays :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
-          <BusLineDelaysWithStops :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
+          <BusLineDelays ref="busLineDelays" :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
+          <BusLineDelaysWithStops ref="busLineDelaysWithStops" :route-id="selectedRouteId" :route-number="selectedRouteNumber" />
         </div>
     </div>
 </template>
@@ -42,6 +48,11 @@ export default {
   },
   created() {
     this.fetchRoutes();
+  },
+  computed: {
+    isSelectDisabled() {
+      return this.$refs.busLineDelays?.isLoading || this.$refs.busLineDelaysWithStops?.isLoading;
+    },
   },
   methods: {
     async fetchRoutes() {

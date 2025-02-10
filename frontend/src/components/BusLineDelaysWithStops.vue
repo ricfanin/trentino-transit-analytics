@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       chart: null,
+      isLoading: false,
     };
   },
   watch: {
@@ -43,9 +44,13 @@ export default {
       if (!this.routeId) return;
 
       try {
+        this.isLoading = true; // Mostra il loading spinner
+
         // Ottieni i dati dal server filtrati per routeId
         const response = await apiClient.get(`trips-average/stops?routeId=${this.routeId}`);
         const data = response.data;
+
+        this.isLoading = false; // nascondi il loading spinner
 
         // Estrarre dati per il grafico
         const labels = data.andata.map((item) => item.stopName);
@@ -81,6 +86,7 @@ export default {
             ],
           },
           options: {
+            animation: { duration: 0 },
             responsive: true,
             maintainAspectRatio: true,
             indexAxis: 'y',

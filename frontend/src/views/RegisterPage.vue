@@ -188,7 +188,7 @@ export default {
         localStorage.setItem("accessToken", tokens.access.token);
         localStorage.setItem("refreshToken", tokens.refresh.token);
 
-        this.$store.dispatch("login", user.name);
+        this.$store.dispatch("login", { name: user.name, role: user.role });
 
         this.$router.push("Profilo");
 
