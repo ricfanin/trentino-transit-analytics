@@ -60,7 +60,7 @@
 
       <!-- Singolo Post -->
       <div v-for="post in posts" :key="post.id">
-        <Post :post="post" />
+        <Post :post="post" @post-deleted="removePost"/>
       </div>
     </div>
   </div>
@@ -95,7 +95,7 @@ export default {
     // Recupera le informazioni del profilo
     async getProfile() {
       try {
-        const response = await apiClient.get("/profile");
+        const response = await apiClient.get("/user");
         this.username = response.data.username;
         this.name = response.data.name;
         this.surname = response.data.surname;
@@ -126,6 +126,11 @@ export default {
         alert("Errore durante il caricamento dei post dell'utente.");
       }
     },
+
+    removePost(postId) {
+      this.posts = this.posts.filter(post => post._id !== postId);
+      this.post_count = this.posts.length;
+    }
   },
 
   async created() {

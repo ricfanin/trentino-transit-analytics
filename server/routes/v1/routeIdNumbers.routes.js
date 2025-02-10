@@ -7,7 +7,13 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router
+    .route('/:routeId')
+    .get(auth(), RouteIdNumbers.getRouteIdNumber);
+
+router
     .route('/')
-    .get(auth(), RouteIdNumbers.getAllRouteIdNumbers)
+    .get(auth(), RouteIdNumbers.getAllRouteIdNumbers);
+
+
 
 module.exports = router;

@@ -27,3 +27,13 @@ export const getCommentByUser = async (authorId) => {
         throw error; 
     }
 }
+
+export const deleteComment = async (commentId) => {
+    try {
+      const response = await apiClient.delete(`/comments/${commentId}`);
+      return response.data; 
+    } catch (error) {
+      throw new Error('Errore durante la cancellazione del comment');
+    }
+  };
+  

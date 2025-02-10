@@ -1,8 +1,6 @@
 const express = require('express');
 const authRoute = require('./auth.routes');
 const userRoute = require('./user.routes');
-const profileRoute = require('./profile.routes');
-const tagRoute = require('./tag.routes');
 const tripsAverageRoute = require('./tripsAverage.routes');
 const postRoute = require('./post.routes');
 const commentRoute = require('./comment.routes');
@@ -20,14 +18,6 @@ const defaultRoutes = [
     {
         path: '/user',
         route: userRoute,
-    },
-    {
-        path: '/profile',
-        route: profileRoute,
-    },
-    {
-        path: '/tags',
-        route: tagRoute,
     },
     {
         path: '/trips-average',

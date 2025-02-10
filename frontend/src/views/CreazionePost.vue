@@ -116,8 +116,8 @@ export default {
 
         this.errorMessage = ""; // Resetta il messaggio di errore`
         this.isLoading = false; // Nascondi il loading spinner
-        this.$router.push({ path: '/Profilo' });
-
+        this.$router.go(-1);
+        
         this.form.title = '';
         this.form.content = '';
         this.form.line

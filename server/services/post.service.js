@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Post } = require('../models');
+const { Post, Comment } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 const createPost = async (postBody) => {
@@ -82,11 +82,13 @@ const getPostByTags = async (tags) => {
 
 const deletePostById = async (id) => {
     const post = await Post.findByIdAndDelete(id);
-    if(!post) {
-        throw new ApiError(httpStatus.NOT_FOUND, "Post not found");
+    if (!post) {
+        throw new Error("Post non trovato");
     }
+    await Comment.deleteMany({ post_id: id });
+
     return post;
-}
+};
 
 module.exports = {
     createPost,

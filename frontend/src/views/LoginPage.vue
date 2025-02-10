@@ -110,6 +110,8 @@ export default {
         // Memorizza i token e redirigi l'utente
         const { user, tokens } = response.data;
         localStorage.setItem("user_id", user._id);
+        localStorage.setItem("user_name", user.name);
+        localStorage.setItem("user_role", user.role)
         localStorage.setItem("accessToken", tokens.access.token);
         localStorage.setItem("refreshToken", tokens.refresh.token);
 

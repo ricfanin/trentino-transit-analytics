@@ -2,7 +2,7 @@
 <template>
     <div class="flex mt-4 mb-8">
         <div class="flex-1 max-w-4xl mx-auto p-4 space-y-6">
-            <Post v-if="post" :post="post" />
+            <Post v-if="post" :post="post" @post-deleted="removePost"/>
             <p v-else>Caricamento...</p>
             <div class="max-w-6xl mx-auto bg-text_1 p-6 rounded-lg shadow-md border">
                     <form @submit.prevent="submitComment">
@@ -26,7 +26,7 @@
                     </form>
                 </div>
             <div v-for="comment in comments" class="max-w-4xl mx-auto space-y-6">
-                <Comment :comment="comment" />
+                <Comment :comment="comment" @comment-deleted="removeComment" />
             </div>
         </div>
     </div>
@@ -81,6 +81,14 @@ export default {
                 console.error("Errore durante il caricamento del post:", error);
             }
         },
+
+        removeComment(commentId) {
+            this.comments = this.comments.filter(comment => comment._id !== commentId); // 🔹 Rimuove il commento eliminato
+        },
+
+        removePost() {
+            this.$router.go(-1);
+        }
     },
     async mounted() {
         this.fetchComments();

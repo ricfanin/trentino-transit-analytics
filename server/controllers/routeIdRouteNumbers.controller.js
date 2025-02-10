@@ -8,8 +8,7 @@ const getAllRouteIdNumbers = catchAsync(async (req, res) => {
 });
 
 const getRouteIdNumber = catchAsync(async (req, res) => {
-    console.log(req.query._id);
-    const route = await routeIdNumbers.getRouteIdNumber(req.query._id);
+    const route = await routeIdNumbers.getRouteIdNumber(req.params.routeId);
     res.status(httpStatus.OK).send(route);
 });
 

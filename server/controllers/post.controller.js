@@ -13,14 +13,13 @@ const updatePost = catchAsync(async (req, res) => {
 })
 
 const getPostByUser = catchAsync(async (req, res) => {
-    const {author_id} = req.query;
-    console.log(author_id);
+    const { author_id } = req.query;
     const posts = await postService.getPostByUser(author_id);
     res.status(httpStatus.OK).send(posts);
 });
 
 const getPostById = catchAsync(async (req, res) => {
-    const {post_id} = req.query;
+    const { post_id } = req.query;
     const post = await postService.getPostById(post_id);
     if (!post) {
         res.status(httpStatus.NOT_FOUND).send('Post not found');
@@ -35,13 +34,13 @@ const getPostByTags = catchAsync(async (req, res) => {
 });
 
 const getPostByDate = catchAsync(async (req, res) => {
-    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const tags = req.query.tags[0];
     const posts = await postService.getPostByDate(tags, req.query.order);
     res.status(httpStatus.OK).send(posts);
 })
 
 const getPostByLikes = catchAsync(async (req, res) => {
-    const tags = req.query.tags ? req.query.tags.split(',') : [];
+    const tags = req.query.tags[0];
     const post = await postService.getPostByLikes(tags, req.query.order);
     res.status(httpStatus.OK).send(post);
 });
