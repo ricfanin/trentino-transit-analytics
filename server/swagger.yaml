@@ -1,16 +1,17 @@
 openapi: 3.0.0
 info:
-  title: API Documentation
-  description: API documentation for authentication and comments
+  title: Documentazione API
+  description: Documentazione API per autenticazione e commenti
   version: 1.0.0
+
 servers:
-  - url: http://localhost:3000
-    description: Local server
+  - url: ${VUE_APP_API_BASE_URL}
+    description: TTA-api
 
 paths:
   /auth/register:
     post:
-      summary: Register as user
+      summary: Registrati come utente o admin
       tags: [Auth]
       requestBody:
         required: true
@@ -20,10 +21,17 @@ paths:
               type: object
               required:
                 - name
+                - surname
+                - username
                 - email
                 - password
+                - role
               properties:
                 name:
+                  type: string
+                surname:
+                  type: string
+                username:
                   type: string
                 email:
                   type: string
@@ -32,11 +40,19 @@ paths:
                   type: string
                   format: password
                   minLength: 8
+                role:
+                  type: string
+                  enum: [admin, user]
       responses:
         "201":
-          description: User registered successfully
+          description: Utente o admin registrato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
         "400":
-          description: Duplicate email
+          description: Email duplicata
+
 
   /auth/login:
     post:
@@ -60,9 +76,13 @@ paths:
                   format: password
       responses:
         "200":
-          description: Successful login
+          description: Login avvenuto con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
         "401":
-          description: Invalid credentials
+          description: Credenziali non valide
 
   /auth/logout:
     post:
@@ -80,14 +100,14 @@ paths:
                 refreshToken:
                   type: string
       responses:
-        "204":
-          description: Successfully logged out
+        "200":
+          description: Logout avvenuto con successo
         "404":
-          description: Token not found
+          description: Token non trovato
 
   /auth/refresh-tokens:
     post:
-      summary: Refresh authentication tokens
+      summary: Aggiorna i token di autenticazione
       tags: [Auth]
       requestBody:
         required: true
@@ -102,13 +122,21 @@ paths:
                   type: string
       responses:
         "200":
-          description: Tokens refreshed
+          description: Token aggiornati
+          content:
+            application/json:
+              schema:
+                properties:
+                  access:
+                    $ref: "#/components/schemas/Token"
+                  refresh:
+                    $ref: "#/components/schemas/Token"
         "401":
-          description: Unauthorized
+          description: Non autorizzato
 
   /comments:
     post:
-      summary: Create a new comment
+      summary: Crea nuovo commento
       tags: [Comments]
       security:
         - bearerAuth: []
@@ -119,15 +147,26 @@ paths:
             schema:
               type: object
               properties:
-                postId:
+                author_id:
+                  type: string
+                post_id:
                   type: string
                 content:
                   type: string
       responses:
         "201":
-          description: Comment created
+          description: Commento creato
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          description: Richiesta non valida
+        "401":
+          description: Non autorizzato
+
     patch:
-      summary: Update a comment
+      summary: Aggiorna commento
       tags: [Comments]
       security:
         - bearerAuth: []
@@ -138,25 +177,27 @@ paths:
             schema:
               type: object
               properties:
-                commentId:
+                id:
                   type: string
                 content:
                   type: string
       responses:
         "200":
-          description: Comment updated
-    get:
-      summary: Get comments by user
-      tags: [Comments]
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: List of comments
+          description: Commento aggiornato
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          description: Richiesta non valida
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Commento non trovato
 
   /comments/{commentId}:
     delete:
-      summary: Delete a comment
+      summary: Cancella commento in base a id
       tags: [Comments]
       security:
         - bearerAuth: []
@@ -167,74 +208,620 @@ paths:
           schema:
             type: string
       responses:
-        "200":
-          description: Comment deleted
+        "204":
+          description: Commento cancellato
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Commento non trovato
 
   /comments/post:
     get:
-      summary: Get comments by post ID
+      summary: Recupera i commenti per un post specifico
       tags: [Comments]
       security:
         - bearerAuth: []
+      parameters:
+        - name: post_id
+          in: query
+          description: ID del post di cui recuperare i commenti
+          required: true
+          schema:
+            type: string
       responses:
         "200":
-          description: List of comments for the post
+          description: Commenti recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Post non trovato
 
   /comments/user:
     get:
-      summary: Get comments by user
+      summary: Ottieni commenti in base all'utente
       tags: [Comments]
+      parameters:
+        - name: author_id
+          in: query
+          description: ID dell'utente di cui recuperare i commenti
+          required: true
+          schema:
+            type: string
       security:
         - bearerAuth: []
       responses:
         "200":
-          description: List of user comments
+          description: Lista dei commenti di un utente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Utente non trovato
 
   /posts:
     post:
-      summary: Create a new post
-      tags: [Posts]
+      tags:
+        - Post
+      summary: Crea un nuovo post
       security:
         - bearerAuth: []
+      requestBody:
+        description: Dati del post da creare
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                author_id:
+                  type: string
+                title:
+                  type: string
+                content:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - title
+                - content
+                - tags
+                - author_id
       responses:
         "201":
-          description: Post created
+          description: Post creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: Richiesta non valida
+
     patch:
-      summary: Update a post
-      tags: [Posts]
+      tags:
+        - Post
+      summary: Aggiorna un post esistente
       security:
         - bearerAuth: []
+      requestBody:
+        description: Dati del post da aggiornare
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                bodyPost:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+              required:
+                - id
+                - bodyPost
       responses:
         "200":
-          description: Post updated
+          description: Post aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: Richiesta non valida
+        "404":
+          description: Post non trovato
+
+    get:
+      tags:
+        - Post
+      summary: Recupera un post per ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: post_id
+          in: query
+          required: true
+          description: ID del post da recuperare
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post recuperato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Post non trovato
+
+  /posts/{postId}:
+    delete:
+      tags:
+        - Post
+      summary: Elimina un post
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          description: ID del post da eliminare
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Post eliminato con successo
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Post non trovato
+
+  /posts/filter/user:
+    get:
+      tags:
+        - Post
+      summary: Recupera i post di un utente specifico
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: author_id
+          in: query
+          required: true
+          description: ID dell'autore dei post
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista dei post recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Utente non trovato
+
+  /posts/filter/date:
+    get:
+      tags:
+        - Post
+      summary: Recupera i post filtrati per data
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: order
+          in: query
+          required: false
+          description: Ordinamento dei post filtrati
+          schema:
+            type: string
+        - name: tags[]
+          in: query
+          required: true
+          description: Tag per filtrare i post
+          schema:
+            type: array
+            items:
+              type: string
+              pattern: "^[a-fA-F0-9]{24}$"  
+      responses:
+        "200":
+          description: Lista dei post recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Tag non trovato
+
+  /posts/filter/likes:
+    get:
+      tags:
+        - Post
+      summary: Recupera i post filtrati per numero di like
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: order
+          in: query
+          required: false
+          description: Ordinamento dei post filtrati
+          schema:
+            type: string
+        - name: tags[]
+          in: query
+          required: true
+          description: Tag per filtrare i post
+          schema:
+            type: array
+            items:
+              type: string
+              pattern: "^[a-fA-F0-9]{24}$"  
+      responses:
+        "200":
+          description: Lista dei post recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Tag non trovato
 
   /votes:
     post:
-      summary: Vote on a post
-      tags: [Votes]
+      tags:
+        - Vote
+      summary: Crea un nuovo voto
       security:
         - bearerAuth: []
+      requestBody:
+        description: Dati del voto da creare
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: ID dell'utente che esprime il voto
+                postId:
+                  type: string
+                  description: ID del post che viene votato
+                voteType:
+                  type: string
+                  enum: ["upvote", "downvote"]
+                  description: Il valore del voto ("upvote" o "downvote")
+                isComment:
+                  type: boolean 
+                  description: Indica se il voto è relativo ad un commento
+              required:
+                - user_id
+                - post_id
+                - voteType
+                - isComment
       responses:
         "201":
-          description: Vote registered
-    delete:
-      summary: Remove a vote
-      tags: [Votes]
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Vote removed
+          description: Voto creato con successo
+        "400":
+          description: Richiesta non valida
+        "401":
+          description: Non autorizzato
 
-  /users:
+    delete:
+      tags:
+        - Vote
+      summary: Elimina un voto
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Dati del voto da eliminare
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  description: ID dell'utente che ha espresso il voto
+                post_id:
+                  type: string
+                  description: ID del post a cui il voto appartiene
+              required:
+                - user_id
+                - post_id
+      responses:
+        "204":
+          description: Voto eliminato con successo
+        "400":
+          description: Richiesta non valida
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Voto non trovato
+
     get:
-      summary: Get authenticated user profile
-      tags: [Users]
+      tags:
+        - Vote
+      summary: Recupera i voti di un utente
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: ID dell'utente di cui recuperare i voti
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Voti recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vote"
+        "400":
+          description: Richiesta non valida
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Utente non trovato
+
+  /user:
+    get:
+      summary: Recupera il profilo dell'utente autenticato
+      tags: [User]
       security:
         - bearerAuth: []
       responses:
         "200":
-          description: User profile retrieved
+          description: Profilo utente recuperato con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    surname:
+                      type: string
+                    email:
+                      type: string              
+        "401":
+          description: Non autorizzato
+        "404":
+          description: Utente non trovato
+
+  /user/{userId}:
+    patch:
+      summary: Aggiorna un utente
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID dell'utente da aggiornare
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    name:
+                      type: string
+                    surname:
+                      type: string
+                    username:
+                      type: string 
+      responses:
+        "200":
+          description: Utente aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Richiesta non valida
+        "401":
+          description: Non autorizzato
+        "403":
+          description: Accesso negato
+        "404":
+          description: Utente non trovato
+
+  /trips-average:
+    get:
+      summary: Ottieni i ritardi medi di tutti i viaggi
+      tags: [RitardiMediViaggi]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Ritardi medi dei viaggi recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TripAverageDelay'
+        "401":
+          description: Non autorizzato
+
+  /trips-average/lines:
+    get:
+      summary: Ottieni i ritardi medi per linea
+      tags: [RitardiMediViaggi]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Ritardi medi per linea recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    avarageDelay:
+                      type: number
+                      format: float
+                    routeNumber:
+                      type: integer      
+        "401":
+          description: Non autorizzato
+
+  /trips-average/times:
+    get:
+      summary: Ottieni i ritardi medi per orario
+      tags: [RitardiMediViaggi]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: routeId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: ID della rotta
+      responses:
+        "200":
+          description: Ritardi medi per orario recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    avarageDelay:
+                      type: number
+                      format: float
+                    startTripTime:
+                      type: string      
+        "401":
+          description: Non autorizzato
+
+  /trips-average/stops:
+    get:
+      summary: Ottieni i ritardi medi per fermata
+      tags: [RitardiMediViaggi]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: routeId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: ID della rotta
+      responses:
+        "200":
+          description: Ritardi medi per fermata recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    avarageDelay:
+                      type: number
+                      format: float
+                    stopSequence:
+                      type: integer
+                    stopId:
+                      type: integer
+                    stopName:
+                      type: string              
+        "401":
+          description: Non autorizzato
+
+  /linesIdNumbers:
+    get:
+      summary: Ottieni tutti i numeri di ID delle rotte
+      tags: [NumeriIDRotte]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Numeri di ID delle rotte recuperati con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RouteIdNumber'
+        "401":
+          description: Non autorizzato
+
+  /linesIdNumbers/{routeId}:
+    get:
+      summary: Ottieni il numero di ID di una rotta specifica
+      tags: [NumeriIDRotte]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: routeId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID della rotta
+      responses:
+        "200":
+          description: Numero di ID della rotta recuperato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteIdNumber'
+        "401":
+          description: Non autorizzato
 
 components:
   securitySchemes:
@@ -247,17 +834,174 @@ components:
     User:
       type: object
       properties:
-        id:
+        _id:
+          type: string
+        username:
           type: string
         name:
+          type: string
+        surname:
           type: string
         email:
           type: string
           format: email
-    AuthTokens:
+        password:
+          type: string
+        role:
+          type: string
+          enum: [admin, user]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        __v:
+          type: integer
+
+    Token:
       type: object
       properties:
-        access:
+        token:
           type: string
-        refresh:
+        expires:
           type: string
+          format: date-time
+
+    AuthResponse:
+          type: object
+          properties:
+            user:
+              $ref: "#/components/schemas/User"
+            tokens:
+              type: object
+              properties:
+                access:
+                  $ref: "#/components/schemas/Token"
+                refresh:
+                  $ref: "#/components/schemas/Token"
+
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+        author_id:
+          type: string
+        post_id:
+          type: string
+        content:
+          type: string
+        upvote:
+          type: integer
+        downvote:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        __v:
+          type: integer
+
+    Vote:
+      type: object
+      properties:
+        _id:
+          type: string
+        post_id:
+          type: string
+        user_id:
+          type: string
+        isComment:
+          type: boolean
+        voteType:
+          type: string
+          enum: [upvote, downvote]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        __v:
+          type: integer
+
+
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        author_id:
+          type: string
+          format: ObjectId
+        title:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+            format: ObjectId
+        comments:
+          type: array
+          items:
+            type: object
+        upvote:
+          type: integer
+        downvote:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        __v:
+          type: integer
+
+    TripAverageDelay:
+      type: object
+      properties:
+        routeId:
+          type: integer
+        routeName:
+          type: string
+        direction:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        tripId:
+          type: string
+        startTripTime:
+          type: string
+        endTripTime:
+          type: string
+        averageDelay:
+          type: number
+
+    LineDelay:
+      type: object
+      properties:
+        lineId:
+          type: string
+        averageDelay:
+          type: number
+
+    RouteIdNumber:
+      type: object
+      properties:
+        _id:
+          type: string
+        routeId:
+          type: number
+        routeNumber:
+          type: number
+        color:
+          type: string
+          pattern: '^#([0-9A-Fa-f]{6})$'

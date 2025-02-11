@@ -20,11 +20,7 @@ router
 router
     .route('/filter/user')
     .get(validate(postValidation.getPostByUser), postController.getPostByUser);  
-
-router
-    .route('/filter/tags')
-    .get(validate(postValidation.getPostByTags), postController.getPostByTags)
-
+    
 router
     .route('/filter/likes')
     .get(validate(postValidation.getPostByLikes), postController.getPostByLikes)
