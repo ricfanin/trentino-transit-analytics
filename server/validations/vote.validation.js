@@ -12,8 +12,8 @@ const createVote = {
 }
 
 const getVotesByUser = {
-    body: Joi.object().keys({
-        author_id: Joi.string().custom(objectId).required()
+    query: Joi.object().keys({
+        id: Joi.string().custom(objectId).required()
     })
 }
 

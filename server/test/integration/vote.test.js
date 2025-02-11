@@ -72,9 +72,8 @@ describe('Vote routes', () => {
       await insertVotes([voteOne]);
 
       const res = await request(app)
-        .get(`/api/v1/votes`)
+        .get(`/api/v1/votes?id=${userOne._id}`)
         .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send({ author_id: userOne._id })
         .expect(httpStatus.OK);
 
       expect(res.body).toEqual([
@@ -83,6 +82,7 @@ describe('Vote routes', () => {
           _id: voteOne._id.toHexString(),
           user_id: voteOne.user_id.toHexString(),
           post_id: voteOne.post_id.toHexString(),
+          isComment: voteOne.isComment,
           voteType: voteOne.voteType,
           createdAt: expect.anything(),
           updatedAt: expect.anything(),

@@ -8,6 +8,7 @@ const voteOne = {
   user_id: userOne._id,
   post_id: postOne._id,
   voteType: 'upvote',
+  isComment: true
 };
 
 const voteTwo = {
@@ -15,6 +16,7 @@ const voteTwo = {
   user_id: userOne._id,
   post_id: postOne._id,
   voteType: 'downvote',
+  isComment: true
 };
 
 const insertVotes = async (votes) => {

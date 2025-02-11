@@ -11,8 +11,22 @@ const { errorConverter, errorHandler } = require('./middlewares/error');
 
 const routes = require('./routes/v1');
 
+
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const yaml = require('yaml');
+
+// Carica il file YAML di Swagger
+const swaggerFile = fs.readFileSync('./swagger.yaml', 'utf8');
+const swaggerDocument = yaml.parse(swaggerFile);
+
+// Configura l'URL del server in Swagger
+swaggerDocument.servers = [ { url: process.env.VUE_APP_API_BASE_URL, description: 'TTA-api'} ];
+
 const app = express();
 
+// Configura Swagger UI
+app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // MIDDLEWARES
 app.use(morgan('dev'))
 
