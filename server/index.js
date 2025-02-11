@@ -9,6 +9,10 @@ const { jwtStrategy } = require('./config/passport');
 const ApiError = require("./utils/ApiError");
 const { errorConverter, errorHandler } = require('./middlewares/error');
 
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const yaml = require('yaml');
+
 const routes = require('./routes/v1');
 const { ConnectDB } = require('./config/db');
 const config = require('./config/config');
@@ -18,6 +22,23 @@ const app = express();
 
 // MIDDLEWARES
 app.use(morgan('dev'))
+
+// Carica il file YAML di Swagger
+const swaggerFile = fs.readFileSync('./swagger.yaml', 'utf8');
+const swaggerDocument = yaml.parse(swaggerFile);
+
+// Configura l'URL del server in Swagger
+swaggerDocument.servers = [
+    {
+      url: process.env.VUE_APP_API_BASE_URL,
+      description: 'Local server',
+    },
+  ];
+
+// Configura Swagger UI
+app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
 
 // set security HTTP headers
 app.use(helmet());
