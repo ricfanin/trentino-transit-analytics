@@ -274,6 +274,8 @@ paths:
       tags:
         - Post
       summary: Crea un nuovo post
+      security:
+        - bearerAuth: []
       requestBody:
         description: Dati del post da creare
         content:
@@ -281,16 +283,28 @@ paths:
             schema:
               type: object
               properties:
+                author_id:
+                  type: string
                 title:
                   type: string
                 content:
                   type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
               required:
                 - title
                 - content
+                - tags
+                - author_id
       responses:
         "201":
           description: Post creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "400":
           description: Richiesta non valida
 
@@ -298,6 +312,8 @@ paths:
       tags:
         - Post
       summary: Aggiorna un post esistente
+      security:
+        - bearerAuth: []
       requestBody:
         description: Dati del post da aggiornare
         content:
@@ -308,13 +324,26 @@ paths:
                 id:
                   type: string
                 bodyPost:
-                  type: string
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    content:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
               required:
                 - id
                 - bodyPost
       responses:
         "200":
           description: Post aggiornato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "400":
           description: Richiesta non valida
         "404":
@@ -336,6 +365,10 @@ paths:
       responses:
         "200":
           description: Post recuperato con successo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "401":
           description: Non autorizzato
         "404":
@@ -346,6 +379,8 @@ paths:
       tags:
         - Post
       summary: Elimina un post
+      security:
+        - bearerAuth: []
       parameters:
         - name: postId
           in: path
@@ -366,6 +401,8 @@ paths:
       tags:
         - Post
       summary: Recupera i post di un utente specifico
+      security:
+        - bearerAuth: []
       parameters:
         - name: author_id
           in: query
@@ -376,40 +413,32 @@ paths:
       responses:
         "200":
           description: Lista dei post recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
         "401":
           description: Non autorizzato
         "404":
           description: Utente non trovato
-
-  /posts/filter/tags:
-    get:
-      tags:
-        - Post
-      summary: Recupera i post per tag
-      parameters:
-        - name: tags
-          in: query
-          required: true
-          description: Tag per filtrare i post
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        "200":
-          description: Lista dei post recuperata con successo
-        "401":
-          description: Non autorizzato
-        "404":
-          description: Tag non trovato
 
   /posts/filter/date:
     get:
       tags:
         - Post
       summary: Recupera i post filtrati per data
+      security:
+        - bearerAuth: []
       parameters:
-        - name: tags
+        - name: order
+          in: query
+          required: false
+          description: Ordinamento dei post filtrati
+          schema:
+            type: string
+        - name: tags[]
           in: query
           required: true
           description: Tag per filtrare i post
@@ -417,13 +446,16 @@ paths:
             type: array
             items:
               type: string
-        - name: order
-          in: query
-          required: false
-          description: Ordinamento dei post filtrati
+              pattern: "^[a-fA-F0-9]{24}$"  
       responses:
         "200":
           description: Lista dei post recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
         "401":
           description: Non autorizzato
         "404":
@@ -434,8 +466,16 @@ paths:
       tags:
         - Post
       summary: Recupera i post filtrati per numero di like
+      security:
+        - bearerAuth: []
       parameters:
-        - name: tags
+        - name: order
+          in: query
+          required: false
+          description: Ordinamento dei post filtrati
+          schema:
+            type: string
+        - name: tags[]
           in: query
           required: true
           description: Tag per filtrare i post
@@ -443,13 +483,16 @@ paths:
             type: array
             items:
               type: string
-        - name: order
-          in: query
-          required: false
-          description: Ordinamento dei post filtrati
+              pattern: "^[a-fA-F0-9]{24}$"  
       responses:
         "200":
           description: Lista dei post recuperata con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
         "401":
           description: Non autorizzato
         "404":
@@ -556,32 +599,36 @@ paths:
         "404":
           description: Utente non trovato
 
-  /users:
+  /user:
     get:
       summary: Recupera il profilo dell'utente autenticato
       tags: [User]
       security:
         - bearerAuth: []
-      parameters:
-        - name: author_id
-          in: query
-          required: false
-          description: ID dell'autore di cui recuperare il profilo (opzionale, se fornito restituisce il profilo di quell'utente)
-          schema:
-            type: string
       responses:
         "200":
           description: Profilo utente recuperato con successo
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    surname:
+                      type: string
+                    email:
+                      type: string              
         "401":
           description: Non autorizzato
         "404":
           description: Utente non trovato
 
-  /users/{userId}:
+  /user/{userId}:
     patch:
       summary: Aggiorna un utente
       tags: [User]
@@ -599,7 +646,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    name:
+                      type: string
+                    surname:
+                      type: string
+                    username:
+                      type: string 
       responses:
         "200":
           description: Utente aggiornato con successo
@@ -648,7 +706,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LineDelay'
+                  type: object
+                  properties:
+                    avarageDelay:
+                      type: number
+                      format: float
+                    routeNumber:
+                      type: integer      
         "401":
           description: Non autorizzato
 
@@ -673,7 +737,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LineDelay'
+                  type: object
+                  properties:
+                    avarageDelay:
+                      type: number
+                      format: float
+                    startTripTime:
+                      type: string      
         "401":
           description: Non autorizzato
 
@@ -698,7 +768,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LineDelay'
+                  type: object
+                  properties:
+                    avarageDelay:
+                      type: number
+                      format: float
+                    stopSequence:
+                      type: integer
+                    stopId:
+                      type: integer
+                    stopName:
+                      type: string              
         "401":
           description: Non autorizzato
 
@@ -849,10 +929,58 @@ components:
           type: integer
 
 
+    Post:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        author_id:
+          type: string
+          format: ObjectId
+        title:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+            format: ObjectId
+        comments:
+          type: array
+          items:
+            type: object
+        upvote:
+          type: integer
+        downvote:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        __v:
+          type: integer
+
     TripAverageDelay:
       type: object
       properties:
         routeId:
+          type: integer
+        routeName:
+          type: string
+        direction:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        tripId:
+          type: string
+        startTripTime:
+          type: string
+        endTripTime:
           type: string
         averageDelay:
           type: number
@@ -868,6 +996,8 @@ components:
     RouteIdNumber:
       type: object
       properties:
+        _id:
+          type: string
         routeId:
           type: number
         routeNumber:
