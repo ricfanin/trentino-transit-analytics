@@ -10,7 +10,7 @@
 
     <!-- Chart -->
     <div class="my-4">
-        <span class="font-bold text-text_4 text-2xl">Ritardi medi delle linee bus</span>
+        <span class="font-bold text-text_2 text-2xl">Ritardo medio delle linee bus</span>
         <div class="w-full">
             <canvas class="m-auto" ref="chart"></canvas>
         </div>

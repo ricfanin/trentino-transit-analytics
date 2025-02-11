@@ -11,8 +11,8 @@
 
     <!-- Chart -->
     <div class="my-4">
-        <span class="font-bold text-text_4 text-2xl">
-            Ritardi medi con orari Linea {{ routeNumber }}
+        <span class="font-bold text-text_2 text-2xl">
+            Ritardo medio con orari Linea {{ routeNumber }}
         </span>
         <div class="w-full">
             <canvas class="m-auto" ref="chart"></canvas>

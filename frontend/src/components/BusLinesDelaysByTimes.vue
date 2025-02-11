@@ -11,7 +11,7 @@
 
     <!-- Chart -->
     <div class="my-4">
-        <span class="font-bold text-text_4 text-2xl">Ritardi medi di tutte le linee con orari</span>
+        <span class="font-bold text-text_2 text-2xl">Ritardo medio di tutte le linee con orari</span>
         <div class="w-full">
             <canvas class="m-auto" ref="chart"></canvas>
         </div>

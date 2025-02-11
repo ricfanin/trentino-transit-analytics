@@ -1,7 +1,7 @@
 <template>
     <div class="my-4">
-        <span class="font-bold text-text_4 text-2xl">
-            Ritardi medi nelle fermate Linea {{ routeNumber }}
+        <span class="font-bold text-text_2 text-2xl">
+            Ritardio medio nelle fermate Linea {{ routeNumber }}
         </span>
         <canvas class="m-auto" ref="chart"></canvas>
     </div>
