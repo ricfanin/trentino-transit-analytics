@@ -4,9 +4,9 @@
       📡 Tutti i dati visualizzati in questa pagina provengono direttamente dalle API di Trentino Trasporti (dal 12/01/2025). <br> 
       🚀 In futuro, raccogliendo più dati, potremo aggiungere nuove funzionalità!
     </div>
-    <div class="font-sans m-6 bg-white rounded-lg">
+    <div class="font-sans py-4 lg:px-24 md:px-8 m-6 bg-white rounded-lg">
         <!-- Select per la scelta della linea -->
-        <div class="p-4">
+        <div class="p-2">
             <label for="routeSelect" class="text-lg mr-4 font-bold text-text_4">Seleziona una linea:</label>
             <select
                 id="routeSelect"

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="my-4">
         <span class="font-bold text-text_4 text-2xl">
             Ritardi medi nelle fermate Linea {{ routeNumber }}
         </span>
