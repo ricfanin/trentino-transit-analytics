@@ -91,7 +91,7 @@ npm install
 Dalla cartella `server`, esegui:
 
 ```bash
-npm run start
+npm run dev
 ```
 
 **Frontend:**
@@ -99,9 +99,8 @@ npm run start
 Dalla cartella `frontend`, esegui:
 
 ```bash
-npm run serve
+npm run dev
 ```
-(oppure `npm run dev`, a seconda della configurazione)
 
 ### Testing
 
